@@ -1,0 +1,51 @@
+.header-content {
+    background-color: #cddcf5; /* Azul más oscuro para mejor contraste */
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Añadir sombra para dar profundidad */
+}
+
+.header-content img {
+    width: 140px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.menu-link {
+    color: #ffffff; /* Texto blanco para mejor contraste */
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.menu-link:hover {
+    color: #1890ff; /* Azul claro al pasar el ratón */
+}
+
+.ant-menu-horizontal {
+    border-bottom: none; /* Quitar borde inferior predeterminado */
+}
+
+.ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected {
+    background-color: #1890ff; /* Azul claro para la selección */
+    border-radius: 4px;
+    margin: 0 4px;
+}
+
+.ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover {
+    background-color: #40a9ff; /* Azul más claro al pasar el ratón */
+}
+
+.ant-menu-item {
+    padding: 0 20px; /* Aumentar espacio entre elementos */
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        justify-content: space-between; /* Asegurar que el contenido esté distribuido correctamente en pantallas pequeñas */
+    }
+
+    .ant-menu-horizontal {
+        display: none; /* Ocultar menú horizontal en pantallas pequeñas */
+    }
+}

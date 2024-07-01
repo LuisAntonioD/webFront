@@ -1,0 +1,128 @@
+.products-table-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: #e0e0e0; /* Fondo más claro para mejor contraste */
+    min-height: calc(100vh - 64px);
+
+}
+
+
+.buttons-container {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.add-button {
+    margin-left: 0; /* Ajustar el margen izquierdo para alinear a la izquierda */
+    background-color: #ffbb33;
+    border-color: #ffbb33;
+    color: #fff;
+}
+
+.add-button:hover {
+    background-color: #ff8800;
+    border-color: #ff8800;
+    color: #fff;
+}
+
+.table-container {
+    width: 100%;
+    max-width: 800px;
+    overflow-x: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc; /* Borde alrededor del contenedor de la tabla */
+}
+
+.formato-tabla {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 16px;
+    text-align: left;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.formato-tabla thead {
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+}
+
+.formato-tabla th,
+.formato-tabla td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ccc; /* Añadir bordes entre filas */
+}
+
+.formato-tabla th {
+    border-right: 1px solid #ccc; /* Añadir bordes entre columnas en el encabezado */
+}
+
+.formato-tabla th:last-child {
+    border-right: none; /* Quitar borde derecho de la última columna */
+}
+
+.formato-tabla tbody tr {
+    border-bottom: 1px solid #ccc; /* Cambiado a gris oscuro para mejor contraste */
+}
+
+.formato-tabla tbody tr:nth-of-type(even) {
+    background-color: #f5f5f5; /* Fondo más claro */
+}
+
+.formato-tabla tbody tr:hover {
+    background-color: #d0d0d0; /* Fondo más oscuro en hover */
+}
+
+.formato-tabla tbody tr:last-of-type {
+    border-bottom: none; /* Quitar borde inferior de la última fila */
+}
+
+.formato-tabla td {
+    border-right: 1px solid #ccc; /* Añadir bordes entre columnas */
+}
+
+.formato-tabla td:last-child {
+    border-right: none; /* Quitar borde derecho de la última columna */
+}
+
+.action-button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 120px;
+    color: #fff;
+}
+
+.action-button.ant-btn-danger {
+    background-color: #e74c3c; /* Rojo más oscuro */
+    border-color: #e74c3c;
+}
+
+.action-button.ant-btn-danger:hover {
+    background-color: #c0392b; /* Rojo más oscuro en hover */
+    border-color: #c0392b;
+}
+
+.action-button.ant-btn-success {
+    background-color: #2ecc71; /* Verde más oscuro */
+    border-color: #2ecc71;
+}
+
+.action-button.ant-btn-success:hover {
+    background-color: #27ae60; /* Verde más oscuro en hover */
+    border-color: #27ae60;
+}
+
+.ant-modal-body {
+    text-align: left;
+}
