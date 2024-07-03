@@ -92,17 +92,7 @@ const NotFound = () => {
             style={{ fontSize: '16px', width: 64, height: 64 }}
           />
         </Header>
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-            overflowX: 'auto', // Scroll horizontal
-            overflowY: 'auto', // Scroll vertical
-            maxHeight: 'calc(100vh - 64px)', // Altura máxima
-          }}
-        >
+        <Content>
         <div className="not-found-container">
             <h1>Desarrollo</h1>
             <h2>La pagina es inexistente  :c</h2>

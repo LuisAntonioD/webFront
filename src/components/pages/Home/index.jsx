@@ -12,6 +12,7 @@ import './Home.css'; // Importamos el archivo CSS para los estilos
 import { useNavigate, Link } from "react-router-dom";
 import logo from '../../../assets/uteq3.png';
 import DrawerComponent from '../../Drawer';
+import Carrousel from '../Carousel/Carusel';
 
 const { Header, Sider, Content } = Layout;
 
@@ -90,21 +91,12 @@ const Home = () => {
             style={{ fontSize: '16px', width: 64, height: 64 }}
           />
         </Header>
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-            overflowX: 'auto', // Scroll horizontal
-            overflowY: 'auto', // Scroll vertical
-            maxHeight: 'calc(100vh - 64px)', // Altura máxima
-          }}
-        >
+        <Content>
           <div className="home-page">
             <div className="home-container">
               <h1>Bienvenido a tu página de inicio</h1>
               <p>Estás en casa, {user.username}</p>
+              <Carrousel />
             </div>
           </div>
         </Content>
