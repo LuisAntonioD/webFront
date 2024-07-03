@@ -1,0 +1,19 @@
+.ver-productos-btn {
+    background-color: var(--primary-color); /* Utiliza la variable de color primario */
+    color: var(--text-color); /* Utiliza la variable de color de texto */
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .ver-productos-btn:hover {
+    background-color: var(--secondary-color); /* Cambia el color de fondo al pasar el mouse */
+  }
+  
+  .button-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
