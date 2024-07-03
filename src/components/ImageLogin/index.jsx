@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import loginImage from '../../assets/api.png';
+import loginImage from '../../assets/uteq3.png';
 
 const ImageLogin = () => {
   return (

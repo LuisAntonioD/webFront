@@ -1,8 +1,65 @@
-.responsive-card{
-    text-align: center;
-    width: 80%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+:root {
+    --primary-color: #2ecc71;
+    --secondary-color: #3498db;
+    --neutral-color: #ecf0f1;
+    --text-color: #333;
+    --text-color-light: #fff;
+    --hover-primary-color: #27ae60;
+    --hover-secondary-color: #2980b9;
+}
 
+.responsive-card {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: var(--neutral-color); /* Fondo neutral */
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Añadir sombra para dar profundidad */
+}
+
+.register-form {
+    width: 100%;
+}
+
+.register-form .ant-form-item {
+    margin-bottom: 16px;
+}
+
+.register-form .ant-input-affix-wrapper {
+    color: var(--text-color);
+    background-color: var(--text-color-light);
+}
+
+.register-form .ant-input {
+    color: var(--text-color);
+}
+
+.register-form .ant-input:hover,
+.register-form .ant-input:focus,
+.register-form .ant-input-affix-wrapper:hover,
+.register-form .ant-input-affix-wrapper:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+}
+
+.login-form-button {
+    width: 100%;
+    background-color: var(--primary-color); /* Color primario */
+    border-color: var(--primary-color);
+    color: var(--text-color-light);
+    font-weight: bold;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.login-form-button:hover,
+.login-form-button:focus {
+    background-color: var(--hover-primary-color); /* Color primario en hover */
+    border-color: var(--hover-primary-color);
+}
+
+a {
+    color: var(--secondary-color); /* Color secundario */
+}
+
+a:hover {
+    color: var(--hover-secondary-color); /* Color secundario en hover */
 }

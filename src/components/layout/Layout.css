@@ -1,3 +1,9 @@
+:root {
+    --primary-color: #0c116f;
+    --secondary-color: #5b5faa;
+    --text-color: #fff;
+}
+
 .layout-container {
     width: 100%;
     height: 100%;
@@ -7,7 +13,7 @@
 
 .content-left {
     height: 100vh;
-    background: rgb(12, 17, 111);
+    background: var(--primary-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,7 +21,7 @@
 
 .content-right {
     height: 100vh;
-    background: rgb(91, 95, 170);
+    background: var(--secondary-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,18 +33,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center; /* Alineación de texto centrada */
-    padding: 1rem; /* Añadir espacio interior al contenido */
+    text-align: center;
+    padding: 1rem;
 }
 
 .title {
     font-size: 2rem;
     font-weight: bold;
-    color: rgb(255, 255, 255);
+    color: var(--text-color);
 }
 
 @media (max-width: 768px) {
     .title {
-        font-size: 1.5rem; /* Reducir el tamaño de fuente en pantallas pequeñas */
+        font-size: 1.5rem;
     }
 }
