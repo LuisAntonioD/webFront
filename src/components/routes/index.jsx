@@ -5,7 +5,6 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import ProductsPage from '../pages/Products/ProductsPage';
-import Navbar from '../Navbar/navbar';
 import NotFound from '../pages/Config/NotFound';  // Importa el componente NotFound
 import { useAuth } from '../../hooks/useAuth';
 
@@ -21,12 +20,7 @@ const AppRoutes = () => {
         { path: '*', element: <NotFound /> },  // Ruta para páginas no encontradas
     ]);
 
-    return (
-        <>
-            {user && <Navbar />}
-            {routes}
-        </>
-    );
+    return routes;
 };
 
 export default AppRoutes;

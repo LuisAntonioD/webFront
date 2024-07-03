@@ -40,3 +40,16 @@
     background-color: #ff0004;
     border-color: #ff0004;
 }
+
+.logo {
+    width: 100%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .logo img {
+    max-height: 40px; /* Ajusta el tamaño de la imagen aquí */
+    max-width: 100%;
+  }
