@@ -1,5 +1,15 @@
+:root {
+    --primary-color: #2ecc71;
+    --secondary-color: #3498db;
+    --neutral-color: #ecf0f1;
+    --text-color: #333;
+    --text-color-light: #fff;
+    --hover-color: #27ae60;
+    --hover-secondary-color: #2980b9;
+}
+
 .header-content {
-    background-color: #cddcf5; /* Azul más oscuro para mejor contraste */
+    background-color: var(--secondary-color); /* Usar color secundario */
     display: flex;
     align-items: center;
     padding: 0 20px;
@@ -13,13 +23,13 @@
 }
 
 .menu-link {
-    color: #ffffff; /* Texto blanco para mejor contraste */
+    color: var(--text-color-light); /* Texto blanco para mejor contraste */
     font-weight: bold;
     transition: color 0.3s;
 }
 
 .menu-link:hover {
-    color: #1890ff; /* Azul claro al pasar el ratón */
+    color: var(--hover-secondary-color); /* Azul claro al pasar el ratón */
 }
 
 .ant-menu-horizontal {
@@ -27,13 +37,13 @@
 }
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected {
-    background-color: #1890ff; /* Azul claro para la selección */
+    background-color: var(--hover-secondary-color); /* Azul claro para la selección */
     border-radius: 4px;
     margin: 0 4px;
 }
 
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover {
-    background-color: #40a9ff; /* Azul más claro al pasar el ratón */
+    background-color: var(--hover-secondary-color); /* Azul más claro al pasar el ratón */
 }
 
 .ant-menu-item {

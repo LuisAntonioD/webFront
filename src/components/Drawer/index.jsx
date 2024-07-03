@@ -3,6 +3,7 @@ import { Drawer, Avatar, Form, Input, Button, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { AuthContext } from '../context/AuthContext';
 import loginImage from '../../assets/perfil.png';
+import './DrawerComponent.css'; // Importa el archivo CSS
 
 const DrawerComponent = () => {
     const { user, updateUserData } = useContext(AuthContext);
@@ -32,6 +33,15 @@ const DrawerComponent = () => {
 
     const onClose = () => {
         setOpen(false);
+        setEditMode(false);
+        if (user) {
+            setFormData({
+                username: user.username,
+                email: user.email,
+                newPassword: '',
+                confirmNewPassword: ''
+            });
+        }
     };
 
     const handleInputChange = (e) => {
@@ -77,14 +87,13 @@ const DrawerComponent = () => {
             <Avatar
                 onClick={showDrawer}
                 size={44}
-                style={{ backgroundColor: '#87d68', cursor: 'pointer', marginLeft: '20px' }}
                 icon={<UserOutlined />}
             />
             <Drawer title="Perfil de Usuario" onClose={onClose} visible={open}>
                 {user ? (
                     <div style={{ padding: '20px' }}>
                         <center>
-                            <img src={loginImage} alt="perfil" style={{ width: '150px', height: 'auto', marginBottom: '10px' }} />
+                            <img src={loginImage} alt="perfil" className="profile-image" />
                         </center>
                         <Form layout="vertical">
                             <Form.Item label="Nombre">
@@ -127,7 +136,7 @@ const DrawerComponent = () => {
                                         <Button type="primary" onClick={handleSubmit}>
                                             Guardar
                                         </Button>
-                                        <Button onClick={() => setEditMode(false)} style={{ marginLeft: '10px' }}>
+                                        <Button onClick={() => setEditMode(false)}>
                                             Cancelar
                                         </Button>
                                     </>
