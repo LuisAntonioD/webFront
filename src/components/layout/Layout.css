@@ -13,11 +13,12 @@
 
 .content-left {
     height: 100vh;
-    background: var(--primary-color);
+    background: #fff; /* Cambiar el fondo a blanco */
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 
 .content-right {
     height: 100vh;

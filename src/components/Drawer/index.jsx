@@ -33,6 +33,15 @@ const DrawerComponent = () => {
 
     const onClose = () => {
         setOpen(false);
+        setEditMode(false);
+        if (user) {
+            setFormData({
+                username: user.username,
+                email: user.email,
+                newPassword: '',
+                confirmNewPassword: ''
+            });
+        }
     };
 
     const handleInputChange = (e) => {
