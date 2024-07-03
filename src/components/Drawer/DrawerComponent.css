@@ -1,0 +1,62 @@
+:root {
+    --primary-color: #2ecc71;
+    --secondary-color: #3498db;
+    --neutral-color: #ecf0f1;
+    --text-color: #333;
+    --text-color-light: #fff;
+    --hover-primary-color: #27ae60;
+    --hover-secondary-color: #2980b9;
+}
+
+.ant-avatar {
+    cursor: pointer;
+    margin-left: 20px;
+    background-color: var(--primary-color);
+}
+
+.ant-drawer-header {
+    background-color: var(--neutral-color);
+}
+
+.ant-drawer-title {
+    color: var(--text-color);
+}
+
+.ant-drawer-body {
+    padding: 20px;
+}
+
+.profile-image {
+    width: 150px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.ant-form-item-label > label {
+    color: var(--text-color);
+}
+
+.ant-input, .ant-input-password {
+    color: var(--text-color);
+    background-color: var(--text-color-light);
+}
+
+.ant-input:hover, .ant-input:focus, .ant-input-password:hover, .ant-input-password:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+}
+
+.ant-btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-color-light);
+}
+
+.ant-btn-primary:hover, .ant-btn-primary:focus {
+    background-color: var(--hover-primary-color);
+    border-color: var(--hover-primary-color);
+}
+
+.ant-btn {
+    margin-left: 10px;
+}

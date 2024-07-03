@@ -4,41 +4,33 @@
     align-items: center;
     justify-content: flex-start;
     padding: 20px;
-    background-color: #e0e0e0; /* Fondo más claro para mejor contraste */
-    min-height: calc(100vh - 64px);
-
-}
-
-
-.buttons-container {
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 20px;
+    background-color: var(--neutral-color);
+    min-height: calc(100vh - 64px); /* Ajusta según la altura de tu barra de navegación */
 }
 
 .add-button {
-    margin-left: 0; /* Ajustar el margen izquierdo para alinear a la izquierda */
-    background-color: #ffbb33;
-    border-color: #ffbb33;
-    color: #fff;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-color-light);
+    margin-bottom: 20px; /* Añade margen inferior para separar del contenido */
+    align-self: flex-start; /* Alinea el botón a la izquierda */
 }
 
 .add-button:hover {
-    background-color: #ff8800;
-    border-color: #ff8800;
-    color: #fff;
+    background-color: var(--hover-color);
+    border-color: var(--hover-color);
+    color: var(--text-color-light);
 }
 
 .table-container {
     width: 100%;
-    max-width: 800px;
+    max-width: 90%; /* Ajusta según el porcentaje deseado */
     overflow-x: auto;
-    background-color: #fff;
+    background-color: var(--text-color-light);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ccc; /* Borde alrededor del contenedor de la tabla */
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px; /* Añade un margen inferior para separar de otros elementos */
 }
 
 .formato-tabla {
@@ -46,81 +38,86 @@
     border-collapse: separate;
     border-spacing: 0;
     font-size: 16px;
-    text-align: left;
-    background-color: #fff;
+    text-align: center;
+    background-color: var(--text-color-light);
     border-radius: 8px;
     overflow: hidden;
+    margin: 0 auto; /* Centra la tabla en la página */
 }
 
+/* Resto de estilos permanecen iguales */
+
+
 .formato-tabla thead {
-    background-color: #333;
-    color: #fff;
+    background-color: var(--text-color);
+    color: var(--text-color-light);
     font-weight: bold;
 }
 
 .formato-tabla th,
 .formato-tabla td {
     padding: 12px 15px;
-    border-bottom: 1px solid #ccc; /* Añadir bordes entre filas */
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
 }
 
 .formato-tabla th {
-    border-right: 1px solid #ccc; /* Añadir bordes entre columnas en el encabezado */
+    border-right: 1px solid var(--border-color);
 }
 
 .formato-tabla th:last-child {
-    border-right: none; /* Quitar borde derecho de la última columna */
+    border-right: none;
 }
 
 .formato-tabla tbody tr {
-    border-bottom: 1px solid #ccc; /* Cambiado a gris oscuro para mejor contraste */
+    border-bottom: 1px solid var(--border-color);
 }
 
 .formato-tabla tbody tr:nth-of-type(even) {
-    background-color: #f5f5f5; /* Fondo más claro */
+    background-color: var(--neutral-color);
 }
 
 .formato-tabla tbody tr:hover {
-    background-color: #d0d0d0; /* Fondo más oscuro en hover */
+    background-color: var(--hover-color);
 }
 
 .formato-tabla tbody tr:last-of-type {
-    border-bottom: none; /* Quitar borde inferior de la última fila */
+    border-bottom: none;
 }
 
 .formato-tabla td {
-    border-right: 1px solid #ccc; /* Añadir bordes entre columnas */
+    border-right: 1px solid var(--border-color);
 }
 
 .formato-tabla td:last-child {
-    border-right: none; /* Quitar borde derecho de la última columna */
+    border-right: none;
 }
 
 .action-button {
     margin-right: 10px;
     margin-bottom: 10px;
     width: 120px;
-    color: #fff;
+    color: var(--text-color-light);
 }
 
 .action-button.ant-btn-danger {
-    background-color: #e74c3c; /* Rojo más oscuro */
-    border-color: #e74c3c;
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
 }
 
 .action-button.ant-btn-danger:hover {
-    background-color: #c0392b; /* Rojo más oscuro en hover */
-    border-color: #c0392b;
+    background-color: var(--hover-secondary-color);
+    border-color: var(--hover-secondary-color);
 }
 
 .action-button.ant-btn-success {
-    background-color: #2ecc71; /* Verde más oscuro */
-    border-color: #2ecc71;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 .action-button.ant-btn-success:hover {
-    background-color: #27ae60; /* Verde más oscuro en hover */
-    border-color: #27ae60;
+    background-color: var(--hover-color);
+    border-color: var(--hover-color);
 }
 
 .ant-modal-body {
