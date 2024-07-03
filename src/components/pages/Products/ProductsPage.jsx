@@ -48,7 +48,10 @@ const ProductsPage = () => {
     }
   };
 
-    return (<Layout style={{ minHeight: '100vh' }}>
+    return (
+    <Layout style={{ minHeight: '100vh' }}>
+        {user && (
+                <>
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <Link to="/" className="logo" onClick={handleLogoClick}>
             <img src={logo} alt="logo" />
@@ -84,6 +87,8 @@ const ProductsPage = () => {
             Logout
           </Button>
         </Sider>
+        </>
+    )}
         <Layout>
           <Header style={{ padding: 0, background: colorBgContainer }}>
             <Button
