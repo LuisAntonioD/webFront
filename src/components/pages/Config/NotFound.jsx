@@ -14,7 +14,7 @@ import { useNavigate, Link } from "react-router-dom";
 import logo from '../../../assets/uteq3.png';
 import DrawerComponent from '../../Drawer';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout;
 
 const NotFound = () => {
 
@@ -97,8 +97,20 @@ const NotFound = () => {
             <h1>Desarrollo</h1>
             <h2>La pagina es inexistente  :c</h2>
             <p>Próximamente</p>
+            <Footer style={{ textAlign: 'center', marginTop:400 }}>
+              <div>
+                  <Link to="/" style={{ margin: '0 10px', color:'black' }}>Inicio</Link>
+                  <Link to="/Admisiones" style={{ margin: '0 10px', color:'black' }}>Admisiones</Link>
+                  <Link to="/servicios" style={{ margin: '0 10px', color:'black' }}>Servicios</Link>
+              </div>
+              <div style={{ marginTop: '20px' }}>
+                  Uteq 2.0 ©2024 Created by TeamAura
+              </div>
+          </Footer>
         </div>
+        
         </Content>
+        
       </Layout>
     </Layout>
     );

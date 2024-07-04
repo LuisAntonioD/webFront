@@ -14,7 +14,7 @@ import logo from '../../../assets/uteq3.png';
 import DrawerComponent from '../../Drawer';
 import Carrousel from '../Carousel/Carusel';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout;
 
 const Home = () => {
     const { user, logout } = useAuth();
@@ -99,8 +99,20 @@ const Home = () => {
               <Carrousel />
             </div>
           </div>
+          <Footer style={{ textAlign: 'center', marginTop:85  }}>
+            <div>
+                <Link to="/" style={{ margin: '0 10px', color:'black' }}>Inicio</Link>
+                <Link to="/Admisiones" style={{ margin: '0 10px', color:'black' }}>Admisiones</Link>
+                <Link to="/servicios" style={{ margin: '0 10px', color:'black' }}>Servicios</Link>
+            </div>
+            <div style={{ marginTop: '16px' }}>
+                Uteq 2.0 ©2024 Created by TeamAura
+            </div>
+        </Footer>
         </Content>
+        
       </Layout>
+      
     </Layout>
   );
 };
