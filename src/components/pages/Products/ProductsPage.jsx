@@ -17,7 +17,7 @@ import ProductsTable from '../../Products/ProductsTable/ProductsTable';
 //import './ProductsPage.css'; // Si tienes estilos específicos para esta página
 
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout;
 
 const ProductsPage = () => {
     const { user, logout } = useAuth();
@@ -109,8 +109,20 @@ const ProductsPage = () => {
         <div className="products-page-container">
             {/* Aquí puedes agregar Navbar u otros elementos comunes si es necesario */}
             <ProductsTable />
+            
         </div>
+        <Footer style={{ textAlign: 'center'}}>
+              <div>
+                  <Link to="/" style={{ margin: '0 10px', color:'black' }}>Inicio</Link>
+                  <Link to="/Admisiones" style={{ margin: '0 10px', color:'black' }}>Admisiones</Link>
+                  <Link to="/servicios" style={{ margin: '0 10px', color:'black' }}>Servicios</Link>
+              </div>
+              <div style={{ marginTop: '20px' }}>
+                  Uteq 2.0 ©2024 Created by TeamAura
+              </div>
+          </Footer>
         </Content>
+        
       </Layout>
     </Layout>
     );
