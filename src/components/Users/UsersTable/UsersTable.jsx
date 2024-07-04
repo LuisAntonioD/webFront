@@ -68,7 +68,8 @@ const UsersTable = () => {
                                 <td>{formatDate(users.createdAt)}</td>
                                 <td>
                                             <Button
-                                             className="action-button ant-btn-danger">
+                                             className="action-button ant-btn-danger"
+                                             >
                                                 Eliminar
                                             </Button>
                                             <Button

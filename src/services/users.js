@@ -28,9 +28,19 @@ const updateUser = async (userId, updatedUserData, token) => {
     return response.data;
 };
 
+
+const deleteUser = async (id, token) => {
+    return axios.delete(`${ENV.API_URL}/${ENV.ENDPOINTS.DELETE}/${id}`, {
+        headers: {
+            'x-access-token': token
+        }
+    });
+};
+
 export const usersService = {
     getMe,
     updateUser,
+    deleteUser
 };
 
 
