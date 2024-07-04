@@ -18,7 +18,6 @@ const FormLogin = () => {
         setLoginError(false);
 
         try {
-            
             const response = await authService.loginForm(values.username, values.password);
 
             if (response && response.data) {
@@ -47,61 +46,57 @@ const FormLogin = () => {
         }
     };
 
-
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed', errorInfo);
         setLoginError(true);
     };
 
     return (
-        <>
-            <Card
-                title="Bienvenido de nuevo"
-                bordered={false}
-                className='responsive-card'
+        <Card
+            title="Bienvenido de nuevo"
+            bordered={false}
+            className='responsive-card'
+        >
+            <Form
+                name='normal_login'
+                className='login-form'
+                initialValues={{
+                    remember: true,
+                }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
             >
-                <Form
-                    name='normal_login'
-                    className='login-form'
-                    initialValues={{
-                        remember: true,
-                    }}
-                    onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
+                <Form.Item
+                    name='username'
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Por favor ingrese su usuario'
+                        }
+                    ]}
                 >
-                    <Form.Item
-                        name='username'
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Por favor ingrese su usuario'
-                            }
-                        ]}
-                    >
-                        <Input prefix={<UserOutlined />} placeholder='Usuario' />
-                    </Form.Item>
+                    <Input prefix={<UserOutlined />} placeholder='Usuario' />
+                </Form.Item>
 
-                    <Form.Item
-                        name='password'
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Por favor ingrese su contraseña'
-                            }
-                        ]}
-                    >
-                        <Input.Password prefix={<LockOutlined />} placeholder='Contraseña' />
-                    </Form.Item>
-                    <Form.Item>
-                        {loginError && <p style={{ color: 'red' }}>Credenciales incorrectas. Inténtalo de nuevo</p>}
-                        <Button type='primary' htmlType='submit' className='login-form-button' loading={loading}>
-                            Iniciar Sesión
-                        </Button>
-                    </Form.Item>
-                    ¿Aún no tienes cuenta? <a href='/register'>Regístrate</a>
-                </Form>
-            </Card>
-        </>
+                <Form.Item
+                    name='password'
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Por favor ingrese su contraseña'
+                        }
+                    ]}
+                >
+                    <Input.Password prefix={<LockOutlined />} placeholder='Contraseña' />
+                </Form.Item>
+                <Form.Item>
+                    {loginError && <p style={{ color: 'red' }}>Credenciales incorrectas. Inténtalo de nuevo</p>}
+                    <Button type='primary' htmlType='submit' className='login-form-button' loading={loading}>
+                        Iniciar Sesión
+                    </Button>
+                </Form.Item>
+                ¿Aún no tienes cuenta? <a href='/register'>Regístrate</a>
+            </Form>
+        </Card>
     );
 };
 

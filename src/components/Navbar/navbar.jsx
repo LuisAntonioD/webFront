@@ -25,9 +25,10 @@ const Navbar = () => {
     return (
         <>
             <Header className='header-content'>
-                <Link to="/" style={{ display: 'flex', alignItems: 'center' }} onClick={handleLogoClick}>
-                    <img src={logo} alt="logo" />
-                </Link>
+            <Link to="/" style={{ display: 'flex', alignItems: 'center' }} onClick={handleLogoClick}>
+        <img src={logo} alt="Logo de la Aplicación" className="app-logo" />
+    
+    </Link>
                 <Menu
                     theme="dark"
                     mode="horizontal"
