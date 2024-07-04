@@ -86,7 +86,7 @@ const UsersPage = () => {
             className="logout-button"
             onClick={() => logout()}
             icon={<LogoutOutlined />}
-            style={{ width: '90%', textAlign: 'left', paddingLeft: '24px', paddingTop: '12px', paddingBottom: '12px' }}
+            style={{ width: '100%', textAlign: 'left', paddingLeft: '24px', paddingTop: '12px', paddingBottom: '12px' }}
           >
             Logout
           </Button>

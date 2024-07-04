@@ -74,7 +74,7 @@ const Home = () => {
           mode="inline"
           onClick={({ key }) => handleMenuClick(key)}
           items={[
-            { key: '4', icon: <DrawerComponent/>, label: `${user.username}` },
+            { key: '5', icon: <DrawerComponent/>, label: `${user.username}` },
           ]}
         />
         <div className="spacer" />
@@ -82,14 +82,14 @@ const Home = () => {
           className="logout-button"
           onClick={() => logout()}
           icon={<LogoutOutlined />}
-          style={{ width: '90%', textAlign: 'center', paddingLeft: '24px', paddingTop: '12px', paddingBottom: '12px' }}
+          style={{ width: '100%', textAlign: 'center', paddingLeft: '24px', paddingTop: '12px', paddingBottom: '12px' }}
         >
           Logout
         </Button>
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
+          <Button 
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
