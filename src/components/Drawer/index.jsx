@@ -87,6 +87,7 @@ const DrawerComponent = () => {
             <Avatar
                 onClick={showDrawer}
                 size={44}
+                style={{ backgroundColor: '#87d68', cursor: 'pointer', marginLeft: '-10px' }}
                 icon={<UserOutlined />}
             />
             <Drawer title="Perfil de Usuario" onClose={onClose} visible={open}>
