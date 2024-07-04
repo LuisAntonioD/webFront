@@ -8,12 +8,6 @@
     --hover-secondary-color: #2980b9;
 }
 
-.ant-avatar {
-    cursor: pointer;
-    margin-left: 20px;
-    background-color: var(--primary-color);
-}
-
 .ant-drawer-header {
     background-color: var(--neutral-color);
 }
@@ -57,6 +51,3 @@
     border-color: var(--hover-primary-color);
 }
 
-.ant-btn {
-    margin-left: 10px;
-}

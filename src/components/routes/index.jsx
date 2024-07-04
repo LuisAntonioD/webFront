@@ -7,6 +7,7 @@ import Register from '../pages/Register';
 import ProductsPage from '../pages/Products/ProductsPage';
 import NotFound from '../pages/Config/NotFound';  // Importa el componente NotFound
 import { useAuth } from '../../hooks/useAuth';
+import UsersPage from '../pages/Usuarios/Users';
 
 const AppRoutes = () => {
     const { user } = useAuth();
@@ -17,6 +18,7 @@ const AppRoutes = () => {
         { path: '/register', element: <Register /> },
         { path: '/productos', element: <ProductsPage /> },
         { path: '/Admisiones', element: <ProductsPage /> },
+        { path: '/Usuarios', element: <UsersPage /> },
         { path: '*', element: <NotFound /> },  // Ruta para páginas no encontradas
     ]);
 

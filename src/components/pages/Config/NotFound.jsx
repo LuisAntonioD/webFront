@@ -8,13 +8,14 @@ import { LogoutOutlined,
   MenuUnfoldOutlined,
   HomeOutlined,
   BookFilled,
-  FireFilled
+  FireFilled,
+  DropboxCircleFilled
     } from '@ant-design/icons'; // Importamos el icono de logout
 import { useNavigate, Link } from "react-router-dom";
 import logo from '../../../assets/uteq3.png';
 import DrawerComponent from '../../Drawer';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout;
 
 const NotFound = () => {
 
@@ -39,6 +40,9 @@ const NotFound = () => {
         navigate('/servicios');
         break;
         case '4':
+          navigate('/Usuarios');
+        break;
+        case '5':
           <DrawerComponent/>
         break;
       default:
@@ -61,7 +65,7 @@ const NotFound = () => {
             { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
             { key: '3', icon: <FireFilled />, label: 'Servicios' },
-            
+            { key: '4', icon: <DropboxCircleFilled />, label: 'Usuarios' },
           ]}
         />
         <div style={{ flex: 1 }}></div>
@@ -70,7 +74,7 @@ const NotFound = () => {
           mode="inline"
           onClick={({ key }) => handleMenuClick(key)}
           items={[
-            { key: '4', icon: <DrawerComponent/>, label: `${user.username}` },
+            { key: '5', icon: <DrawerComponent/>, label: `${user.username}` },
           ]}
         />
         <div className="spacer" />
@@ -92,13 +96,30 @@ const NotFound = () => {
             style={{ fontSize: '16px', width: 64, height: 64 }}
           />
         </Header>
-        <Content>
+        <Content
+        style={{
+          overflowX: 'auto',
+          overflowY: 'auto', 
+          maxHeight: 'calc(100vh - 64px)',
+        }}>
         <div className="not-found-container">
             <h1>Desarrollo</h1>
             <h2>La pagina es inexistente  :c</h2>
             <p>Próximamente</p>
+            <Footer style={{ textAlign: 'center', marginTop:200 }}>
+              <div>
+                  <Link to="/" style={{ margin: '0 10px', color:'black' }}>Inicio</Link>
+                  <Link to="/Admisiones" style={{ margin: '0 10px', color:'black' }}>Admisiones</Link>
+                  <Link to="/servicios" style={{ margin: '0 10px', color:'black' }}>Servicios</Link>
+              </div>
+              <div style={{ marginTop: '20px' }}>
+                  Uteq 2.0 ©2024 Created by TeamAura
+              </div>
+          </Footer>
         </div>
+        
         </Content>
+        
       </Layout>
     </Layout>
     );

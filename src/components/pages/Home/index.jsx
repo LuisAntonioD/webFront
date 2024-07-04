@@ -6,7 +6,8 @@ import { LogoutOutlined,
   MenuUnfoldOutlined,
   HomeOutlined,
   BookFilled,
-  FireFilled
+  FireFilled,
+  DropboxCircleFilled,
     } from '@ant-design/icons'; // Importamos el icono de logout
 import './Home.css'; // Importamos el archivo CSS para los estilos
 import { useNavigate, Link } from "react-router-dom";
@@ -14,7 +15,7 @@ import logo from '../../../assets/uteq3.png';
 import DrawerComponent from '../../Drawer';
 import Carrousel from '../Carousel/Carusel';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout;
 
 const Home = () => {
     const { user, logout } = useAuth();
@@ -38,6 +39,9 @@ const Home = () => {
         navigate('/servicios');
         break;
         case '4':
+          navigate('/Usuarios');
+        break;
+        case '5':
           <DrawerComponent/>
         break;
       default:
@@ -60,6 +64,7 @@ const Home = () => {
             { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
             { key: '3', icon: <FireFilled />, label: 'Servicios' },
+            { key: '4', icon: <DropboxCircleFilled />, label: 'Usuarios' },
             
           ]}
         />
@@ -69,7 +74,7 @@ const Home = () => {
           mode="inline"
           onClick={({ key }) => handleMenuClick(key)}
           items={[
-            { key: '4', icon: <DrawerComponent/>, label: `${user.username}` },
+            { key: '5', icon: <DrawerComponent/>, label: `${user.username}` },
           ]}
         />
         <div className="spacer" />
@@ -77,21 +82,27 @@ const Home = () => {
           className="logout-button"
           onClick={() => logout()}
           icon={<LogoutOutlined />}
-          style={{ width: '100%', textAlign: 'left', paddingLeft: '24px', paddingTop: '12px', paddingBottom: '12px' }}
+          style={{ width: '100%', textAlign: 'center', paddingLeft: '24px', paddingTop: '12px', paddingBottom: '12px' }}
         >
           Logout
         </Button>
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
+          <Button 
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
             style={{ fontSize: '16px', width: 64, height: 64 }}
           />
         </Header>
-        <Content>
+        <Content
+        style={{
+              
+          overflowX: 'auto', // Scroll horizontal
+          overflowY: 'auto', // Scroll vertical
+          maxHeight: 'calc(100vh - 64px)', // Altura máxima
+        }}>
           <div className="home-page">
             <div className="home-container">
               <h1>Bienvenido a tu página de inicio</h1>
@@ -99,8 +110,20 @@ const Home = () => {
               <Carrousel />
             </div>
           </div>
+          <Footer style={{ textAlign: 'center', marginTop:85  }}>
+            <div>
+                <Link to="/" style={{ margin: '0 10px', color:'black' }}>Inicio</Link>
+                <Link to="/Admisiones" style={{ margin: '0 10px', color:'black' }}>Admisiones</Link>
+                <Link to="/servicios" style={{ margin: '0 10px', color:'black' }}>Servicios</Link>
+            </div>
+            <div style={{ marginTop: '16px' }}>
+                Uteq 2.0 ©2024 Created by TeamAura
+            </div>
+        </Footer>
         </Content>
+        
       </Layout>
+      
     </Layout>
   );
 };
