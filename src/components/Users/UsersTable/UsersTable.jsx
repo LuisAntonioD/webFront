@@ -36,6 +36,7 @@ const UsersTable = () => {
             fetchUsers();
             showDeleteNotification();
         } catch (error) {
+            showErrorNotification('Error al eliminar el usuario');
             console.error(error);
         }
     };
@@ -47,7 +48,21 @@ const UsersTable = () => {
         });
     };
 
+    const showErrorNotification = (message) => {
+        notification.error({
+            message: 'Error',
+            description: message,
+        });
+    };
+
     const confirmDeleteUser = (id) => {
+        console.log("ID del usuario a eliminar:", id);
+        console.log("ID del usuario en sesión:", user._id);
+        if (id === user._id) {
+            showErrorNotification('No puedes eliminar tu propia cuenta.');
+            return;
+        }
+
         Modal.confirm({
             title: 'Confirmar Eliminación',
             content: '¿Estás seguro de que deseas eliminar a este usuario?',
