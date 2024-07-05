@@ -26,6 +26,28 @@ const updateUser = async (userId, updatedUserData, token) => {
     return response.data;
 };
 
+
+const createUser = async (userData, token) => {
+    const url = `${ENV.API_URL}/${ENV.ENDPOINTS.REGISTER}`;
+    const response = await axios.post(url, userData, {
+        headers: {
+            'x-access-token': token
+        }
+    });
+    return response.data;
+};
+
+
+export const getRoles = async () => {
+    try {
+        const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.ROLES}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener las roles:', error);
+        throw error;
+    }
+};
+
 const deleteUser = async (id, token) => {
     return axios.delete(`${ENV.API_URL}/${ENV.ENDPOINTS.USER}/${id}`, {
         headers: {
@@ -41,7 +63,9 @@ export { getMe, updateUser, deleteUser };
 const usersService = {
     getMe,
     updateUser,
-    deleteUser
+    deleteUser,
+    createUser,
+    getRoles
 };
 
 export default usersService;
