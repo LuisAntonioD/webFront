@@ -7,6 +7,7 @@ export const ENV = {
         ADMISION: 'api/admision',
         DELETE: 'api/admision',
         UPDATE: 'api/admision',
+        ROLES: 'api/roles',
     },
     STORAGE: {
         TOKEN: "token",
