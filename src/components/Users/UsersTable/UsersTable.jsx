@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Button, Modal, notification, Form, Input, Select } from 'antd';
-import { RiAddLine, RiDeleteBin6Line, RiEditLine } from 'react-icons/ri';
+import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import usersService from '../../../services/users';
 import { AuthContext } from '../../context/AuthContext';
@@ -12,24 +12,23 @@ const UsersTable = () => {
     const [roles, setRoles] = useState([]);
     const [error, setError] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [editingUser, setEditingUser] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [isEmailUnique, setIsEmailUnique] = useState(true);
     const { user, token } = useContext(AuthContext);
     const [form] = Form.useForm();
-
-
-
 
     useEffect(() => {
         fetchUsers();
         fetchRoles();
     }, []);
 
-    
     const fetchUsers = async () => {
         try {
             const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.USER}`);
             if (Array.isArray(response.data)) {
-                setUsers(response.data);
+                const filteredUsers = response.data.filter(u => u._id !== user._id);
+                setUsers(filteredUsers);
             } else {
                 setError('La respuesta de la API no es un arreglo');
             }
@@ -108,12 +107,15 @@ const UsersTable = () => {
         }
     };
 
-    const handleEditUser = async (values) => {
+    const handleEditUser = async (updatedUser) => {
         try {
-            await usersService.updateUser(editingUser._id, values, token);
+            await usersService.updateUser(currentUser._id, updatedUser, token);
             fetchUsers();
             setIsModalVisible(false);
-            setEditingUser(null);
+            form.resetFields();
+            setIsEditing(false);
+            setCurrentUser(null);
+            setIsEmailUnique(true);
             notification.success({
                 message: 'Usuario Actualizado',
                 description: 'Usuario actualizado correctamente.',
@@ -124,19 +126,43 @@ const UsersTable = () => {
         }
     };
 
-    const openEditModal = (user) => {
-        setEditingUser(user);
+    const showEditModal = (user) => {
+        setCurrentUser(user);
+        setIsEditing(true);
+        setIsModalVisible(true);
+        setIsEmailUnique(true);
         form.setFieldsValue({
             username: user.username,
             email: user.email,
-            password: '',
+            // password: '', // Comentado para la funcionalidad futura
+            // roles: user.roles.map(role => role.name), // Comentado para la funcionalidad futura
         });
-        setIsModalVisible(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+        setIsEditing(false);
+        setCurrentUser(null);
+        setIsEmailUnique(true);
+        form.resetFields();
     };
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+
+    const validateEmail = async (rule, value) => {
+        if (!value) {
+            return Promise.resolve();
+        }
+        const existingUser = users.find(u => u.email === value && (!isEditing || u._id !== currentUser._id));
+        if (existingUser) {
+            setIsEmailUnique(false);
+            return Promise.reject('El correo electrónico ya está registrado');
+        }
+        setIsEmailUnique(true);
+        return Promise.resolve();
     };
 
     if (error) {
@@ -181,8 +207,7 @@ const UsersTable = () => {
                                     </Button>
                                     <Button
                                         className="action-button ant-btn-success"
-                                        onClick={() => openEditModal(user)}
-                                        icon={<RiEditLine />}
+                                        onClick={() => showEditModal(user)}
                                     >
                                         Editar
                                     </Button>
@@ -193,15 +218,15 @@ const UsersTable = () => {
                 </table>
             </div>
             <Modal
-                title={editingUser ? "Editar Usuario" : "Agregar Usuario"}
+                title={isEditing ? "Editar Usuario" : "Agregar Usuario"}
                 visible={isModalVisible}
-                onCancel={() => {
-                    setIsModalVisible(false);
-                    setEditingUser(null);
-                }}
+                onCancel={handleCancel}
                 footer={null}
             >
-                <Form form={form} onFinish={editingUser ? handleEditUser : handleAddUser}>
+                <Form
+                    form={form}
+                    onFinish={isEditing ? handleEditUser : handleAddUser}
+                >
                     <Form.Item
                         name="username"
                         rules={[{ required: true, message: 'Por favor ingrese el nombre de usuario' }]}
@@ -210,37 +235,72 @@ const UsersTable = () => {
                     </Form.Item>
                     <Form.Item
                         name="email"
-                        rules={[{ required: true, message: 'Por favor ingrese el correo electrónico' }]}
+                        rules={[
+                            { required: true, message: 'Por favor ingrese el correo electrónico' },
+                            { validator: validateEmail }
+                        ]}
                     >
-                        <Input type="email" placeholder="Correo electrónico" />
+                        <Input
+                            type="email"
+                            placeholder="Correo electrónico"
+                            disabled={!isEmailUnique && isEditing}
+                        />
                     </Form.Item>
-                { /*<Form.Item
-                        name="password"
-                        rules={[{ required: true, message: 'Por favor ingrese la contraseña' }]}
-                    >
-                        <Input.Password placeholder="Contraseña" />
-                    </Form.Item>*/}
-                    {!editingUser && (
-                        <Form.Item
-                            name="roles"
-                            rules={[{ required: true, message: 'Por favor seleccione al menos un rol' }]}
-                        >
-                            <Select
-                                mode="multiple"
-                                placeholder="Seleccionar roles"
+                    {!isEditing && (
+                        <>
+                            <Form.Item
+                                name="password"
+                                rules={[{ required: true, message: 'Por favor ingrese la contraseña' }]}
                             >
-                                {roles.map(role => (
-                                    <Select.Option key={role._id} value={role._id}>
-                                        {role.name}
-                                    </Select.Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
+                                <Input.Password placeholder="Contraseña" />
+                            </Form.Item>
+                            <Form.Item
+                                name="roles"
+                                rules={[{ required: true, message: 'Por favor seleccione al menos un rol' }]}
+                            >
+                                <Select
+                                    mode="multiple"
+                                    placeholder="Seleccionar roles"
+                                >
+                                    {roles.map(role => (
+                                        <Select.Option key={role.name} value={role.name}>
+                                            {role.name}
+                                        </Select.Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                        </>
                     )}
-
+                    {/* Comentado para la funcionalidad futura */}
+                    {/*isEditing && (
+                        <>
+                            <Form.Item
+                                name="password"
+                                rules={[{ required: true, message: 'Por favor ingrese la contraseña' }]}
+                            >
+                                <Input.Password placeholder="Contraseña" />
+                            </Form.Item>
+                            <Form.Item
+                                name="roles"
+                                rules={[{ required: true, message: 'Por favor seleccione al menos un rol' }]}
+                            >
+                                <Select
+                                    mode="multiple"
+                                    placeholder="Seleccionar roles"
+                                    disabled={isEditing}
+                                >
+                                    {roles.map(role => (
+                                        <Select.Option key={role.name} value={role.name}>
+                                            {role.name}
+                                        </Select.Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                        </>
+                    )*/}
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
-                            {editingUser ? 'Actualizar' : 'Agregar'}
+                            {isEditing ? "Guardar Cambios" : "Agregar"}
                         </Button>
                     </Form.Item>
                 </Form>
