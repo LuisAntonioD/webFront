@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Button, Modal, notification, Form, Input, Select } from 'antd';
-import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
+import { RiAddLine, RiDeleteBin6Line, RiEditLine } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import usersService from '../../../services/users';
 import { AuthContext } from '../../context/AuthContext';
@@ -9,17 +9,22 @@ import './UsersTable.css';
 
 const UsersTable = () => {
     const [users, setUsers] = useState([]);
-    const [roles, setRoles] = useState([]); // Estado para almacenar roles
+    const [roles, setRoles] = useState([]);
     const [error, setError] = useState(null);
-    const [isModalVisible, setIsModalVisible] = useState(false); // Estado para controlar la visibilidad del modal
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editingUser, setEditingUser] = useState(null);
     const { user, token } = useContext(AuthContext);
-    const [form] = Form.useForm(); // Formulario para agregar usuario
+    const [form] = Form.useForm();
+
+
+
 
     useEffect(() => {
         fetchUsers();
-        fetchRoles(); // Obtener roles al montar el componente
+        fetchRoles();
     }, []);
 
+    
     const fetchUsers = async () => {
         try {
             const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.USER}`);
@@ -70,8 +75,6 @@ const UsersTable = () => {
     };
 
     const confirmDeleteUser = (id) => {
-        console.log("ID del usuario a eliminar:", id);
-        console.log("ID del usuario en sesión:", user._id);
         if (id === user._id) {
             showErrorNotification('No puedes eliminar tu propia cuenta.');
             return;
@@ -89,15 +92,8 @@ const UsersTable = () => {
         });
     };
 
-    // Agregar usuario
     const handleAddUser = async (newUser) => {
         try {
-            console.log(newUser); // Verifica qué valores llegan aquí
-    
-            
-    
-            console.log('Datos a enviar al crear usuario:', newUser);
-    
             await usersService.createUser(newUser, token);
             fetchUsers();
             setIsModalVisible(false);
@@ -111,9 +107,32 @@ const UsersTable = () => {
             console.error(error);
         }
     };
-    
-    
-    // Agrega usuario fin
+
+    const handleEditUser = async (values) => {
+        try {
+            await usersService.updateUser(editingUser._id, values, token);
+            fetchUsers();
+            setIsModalVisible(false);
+            setEditingUser(null);
+            notification.success({
+                message: 'Usuario Actualizado',
+                description: 'Usuario actualizado correctamente.',
+            });
+        } catch (error) {
+            showErrorNotification('Error al actualizar el usuario');
+            console.error(error);
+        }
+    };
+
+    const openEditModal = (user) => {
+        setEditingUser(user);
+        form.setFieldsValue({
+            username: user.username,
+            email: user.email,
+            password: '',
+        });
+        setIsModalVisible(true);
+    };
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
@@ -131,7 +150,7 @@ const UsersTable = () => {
                     className="add-button"
                     type="primary"
                     icon={<RiAddLine />}
-                    onClick={() => setIsModalVisible(true)} // Mostrar el modal al hacer clic
+                    onClick={() => setIsModalVisible(true)}
                 >
                     Agregar Usuario
                 </Button>
@@ -160,7 +179,11 @@ const UsersTable = () => {
                                     >
                                         Eliminar
                                     </Button>
-                                    <Button className="action-button ant-btn-success">
+                                    <Button
+                                        className="action-button ant-btn-success"
+                                        onClick={() => openEditModal(user)}
+                                        icon={<RiEditLine />}
+                                    >
                                         Editar
                                     </Button>
                                 </td>
@@ -169,14 +192,16 @@ const UsersTable = () => {
                     </tbody>
                 </table>
             </div>
-            {/* Modal para agregar usuario */}
             <Modal
-                title="Agregar Usuario"
+                title={editingUser ? "Editar Usuario" : "Agregar Usuario"}
                 visible={isModalVisible}
-                onCancel={() => setIsModalVisible(false)}
+                onCancel={() => {
+                    setIsModalVisible(false);
+                    setEditingUser(null);
+                }}
                 footer={null}
             >
-                <Form form={form} onFinish={handleAddUser}>
+                <Form form={form} onFinish={editingUser ? handleEditUser : handleAddUser}>
                     <Form.Item
                         name="username"
                         rules={[{ required: true, message: 'Por favor ingrese el nombre de usuario' }]}
@@ -189,36 +214,37 @@ const UsersTable = () => {
                     >
                         <Input type="email" placeholder="Correo electrónico" />
                     </Form.Item>
-                    <Form.Item
+                { /*<Form.Item
                         name="password"
                         rules={[{ required: true, message: 'Por favor ingrese la contraseña' }]}
                     >
                         <Input.Password placeholder="Contraseña" />
-                    </Form.Item>
-                    <Form.Item
-                        name="roles"
-                        rules={[{ required: true, message: 'Por favor seleccione al menos un rol' }]}
-                    >
-                        <Select
-                            mode="multiple"
-                            placeholder="Seleccionar roles"
+                    </Form.Item>*/}
+                    {!editingUser && (
+                        <Form.Item
+                            name="roles"
+                            rules={[{ required: true, message: 'Por favor seleccione al menos un rol' }]}
                         >
-                            {roles.map(role => (
-                                <Select.Option key={role.name} value={role.name}>
-                                    {role.name}
-                                </Select.Option>
-                            ))}
-                        </Select>
-                    </Form.Item>
+                            <Select
+                                mode="multiple"
+                                placeholder="Seleccionar roles"
+                            >
+                                {roles.map(role => (
+                                    <Select.Option key={role._id} value={role._id}>
+                                        {role.name}
+                                    </Select.Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                    )}
 
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
-                            Agregar
+                            {editingUser ? 'Actualizar' : 'Agregar'}
                         </Button>
                     </Form.Item>
                 </Form>
             </Modal>
-            {/* Modal para agregar usuario fin */}
         </div>
     );
 };
