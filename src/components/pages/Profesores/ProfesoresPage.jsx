@@ -5,7 +5,7 @@ import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined, Boo
 import { useNavigate, Link } from "react-router-dom";
 import logo from '../../../assets/uteq3.png';
 import DrawerComponent from '../../Drawer';
-import ProfesoresTable from '../../Profesores/ProfesoresTable'; // Ajusta la importación según la estructura de tu proyecto
+import ProfesoresTable from '../../Profesores/ProfesoresTabla/ProfesoresTable'; // Ajusta la importación según la estructura de tu proyecto
 
 const { Header, Sider, Content, Footer } = Layout;
 
