@@ -1,5 +1,5 @@
 export const ENV = {
-    API_URL: "https://lizard2-m2evbcgb8-ricolin2653ms-projects.vercel.app",
+    API_URL: "https://lizard-server.vercel.app",
     ENDPOINTS:{
         LOGIN:'api/auth/signin',
         REGISTER:'api/auth/signup',
