@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext } from 'react';
 import { storageController } from '../../services/token';
 
-import { usersService } from '../../services/users';
+import usersService from '../../services/users';
 import { tokenExpired } from '../../utils/tokenExpired';
 
 export const AuthContext = createContext();

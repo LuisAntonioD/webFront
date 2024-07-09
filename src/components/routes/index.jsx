@@ -7,6 +7,7 @@ import Register from '../pages/Register';
 import ProductsPage from '../pages/Products/ProductsPage';
 import NotFound from '../pages/Config/NotFound';  // Importa el componente NotFound
 import { useAuth } from '../../hooks/useAuth';
+import ProfesoresPage from '../pages/Profesores/ProfesoresPage';
 import UsersPage from '../pages/Usuarios/Users';
 
 const AppRoutes = () => {
@@ -19,6 +20,7 @@ const AppRoutes = () => {
         { path: '/productos', element: <ProductsPage /> },
         { path: '/Admisiones', element: <ProductsPage /> },
         { path: '/Usuarios', element: <UsersPage /> },
+        { path: '/profesores', element: <ProfesoresPage /> },
         { path: '*', element: <NotFound /> },  // Ruta para páginas no encontradas
     ]);
 
