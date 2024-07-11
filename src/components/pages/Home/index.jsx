@@ -7,7 +7,7 @@ import { LogoutOutlined,
   HomeOutlined,
   BookFilled,
   FireFilled,
-  DropboxCircleFilled,
+  UserOutlined,
     } from '@ant-design/icons'; // Importamos el icono de logout
 import './Home.css'; // Importamos el archivo CSS para los estilos
 import { useNavigate, Link } from "react-router-dom";
@@ -42,6 +42,9 @@ const Home = () => {
           navigate('/Usuarios');
         break;
         case '5':
+          navigate('/Profesores');
+        break;
+        case '6':
           <DrawerComponent/>
         break;
       default:
@@ -64,7 +67,8 @@ const Home = () => {
             { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
             { key: '3', icon: <FireFilled />, label: 'Servicios' },
-            { key: '4', icon: <DropboxCircleFilled />, label: 'Usuarios' },
+            { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
+            { key: '5', icon: <UserOutlined />, label: 'Profesores' }, 
             
           ]}
         />
@@ -112,9 +116,11 @@ const Home = () => {
           </div>
           <Footer style={{ textAlign: 'center', marginTop:85  }}>
             <div>
-                <Link to="/" style={{ margin: '0 10px', color:'black' }}>Inicio</Link>
-                <Link to="/Admisiones" style={{ margin: '0 10px', color:'black' }}>Admisiones</Link>
-                <Link to="/servicios" style={{ margin: '0 10px', color:'black' }}>Servicios</Link>
+            <Link to="/" style={{ margin: '0 10px', color: 'black' }}>Inicio</Link>
+                            <Link to="/Admisiones" style={{ margin: '0 10px', color: 'black' }}>Admisiones</Link>
+                            <Link to="/servicios" style={{ margin: '0 10px', color: 'black' }}>Servicios</Link>
+                            <Link to="/Usuarios" style={{ margin: '0 10px', color: 'black' }}>Usuarios</Link>
+                            <Link to="/Profesores" style={{ margin: '0 10px', color: 'black' }}>Profesores</Link>
             </div>
             <div style={{ marginTop: '16px' }}>
                 Uteq 2.0 ©2024 Created by TeamAura
