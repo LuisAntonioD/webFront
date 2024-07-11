@@ -67,8 +67,8 @@ const Home = () => {
             { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
             { key: '3', icon: <FireFilled />, label: 'Servicios' },
-            { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
-            { key: '5', icon: <UserOutlined />, label: 'Profesores' }, 
+            { key: '4', icon: <DropboxCircleFilled />, label: 'Usuarios' },
+            { key: '5', icon: <DropboxCircleFilled />, label: 'Profesores' }, 
             
           ]}
         />
@@ -78,7 +78,7 @@ const Home = () => {
           mode="inline"
           onClick={({ key }) => handleMenuClick(key)}
           items={[
-            { key: '5', icon: <DrawerComponent/>, label: `${user.username}` },
+            { key: '6', icon: <DrawerComponent/>, label: `${user.username}` },
           ]}
         />
         <div className="spacer" />

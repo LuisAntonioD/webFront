@@ -31,27 +31,27 @@ const UsersPage = () => {
 
   const handleMenuClick = (key) => {
     switch (key) {
-      case '1':
-        navigate('/');
-        break;
-      case '2':
-        navigate('/Admisiones');
-        break;
-      case '3':
-        navigate('/servicios');
-        break;
-        case '4':
-          navigate('/Usuarios');
-        break;
-        case '5':
+        case '1':
+          navigate('/');
+          break;
+        case '2':
+          navigate('/Admisiones');
+          break;
+        case '3':
+          navigate('/servicios');
+          break;
+          case '4':
+            navigate('/Usuarios');
+          break;
+          case '5':
           navigate('/Profesores');
         break;
-        case '6':
-          <DrawerComponent/>
-        break;
-      default:
-        break;
-    }
+          case '6':
+            <DrawerComponent/>
+          break;
+        default:
+          break;
+      }
   };
 
     return (
@@ -71,8 +71,8 @@ const UsersPage = () => {
             { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
             { key: '3', icon: <FireFilled />, label: 'Servicios' },
-            { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
-            { key: '5', icon: <UserOutlined />, label: 'Profesores' }, 
+            { key: '4', icon: <DropboxCircleFilled />, label: 'Usuarios' },
+            { key: '5', icon: <DropboxCircleFilled />, label: 'Profesores' }, 
             
             ]}
           />
@@ -82,7 +82,7 @@ const UsersPage = () => {
             mode="inline"
             onClick={({ key }) => handleMenuClick(key)}
             items={[
-              { key: '5', icon: <DrawerComponent/>, label: `${user.username}` },
+              { key: '6', icon: <DrawerComponent/>, label: `${user.username}` },
             ]}
           />
           <div className="spacer" />
@@ -119,6 +119,7 @@ const UsersPage = () => {
             <UsersTable />
             
         </div>
+        
         <Footer style={{ textAlign: 'center'}}>
               <div>
               <Link to="/" style={{ margin: '0 10px', color: 'black' }}>Inicio</Link>

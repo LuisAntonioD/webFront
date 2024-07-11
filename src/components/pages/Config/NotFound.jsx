@@ -49,6 +49,7 @@ const NotFound = () => {
         case '6':
           <DrawerComponent/>
         break;
+        
       default:
         break;
     }
@@ -79,7 +80,7 @@ const NotFound = () => {
           mode="inline"
           onClick={({ key }) => handleMenuClick(key)}
           items={[
-            { key: '5', icon: <DrawerComponent/>, label: `${user.username}` },
+            { key: '6', icon: <DrawerComponent/>, label: `${user.username}` },
           ]}
         />
         <div className="spacer" />

@@ -35,13 +35,13 @@ const ProfesoresPage = () => {
               break;
               case '4':
                 navigate('/Usuarios');
-              break;
-              case '5':
-                navigate('/Profesores');
-              break;
-              case '6':
-                <DrawerComponent/>
-              break;
+                break;
+                case '5':
+          navigate('/Profesores');
+        break;
+        case '6':
+          <DrawerComponent/>
+        break;
             default:
               break;
           }
@@ -71,8 +71,9 @@ const ProfesoresPage = () => {
                             { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
                             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
                             { key: '3', icon: <FireFilled />, label: 'Servicios' },
-                            { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
-                            { key: '5', icon: <UserOutlined />, label: 'Profesores' }, 
+                            { key: '4', icon: <DropboxCircleFilled />, label: 'Usuarios' },
+                            { key: '5', icon: <DropboxCircleFilled />, label: 'Profesores' }, 
+
                         ]}
                     />
                     <div style={{ flex: 1 }}></div>
@@ -81,7 +82,7 @@ const ProfesoresPage = () => {
                         mode="inline"
                         onClick={({ key }) => handleMenuClick(key)}
                         items={[
-                            { key: '5', icon: <DrawerComponent />, label: `${user.username}` },
+                            { key: '6', icon: <DrawerComponent />, label: `${user.username}` },
                         ]}
                     />
                     <div className="spacer" />
