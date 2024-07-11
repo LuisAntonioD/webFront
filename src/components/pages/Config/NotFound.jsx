@@ -9,7 +9,6 @@ import { LogoutOutlined,
   HomeOutlined,
   BookFilled,
   FireFilled,
-  DropboxCircleFilled,
   UserOutlined
     } from '@ant-design/icons'; // Importamos el icono de logout
 import { useNavigate, Link } from "react-router-dom";
