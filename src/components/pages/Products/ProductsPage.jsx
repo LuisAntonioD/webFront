@@ -8,7 +8,7 @@ import { LogoutOutlined,
   HomeOutlined,
   BookFilled,
   FireFilled,
-  DropboxCircleFilled
+  UserOutlined
     } from '@ant-design/icons'; // Importamos el icono de logout
 import { useNavigate, Link } from "react-router-dom";
 import logo from '../../../assets/uteq3.png';
@@ -73,8 +73,8 @@ const ProductsPage = () => {
               { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
               { key: '2', icon: <BookFilled />, label: 'Admisiones' },
               { key: '3', icon: <FireFilled />, label: 'Servicios' },
-              { key: '4', icon: <DropboxCircleFilled />, label: 'Usuarios' }, 
-              { key: '5', icon: <DropboxCircleFilled />, label: 'Profesores' },   
+              { key: '4', icon: <UserOutlined />, label: 'Usuarios' }, 
+              { key: '5', icon: <UserOutlined />, label: 'Profesores' },   
             ]}
           />
           <div style={{ flex: 1 }}></div>
@@ -122,10 +122,11 @@ const ProductsPage = () => {
         </div>
         <Footer style={{ textAlign: 'center'}}>
               <div>
-                  <Link to="/" style={{ margin: '0 10px', color:'black' }}>Inicio</Link>
-                  <Link to="/Admisiones" style={{ margin: '0 10px', color:'black' }}>Admisiones</Link>
-                  <Link to="/servicios" style={{ margin: '0 10px', color:'black' }}>Servicios</Link>
-                  <Link to="/profesores" style={{ margin: '0 10px', color:'black' }}>Profesores</Link>
+              <Link to="/" style={{ margin: '0 10px', color: 'black' }}>Inicio</Link>
+                            <Link to="/Admisiones" style={{ margin: '0 10px', color: 'black' }}>Admisiones</Link>
+                            <Link to="/servicios" style={{ margin: '0 10px', color: 'black' }}>Servicios</Link>
+                            <Link to="/Usuarios" style={{ margin: '0 10px', color: 'black' }}>Usuarios</Link>
+                            <Link to="/Profesores" style={{ margin: '0 10px', color: 'black' }}>Profesores</Link>
               </div>
               <div style={{ marginTop: '20px' }}>
                   Uteq 2.0 ©2024 Created by TeamAura

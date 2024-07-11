@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Layout, Menu, theme } from 'antd';
-import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined, BookFilled, FireFilled, DropboxCircleFilled } from '@ant-design/icons';
+import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined, BookFilled, FireFilled, UserOutlined } from '@ant-design/icons';
 import { useNavigate, Link } from "react-router-dom";
 import logo from '../../../assets/uteq3.png';
 import DrawerComponent from '../../Drawer';
@@ -25,20 +25,26 @@ const ProfesoresPage = () => {
     const handleMenuClick = (key) => {
         switch (key) {
             case '1':
-                navigate('/');
-                break;
+              navigate('/');
+              break;
             case '2':
-                navigate('/Admisiones');
-                break;
+              navigate('/Admisiones');
+              break;
             case '3':
-                navigate('/servicios');
-                break;
-            case '4':
+              navigate('/servicios');
+              break;
+              case '4':
                 navigate('/Usuarios');
-                break;
+              break;
+              case '5':
+                navigate('/Profesores');
+              break;
+              case '6':
+                <DrawerComponent/>
+              break;
             default:
-                break;
-        }
+              break;
+          }
     };
 
     const handleAddProfesor = () => {
@@ -65,7 +71,8 @@ const ProfesoresPage = () => {
                             { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
                             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
                             { key: '3', icon: <FireFilled />, label: 'Servicios' },
-                            { key: '4', icon: <DropboxCircleFilled />, label: 'Usuarios' },
+                            { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
+                            { key: '5', icon: <UserOutlined />, label: 'Profesores' }, 
                         ]}
                     />
                     <div style={{ flex: 1 }}></div>
@@ -118,6 +125,8 @@ const ProfesoresPage = () => {
                             <Link to="/Admisiones" style={{ margin: '0 10px', color: 'black' }}>Admisiones</Link>
                             <Link to="/servicios" style={{ margin: '0 10px', color: 'black' }}>Servicios</Link>
                             <Link to="/Usuarios" style={{ margin: '0 10px', color: 'black' }}>Usuarios</Link>
+                            <Link to="/Profesores" style={{ margin: '0 10px', color: 'black' }}>Profesores</Link>
+
                         </div>
                         <div style={{ marginTop: '20px' }}>
                             Uteq 2.0 ©2024 Created by TeamAura

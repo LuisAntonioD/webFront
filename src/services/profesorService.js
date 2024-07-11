@@ -43,25 +43,38 @@ const deleteProfesor = async (id, token) => {
     }
 };
 
-const addProfesor = async (token, profesor) => {
-    try {
-        const response = await axios.post(`${ENV.API_URL}/${ENV.ENDPOINTS.PROFESORES}`, profesor, {
-            headers: {
-                'Content-Type': 'application/json',
-                'x-access-token': token
-            }
-        });
 
-        return response.data;
-    } catch (error) {
-        console.error('Error al agregar al profesor:', error);
-        throw error;
-    }
+const addProfesor = async (userData, token) => {
+    const url = `${ENV.API_URL}/${ENV.ENDPOINTS.PROFESORES}`;
+    const response = await axios.post(url, userData, {
+        headers: {
+            'x-access-token': token
+        }
+    });
+    return response.data;
 };
 
-export default {
+const updateUser = async (userId, updatedUserData, token) => {
+    const url = `${ENV.API_URL}/${ENV.ENDPOINTS.PROFESORES}/${userId}`;
+    const response = await axios.put(url, updatedUserData, {
+        headers: {
+            'x-access-token': token,
+        },
+    });
+    return response.data;
+};
+
+
+// Esto exporta los métodos individualmente
+export { getMe, updateUser, deleteProfesor };
+
+// Esto exporta los métodos como un objeto por defecto
+const usersService = {
     getMe,
+    updateUser,
     getProfesores,
     deleteProfesor,
     addProfesor
 };
+
+export default usersService;
