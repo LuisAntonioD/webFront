@@ -72,7 +72,7 @@ const ProfesoresPage = () => {
                             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
                             { key: '3', icon: <FireFilled />, label: 'Servicios' },
                             { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
-                            { key: '5', icon: <UserOutlinedgit ad />, label: 'Profesores' }, 
+                            { key: '5', icon: <UserOutlined />, label: 'Profesores' }, 
 
                         ]}
                     />
