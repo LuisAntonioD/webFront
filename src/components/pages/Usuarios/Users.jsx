@@ -44,6 +44,9 @@ const UsersPage = () => {
             navigate('/Usuarios');
           break;
           case '5':
+          navigate('/Profesores');
+        break;
+          case '6':
             <DrawerComponent/>
           break;
         default:
@@ -69,6 +72,7 @@ const UsersPage = () => {
             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
             { key: '3', icon: <FireFilled />, label: 'Servicios' },
             { key: '4', icon: <DropboxCircleFilled />, label: 'Usuarios' },
+            { key: '5', icon: <DropboxCircleFilled />, label: 'Profesores' }, 
             
             ]}
           />
@@ -78,7 +82,7 @@ const UsersPage = () => {
             mode="inline"
             onClick={({ key }) => handleMenuClick(key)}
             items={[
-              { key: '5', icon: <DrawerComponent/>, label: `${user.username}` },
+              { key: '6', icon: <DrawerComponent/>, label: `${user.username}` },
             ]}
           />
           <div className="spacer" />
@@ -115,6 +119,7 @@ const UsersPage = () => {
             <UsersTable />
             
         </div>
+        
         <Footer style={{ textAlign: 'center'}}>
               <div>
                   <Link to="/" style={{ margin: '0 10px', color:'black' }}>Inicio</Link>

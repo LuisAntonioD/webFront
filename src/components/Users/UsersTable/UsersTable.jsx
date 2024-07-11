@@ -5,6 +5,7 @@ import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import usersService from '../../../services/users';
 import { AuthContext } from '../../context/AuthContext';
+import { generatePDF } from '../../../utils/pdf';
 import './UsersTable.css';
 
 const UsersTable = () => {
@@ -180,6 +181,13 @@ const UsersTable = () => {
                 >
                     Agregar Usuario
                 </Button>
+                <Button
+                type="secondary"
+                icon={<RiAddLine />}
+                onClick={() => generatePDF(users, user)}
+            >
+                Generar Reporte
+            </Button>
             </div>
             <div className="table-container table-wrapper">
                 <table className="formato-tabla">

@@ -43,8 +43,12 @@ const NotFound = () => {
           navigate('/Usuarios');
         break;
         case '5':
+          navigate('/Profesores');
+        break;
+        case '6':
           <DrawerComponent/>
         break;
+        
       default:
         break;
     }
@@ -66,6 +70,7 @@ const NotFound = () => {
             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
             { key: '3', icon: <FireFilled />, label: 'Servicios' },
             { key: '4', icon: <DropboxCircleFilled />, label: 'Usuarios' },
+            { key: '5', icon: <DropboxCircleFilled />, label: 'Profesores' }, 
           ]}
         />
         <div style={{ flex: 1 }}></div>
@@ -74,7 +79,7 @@ const NotFound = () => {
           mode="inline"
           onClick={({ key }) => handleMenuClick(key)}
           items={[
-            { key: '5', icon: <DrawerComponent/>, label: `${user.username}` },
+            { key: '6', icon: <DrawerComponent/>, label: `${user.username}` },
           ]}
         />
         <div className="spacer" />
