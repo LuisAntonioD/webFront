@@ -317,7 +317,7 @@ export default ProfesoresTable;
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Button, Modal, notification, Form,Input, DatePicker } from 'antd';
+import { Button, Modal, notification, Form, Input, DatePicker } from 'antd';
 import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import profesorService from '../../../services/profesorService';
@@ -404,6 +404,8 @@ const ProfesoresTable = () => {
         try {
             const newUser = {
                 ...values,
+                nombre: values.nombre.charAt(0).toUpperCase() + values.nombre.slice(1).toLowerCase(),
+                apellidos: values.apellidos.split(' ').map(apellido => apellido.charAt(0).toUpperCase() + apellido.slice(1).toLowerCase()).join(' '),
                 fechaNacimiento: values.fechaNacimiento.format('YYYY-MM-DD'),
             };
             await profesorService.addProfesor(newUser, token);
@@ -424,6 +426,8 @@ const ProfesoresTable = () => {
         try {
             const updatedUser = {
                 ...values,
+                nombre: values.nombre.charAt(0).toUpperCase() + values.nombre.slice(1).toLowerCase(),
+                apellidos: values.apellidos.split(' ').map(apellido => apellido.charAt(0).toUpperCase() + apellido.slice(1).toLowerCase()).join(' '),
                 fechaNacimiento: values.fechaNacimiento.format('YYYY-MM-DD'),
             };
             await profesorService.updateUser(currentUser._id, updatedUser, token);
@@ -441,6 +445,7 @@ const ProfesoresTable = () => {
             console.error(error);
         }
     };
+
 
     const showEditModal = (user) => {
         setCurrentUser(user);
@@ -543,21 +548,30 @@ const ProfesoresTable = () => {
                     <Form.Item
                         name="nombre"
                         label="Nombre"
-                        rules={[{ required: true, message: 'Por favor ingrese el nombre del profesor' }]}
+                        rules={[
+                            { required: true, message: 'Por favor ingrese el nombre del profesor' },
+                            { pattern: /^[a-zA-Z\s]+$/, message: 'El nombre solo debe contener letras y espacios' }
+                        ]}
                     >
                         <Input placeholder="Nombre del profesor" />
                     </Form.Item>
                     <Form.Item
                         name="apellidos"
                         label="Apellidos"
-                        rules={[{ required: true, message: 'Por favor ingrese los apellidos del profesor' }]}
+                        rules={[
+                            { required: true, message: 'Por favor ingrese los apellidos del profesor' },
+                            { pattern: /^[a-zA-Z\s]+$/, message: 'Los apellidos solo deben contener letras y espacios' }
+                        ]}
                     >
                         <Input placeholder="Apellidos del profesor" />
                     </Form.Item>
                     <Form.Item
                         name="numeroEmpleado"
                         label="Numero de Empleado"
-                        rules={[{ required: true, message: 'Por favor ingrese el número de empleado' }]}
+                        rules={[
+                            { required: true, message: 'Por favor ingrese el número de empleado' },
+                            { pattern: /^\d{10}$/, message: 'El número de empleado debe ser numérico y de 10 dígitos' },
+                        ]}
                     >
                         <Input placeholder="Numero de empleado" />
                     </Form.Item>
