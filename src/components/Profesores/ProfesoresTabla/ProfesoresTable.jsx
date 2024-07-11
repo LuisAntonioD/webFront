@@ -404,8 +404,6 @@ const ProfesoresTable = () => {
         try {
             const newUser = {
                 ...values,
-                nombre: values.nombre.charAt(0).toUpperCase() + values.nombre.slice(1).toLowerCase(),
-                apellidos: values.apellidos.split(' ').map(apellido => apellido.charAt(0).toUpperCase() + apellido.slice(1).toLowerCase()).join(' '),
                 fechaNacimiento: values.fechaNacimiento.format('YYYY-MM-DD'),
             };
             await profesorService.addProfesor(newUser, token);
@@ -421,6 +419,7 @@ const ProfesoresTable = () => {
             console.error(error);
         }
     };
+    
 
     const handleEditUser = async (values) => {
         try {
@@ -607,6 +606,17 @@ const ProfesoresTable = () => {
                             placeholder="Selecciona la fecha"
                         />
                     </Form.Item>
+                    <Form.Item
+                        name="telefono"
+                        label="Teléfono"
+                        rules={[
+                            { required: true, message: 'Por favor ingrese el número de teléfono' },
+                            // Puedes añadir reglas de validación adicionales aquí según tus requisitos
+                        ]}
+                    >
+                        <Input placeholder="Número de teléfono" />
+                    </Form.Item>
+
                     <Form.Item>
                         <Button key="submit" type="primary" htmlType="submit">
                             {isEditing ? 'Guardar Cambios' : 'Agregar Profesor'}

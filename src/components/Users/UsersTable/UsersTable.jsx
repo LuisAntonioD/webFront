@@ -134,8 +134,6 @@ const UsersTable = () => {
         form.setFieldsValue({
             username: user.username,
             email: user.email,
-            // password: '', // Comentado para la funcionalidad futura
-            // roles: user.roles.map(role => role.name), // Comentado para la funcionalidad futura
         });
     };
 
@@ -229,15 +227,26 @@ const UsersTable = () => {
                 >
                     <Form.Item
                         name="username"
-                        rules={[{ required: true, message: 'Por favor ingrese el nombre de usuario' }]}
-                    >
+                        rules={[
+                            { required: true, message: 'Por favor ingrese el nombre de usuario' },
+                            { pattern: /^[a-zA-Z\s]+$/, message: 'El nombre solo debe contener letras y espacios' }
+                        ]}                    >
                         <Input placeholder="Nombre de usuario" />
                     </Form.Item>
                     <Form.Item
                         name="email"
                         rules={[
                             { required: true, message: 'Por favor ingrese el correo electrónico' },
-                            { validator: validateEmail }
+                            { type: 'email', message: 'Por favor ingrese un correo electrónico válido' },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    const isCurrentEmailUnique = users.every(u => u._id === currentUser?._id || u.correo !== value);
+                                    if (isCurrentEmailUnique) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject('El correo electrónico ya está en uso');
+                                },
+                            }),
                         ]}
                     >
                         <Input
@@ -271,33 +280,6 @@ const UsersTable = () => {
                             </Form.Item>
                         </>
                     )}
-                    {/* Comentado para la funcionalidad futura */}
-                    {/*isEditing && (
-                        <>
-                            <Form.Item
-                                name="password"
-                                rules={[{ required: true, message: 'Por favor ingrese la contraseña' }]}
-                            >
-                                <Input.Password placeholder="Contraseña" />
-                            </Form.Item>
-                            <Form.Item
-                                name="roles"
-                                rules={[{ required: true, message: 'Por favor seleccione al menos un rol' }]}
-                            >
-                                <Select
-                                    mode="multiple"
-                                    placeholder="Seleccionar roles"
-                                    disabled={isEditing}
-                                >
-                                    {roles.map(role => (
-                                        <Select.Option key={role.name} value={role.name}>
-                                            {role.name}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                        </>
-                    )*/}
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
                             {isEditing ? "Guardar Cambios" : "Agregar"}
