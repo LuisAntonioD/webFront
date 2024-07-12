@@ -32,29 +32,44 @@ const getOfertasEducativas = async () => {
 };
 
 // Agregar una nueva oferta educativa
-const addOfertasEducativas = async (ofertaData, token) => {
+const addOfertasEducativas = async (token, oferta) => {
     try {
-        const url = `${ENV.API_URL}/${ENV.ENDPOINTS.OFERTAEDUCATIVA}`;
-        const response = await axios.post(url, ofertaData, {
+        const response = await axios.post(`${ENV.API_URL}/${ENV.ENDPOINTS.OFERTAEDUCATIVA}`, oferta, {
             headers: {
-                'x-access-token': token
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
             }
         });
         return response.data;
     } catch (error) {
-        console.error('Error al agregar la oferta educativa:', error);
+        console.error('Error adding oferta educativa:', error);
+        throw error;
+    }
+};
+const addOfertaEducativa = async (token, oferta) => {
+    try {
+        const response = await axios.post(`${ENV.API_URL}/${ENV.ENDPOINTS.OFERTAEDUCATIVA}`, oferta, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error adding oferta educativa:', error);
         throw error;
     }
 };
 
 // Esto exporta los métodos individualmente
-export { getMe, getOfertasEducativas, addOfertasEducativas };
+//export { getMe, getOfertasEducativas, addOfertasEducativas };
 
 // Esto exporta los métodos como un objeto por defecto
 const ofertaEducativaService = {
     getMe,
     getOfertasEducativas,
-    addOfertasEducativas
+    addOfertasEducativas,
+    addOfertaEducativa
 };
 
 export default ofertaEducativaService;

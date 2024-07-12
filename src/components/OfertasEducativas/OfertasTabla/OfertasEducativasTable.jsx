@@ -1,33 +1,33 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Button, Modal, notification, Form, Input, DatePicker } from 'antd';
+import { Button, Modal, notification } from 'antd';
 import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import ofertaEducativaService from '../../../services/OfertaEducativaService';
-import { AuthContext } from '../../context/AuthContext';
+import NewOfertaForm from '../OfertasForm/newOferta'; // Asegúrate de importar el formulario NewOfertaForm
 import '../OfertasTabla/OfertasTable.css';
 
 const OfertasEducativasTable = () => {
     const [ofertas, setOfertas] = useState([]);
+    const [profesores, setProfesores] = useState([]);
     const [error, setError] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
-    const [isEmailUnique, setIsEmailUnique] = useState(true);
-    const { user, token } = useContext(AuthContext);
-    const [form] = Form.useForm();
+    const [token, setToken] = useState(''); // Asegúrate de obtener el token adecuadamente
+    const formRef = useRef();
 
     useEffect(() => {
         fetchOfertas();
+        fetchProfesores();
     }, []);
 
     const fetchOfertas = async () => {
         try {
             const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.OFERTAEDUCATIVA}`);
             if (Array.isArray(response.data)) {
-                const filteredOfertas = response.data.filter(o => o._id !== user._id);
-                setOfertas(filteredOfertas);
+                setOfertas(response.data);
             } else {
                 setError('La respuesta de la API no es un arreglo');
             }
@@ -35,6 +35,27 @@ const OfertasEducativasTable = () => {
             setError('Error al obtener los datos de la API');
             console.error(err);
         }
+    };
+
+    const fetchProfesores = async () => {
+        try {
+            const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.PROFESORES}`);
+            if (Array.isArray(response.data)) {
+                setProfesores(response.data);
+            } else {
+                setError('La respuesta de la API no es un arreglo');
+            }
+        } catch (err) {
+            setError('Error al obtener los datos de los profesores');
+            console.error(err);
+        }
+    };
+
+    const getProfesorNames = (profesorIds) => {
+        return profesorIds.map(id => {
+            const profesor = profesores.find(prof => prof._id === id);
+            return profesor ? profesor.nombre : 'Desconocido';
+        }).join(', ');
     };
 
     const deleteOferta = async (id) => {
@@ -63,11 +84,6 @@ const OfertasEducativasTable = () => {
     };
 
     const confirmDeleteOferta = (id) => {
-        if (id === user._id) {
-            showErrorNotification('No puedes eliminar tu propia cuenta.');
-            return;
-        }
-
         Modal.confirm({
             title: 'Confirmar Eliminación',
             content: '¿Estás seguro de que deseas eliminar esta oferta?',
@@ -89,7 +105,6 @@ const OfertasEducativasTable = () => {
             await ofertaEducativaService.addOfertaEducativa(newOferta, token);
             fetchOfertas();
             setIsModalVisible(false);
-            form.resetFields();
             notification.success({
                 message: 'Oferta Agregada',
                 description: 'Oferta agregada correctamente.',
@@ -100,18 +115,20 @@ const OfertasEducativasTable = () => {
         }
     };
 
+    const showEditModal = (oferta) => {
+        setCurrentUser(oferta);
+        setIsEditing(true);
+        setIsModalVisible(true);
+    };
+
     const handleEditOferta = async (values) => {
         try {
             const updatedOferta = {
                 ...values,
-                nombre: values.nombre.charAt(0).toUpperCase() + values.nombre.slice(1).toLowerCase(),
-                apellidos: values.apellidos.split(' ').map(apellido => apellido.charAt(0).toUpperCase() + apellido.slice(1).toLowerCase()).join(' '),
-                fechaNacimiento: values.fechaNacimiento.format('YYYY-MM-DD'),
             };
             await ofertaEducativaService.updateOferta(currentUser._id, updatedOferta, token);
             fetchOfertas();
             setIsModalVisible(false);
-            form.resetFields();
             setIsEditing(false);
             setCurrentUser(null);
             notification.success({
@@ -124,45 +141,22 @@ const OfertasEducativasTable = () => {
         }
     };
 
-    const showEditModal = (oferta) => {
-        setCurrentUser(oferta);
-        setIsEditing(true);
-        setIsModalVisible(true);
-        form.setFieldsValue({
-            nombre: oferta.nombre,
-            apellidos: oferta.apellidos,
-            numeroEmpleado: oferta.numeroEmpleado,
-            correo: oferta.correo,
-            fechaNacimiento: oferta.fechaNacimiento ? moment(oferta.fechaNacimiento) : null,
-        });
-    };
-
     const handleCancel = () => {
         setIsModalVisible(false);
         setIsEditing(false);
         setCurrentUser(null);
-        setIsEmailUnique(true);
-        form.resetFields();
-    };
-
-    const validateFechaNacimiento = (_, value) => {
-        if (!value) {
-            return Promise.reject('Por favor selecciona la fecha de nacimiento');
-        }
-        const ageLimitDate = moment().subtract(18, 'years');
-        if (value.isAfter(ageLimitDate, 'day')) {
-            return Promise.reject('El profesor debe ser mayor de 18 años');
-        }
-        return Promise.resolve();
+        formRef.current.resetFormFields(); // Accede a resetFormFields a través de la referencia
     };
 
     if (error) {
         return <div>{error}</div>;
     }
 
+    const existingNames = ofertas.map(oferta => oferta.nombre);
+
     return (
         <div className="ofertas-educativas-table-page">
-                     <div className="buttons-container">
+            <div className="buttons-container">
                 <Button
                     className="add-button"
                     type="primary"
@@ -179,6 +173,7 @@ const OfertasEducativasTable = () => {
                             <th>Nombre</th>
                             <th>Activo</th>
                             <th>Fecha de Creación</th>
+                            <th>Profesores</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -187,7 +182,8 @@ const OfertasEducativasTable = () => {
                             <tr key={oferta._id}>
                                 <td>{oferta.nombre}</td>
                                 <td>{oferta.activo ? 'Sí' : 'No'}</td>
-                                <td>{new Date(oferta.createdAt).toLocaleDateString()}</td>
+                                <td>{moment(oferta.createdAt).format('DD/MM/YYYY')}</td>
+                                <td>{getProfesorNames(oferta.profesores)}</td>
                                 <td>
                                     <Button
                                         className="action-button ant-btn-danger"
@@ -208,22 +204,18 @@ const OfertasEducativasTable = () => {
                     </tbody>
                 </table>
             </div>
-            <Modal
-                title={isEditing ? "Editar oferta" : "Agregar oferta"}
+            <NewOfertaForm
+                ref={formRef}
+                onCreate={fetchOfertas}  //Llamar la funcion fetchOfertas que sirve para volver a cargar la tabla
+                onEdit={handleEditOferta}
                 visible={isModalVisible}
                 onCancel={handleCancel}
-                footer={null}
-            >
-                <Form
-                    form={form}
-                    onFinish={isEditing ? handleEditOferta : handleAddOfertaEducativa}
-                >
-                    {/* Form items for adding/editing oferta educativa */}
-                </Form>
-            </Modal>
+                editing={isEditing}
+                oferta={currentUser}
+                existingNames={existingNames} // Pasar los nombres existentes
+            />
         </div>
     );
 };
 
 export default OfertasEducativasTable;
-
