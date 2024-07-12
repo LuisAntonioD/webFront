@@ -8,7 +8,8 @@
             DELETE: 'api/admision',
             UPDATE: 'api/admision',
             ROLES: 'api/roles',
-            PROFESORES:'api/profesores'
+            PROFESORES:'api/profesores',
+            OFERTAEDUCATIVA: 'api/oferta'
         },
         STORAGE: {
             TOKEN: "token",
