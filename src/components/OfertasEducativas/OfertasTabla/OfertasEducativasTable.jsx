@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Button, Modal, notification } from 'antd';
+import { Button, Modal, notification, Form } from 'antd';
 import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import ofertaEducativaService from '../../../services/OfertaEducativaService';
@@ -96,24 +96,7 @@ const OfertasEducativasTable = () => {
         });
     };
 
-    const handleAddOfertaEducativa = async (values) => {
-        try {
-            const newOferta = {
-                ...values,
-                activo: true,
-            };
-            await ofertaEducativaService.addOfertaEducativa(newOferta, token);
-            fetchOfertas();
-            setIsModalVisible(false);
-            notification.success({
-                message: 'Oferta Agregada',
-                description: 'Oferta agregada correctamente.',
-            });
-        } catch (error) {
-            showErrorNotification('Error al agregar la oferta');
-            console.error(error);
-        }
-    };
+    
 
     const showEditModal = (oferta) => {
         setCurrentUser(oferta);
@@ -126,7 +109,7 @@ const OfertasEducativasTable = () => {
             const updatedOferta = {
                 ...values,
             };
-            await ofertaEducativaService.updateOferta(currentUser._id, updatedOferta, token);
+            await ofertaEducativaService.updateOfertaEducativa(currentUser._id, updatedOferta, token);
             fetchOfertas();
             setIsModalVisible(false);
             setIsEditing(false);
@@ -161,7 +144,11 @@ const OfertasEducativasTable = () => {
                     className="add-button"
                     type="primary"
                     icon={<RiAddLine />}
-                    onClick={() => setIsModalVisible(true)}
+                    onClick={() => {
+                        setCurrentUser(null);
+                        setIsEditing(false);
+                        setIsModalVisible(true);
+                    }}
                 >
                     Agregar Oferta
                 </Button>
