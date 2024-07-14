@@ -62,12 +62,29 @@ const updateOfertaEducativa = async (id, oferta, token) => {
     }
 };
 
+
+//Eliminar oferta educativa
+const deleteOfertaEducativa = async (id, token) => {
+    try {
+        const response = await axios.delete(`${ENV.API_URL}/${ENV.ENDPOINTS.OFERTAEDUCATIVA}/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting oferta educativa:', error);
+        throw error;
+    }
+};
+
 // Esto exporta los métodos como un objeto por defecto
 const ofertaEducativaService = {
     getMe,
     getOfertasEducativas,
     addOfertaEducativa,
-    updateOfertaEducativa
+    updateOfertaEducativa,
+    deleteOfertaEducativa
 
 };
 
