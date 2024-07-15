@@ -18,6 +18,8 @@ const UsersTable = () => {
     const [isEmailUnique, setIsEmailUnique] = useState(true);
     const { user, token } = useContext(AuthContext);
     const [form] = Form.useForm();
+    const [searchText, setSearchText] = useState('');
+
 
     useEffect(() => {
         fetchUsers();
@@ -91,6 +93,8 @@ const UsersTable = () => {
             },
         });
     };
+
+    
 
     const handleAddUser = async (newUser) => {
         try {
@@ -168,6 +172,16 @@ const UsersTable = () => {
         return <div>{error}</div>;
     }
 
+    const handleSearchChange = (e) => {
+        setSearchText(e.target.value);
+    };
+
+    const filteredUsers = users.filter(
+        (user) =>
+            user.username.toLowerCase().includes(searchText.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchText.toLowerCase())
+    );
+
     return (
         <div className="users-table-page">
             <div className="buttons-container">
@@ -186,8 +200,16 @@ const UsersTable = () => {
             >
                 Generar Reporte
             </Button>
+            <Input
+                placeholder="Buscar por nombre o correo"
+                value={searchText}
+                onChange={handleSearchChange}
+                style={{ marginBottom: 20, width: '300px' }}
+            />
             </div>
+            
             <div className="table-container table-wrapper">
+                
                 <table className="formato-tabla">
                     <thead>
                         <tr>
@@ -198,7 +220,7 @@ const UsersTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user) => (
+                        {filteredUsers.map((user) => (
                             <tr key={user._id}>
                                 <td>{user.username}</td>
                                 <td>{user.email}</td>
