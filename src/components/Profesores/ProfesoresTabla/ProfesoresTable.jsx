@@ -1,16 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Button, Modal, notification, Form, Input, Select } from 'antd';
+import moment from 'moment';
+import { Button, Modal, notification, Form, Input, DatePicker } from 'antd';
 import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
-import usersService from '../../../services/users';
+import profesorService from '../../../services/profesorService';
 import { AuthContext } from '../../context/AuthContext';
-import { generatePDF } from '../../../utils/pdf';
-import './UsersTable.css';
 
-const UsersTable = () => {
+const ProfesoresTable = () => {
     const [users, setUsers] = useState([]);
-    const [roles, setRoles] = useState([]);
     const [error, setError] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -21,12 +19,11 @@ const UsersTable = () => {
 
     useEffect(() => {
         fetchUsers();
-        fetchRoles();
     }, []);
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.USER}`);
+            const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.PROFESORES}`);
             if (Array.isArray(response.data)) {
                 const filteredUsers = response.data.filter(u => u._id !== user._id);
                 setUsers(filteredUsers);
@@ -39,19 +36,14 @@ const UsersTable = () => {
         }
     };
 
-    const fetchRoles = async () => {
-        try {
-            const rolesData = await usersService.getRoles();
-            setRoles(rolesData);
-        } catch (error) {
-            setError('Error al obtener los roles');
-            console.error(error);
-        }
-    };
 
-    const deleteUser = async (id) => {
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+    const deleteProfesor = async (id) => {
         try {
-            await usersService.deleteUser(id, token);
+            await profesorService.deleteProfesor(id, token);
             fetchUsers();
             showDeleteNotification();
         } catch (error) {
@@ -74,7 +66,7 @@ const UsersTable = () => {
         });
     };
 
-    const confirmDeleteUser = (id) => {
+    const confirmDeleteProfesor = (id) => {
         if (id === user._id) {
             showErrorNotification('No puedes eliminar tu propia cuenta.');
             return;
@@ -87,14 +79,18 @@ const UsersTable = () => {
             okType: 'danger',
             cancelText: 'Cancelar',
             onOk() {
-                deleteUser(id);
+                deleteProfesor(id);
             },
         });
     };
 
-    const handleAddUser = async (newUser) => {
+    const handleAddUser = async (values) => {
         try {
-            await usersService.createUser(newUser, token);
+            const newUser = {
+                ...values,
+                fechaNacimiento: values.fechaNacimiento.format('YYYY-MM-DD'),
+            };
+            await profesorService.addProfesor(newUser, token);
             fetchUsers();
             setIsModalVisible(false);
             form.resetFields();
@@ -107,16 +103,22 @@ const UsersTable = () => {
             console.error(error);
         }
     };
+    
 
-    const handleEditUser = async (updatedUser) => {
+    const handleEditUser = async (values) => {
         try {
-            await usersService.updateUser(currentUser._id, updatedUser, token);
+            const updatedUser = {
+                ...values,
+                nombre: values.nombre.charAt(0).toUpperCase() + values.nombre.slice(1).toLowerCase(),
+                apellidos: values.apellidos.split(' ').map(apellido => apellido.charAt(0).toUpperCase() + apellido.slice(1).toLowerCase()).join(' '),
+                fechaNacimiento: values.fechaNacimiento.format('YYYY-MM-DD'),
+            };
+            await profesorService.updateUser(currentUser._id, updatedUser, token);
             fetchUsers();
             setIsModalVisible(false);
             form.resetFields();
             setIsEditing(false);
             setCurrentUser(null);
-            setIsEmailUnique(true);
             notification.success({
                 message: 'Usuario Actualizado',
                 description: 'Usuario actualizado correctamente.',
@@ -127,14 +129,17 @@ const UsersTable = () => {
         }
     };
 
+
     const showEditModal = (user) => {
         setCurrentUser(user);
         setIsEditing(true);
         setIsModalVisible(true);
-        setIsEmailUnique(true);
         form.setFieldsValue({
-            username: user.username,
-            email: user.email,
+            nombre: user.nombre,
+            apellidos: user.apellidos,
+            numeroEmpleado: user.numeroEmpleado,
+            correo: user.correo,
+            fechaNacimiento: user.fechaNacimiento ? moment(user.fechaNacimiento) : null,
         });
     };
 
@@ -146,21 +151,14 @@ const UsersTable = () => {
         form.resetFields();
     };
 
-    const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
-    };
-
-    const validateEmail = async (rule, value) => {
+    const validateFechaNacimiento = (_, value) => {
         if (!value) {
-            return Promise.resolve();
+            return Promise.reject('Por favor selecciona la fecha de nacimiento');
         }
-        const existingUser = users.find(u => u.email === value && (!isEditing || u._id !== currentUser._id));
-        if (existingUser) {
-            setIsEmailUnique(false);
-            return Promise.reject('El correo electrónico ya está registrado');
+        const ageLimitDate = moment().subtract(18, 'years');
+        if (value.isAfter(ageLimitDate, 'day')) {
+            return Promise.reject('El profesor debe ser mayor de 18 años');
         }
-        setIsEmailUnique(true);
         return Promise.resolve();
     };
 
@@ -177,43 +175,40 @@ const UsersTable = () => {
                     icon={<RiAddLine />}
                     onClick={() => setIsModalVisible(true)}
                 >
-                    Agregar Usuario
+                    Agregar Profesor
                 </Button>
-                <Button
-                type="secondary"
-                icon={<RiAddLine />}
-                onClick={() => generatePDF(users, user)}
-            >
-                Generar Reporte
-            </Button>
             </div>
             <div className="table-container table-wrapper">
                 <table className="formato-tabla">
                     <thead>
                         <tr>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Fecha de creación</th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Numero Empleado</th>
+                            <th>Correo</th>
+                            <th>Fecha de Nacimiento</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user) => (
-                            <tr key={user._id}>
-                                <td>{user.username}</td>
-                                <td>{user.email}</td>
-                                <td>{formatDate(user.createdAt)}</td>
+                        {users.map((prof) => (
+                            <tr key={prof._id}>
+                                <td>{prof.nombre}</td>
+                                <td>{prof.apellidos}</td>
+                                <td>{prof.numeroEmpleado}</td>
+                                <td>{prof.correo}</td>
+                                <td>{formatDate(prof.fechaNacimiento)}</td>
                                 <td>
                                     <Button
                                         className="action-button ant-btn-danger"
-                                        onClick={() => confirmDeleteUser(user._id)}
+                                        onClick={() => confirmDeleteProfesor(prof._id)}
                                         icon={<RiDeleteBin6Line />}
                                     >
                                         Eliminar
                                     </Button>
                                     <Button
                                         className="action-button ant-btn-success"
-                                        onClick={() => showEditModal(user)}
+                                        onClick={() => showEditModal(prof)}
                                     >
                                         Editar
                                     </Button>
@@ -224,7 +219,7 @@ const UsersTable = () => {
                 </table>
             </div>
             <Modal
-                title={isEditing ? "Editar Usuario" : "Agregar Usuario"}
+                title={isEditing ? "Editar Profesor" : "Agregar Profesor"}
                 visible={isModalVisible}
                 onCancel={handleCancel}
                 footer={null}
@@ -234,15 +229,38 @@ const UsersTable = () => {
                     onFinish={isEditing ? handleEditUser : handleAddUser}
                 >
                     <Form.Item
-                        name="username"
+                        name="nombre"
+                        label="Nombre"
                         rules={[
-                            { required: true, message: 'Por favor ingrese el nombre de usuario' },
+                            { required: true, message: 'Por favor ingrese el nombre del profesor' },
                             { pattern: /^[a-zA-Z\s]+$/, message: 'El nombre solo debe contener letras y espacios' }
-                        ]}                    >
-                        <Input placeholder="Nombre de usuario" />
+                        ]}
+                    >
+                        <Input placeholder="Nombre del profesor" />
                     </Form.Item>
                     <Form.Item
-                        name="email"
+                        name="apellidos"
+                        label="Apellidos"
+                        rules={[
+                            { required: true, message: 'Por favor ingrese los apellidos del profesor' },
+                            { pattern: /^[a-zA-Z\s]+$/, message: 'Los apellidos solo deben contener letras y espacios' }
+                        ]}
+                    >
+                        <Input placeholder="Apellidos del profesor" />
+                    </Form.Item>
+                    <Form.Item
+                        name="numeroEmpleado"
+                        label="Numero de Empleado"
+                        rules={[
+                            { required: true, message: 'Por favor ingrese el número de empleado' },
+                            { pattern: /^\d{10}$/, message: 'El número de empleado debe ser numérico y de 10 dígitos' },
+                        ]}
+                    >
+                        <Input placeholder="Numero de empleado" />
+                    </Form.Item>
+                    <Form.Item
+                        name="correo"
+                        label="Correo"
                         rules={[
                             { required: true, message: 'Por favor ingrese el correo electrónico' },
                             { type: 'email', message: 'Por favor ingrese un correo electrónico válido' },
@@ -257,40 +275,35 @@ const UsersTable = () => {
                             }),
                         ]}
                     >
-                        <Input
-                            type="email"
-                            placeholder="Correo electrónico"
-                            disabled={!isEmailUnique && isEditing}
+                        <Input placeholder="Correo electrónico" />
+                    </Form.Item>
+                    <Form.Item
+                        name="fechaNacimiento"
+                        label="Fecha de Nacimiento"
+                        rules={[
+                            { required: true, message: 'Por favor selecciona la fecha de nacimiento' },
+                            { validator: validateFechaNacimiento },
+                        ]}
+                    >
+                        <DatePicker
+                            format="DD/MM/YYYY"
+                            placeholder="Selecciona la fecha"
                         />
                     </Form.Item>
-                    {!isEditing && (
-                        <>
-                            <Form.Item
-                                name="password"
-                                rules={[{ required: true, message: 'Por favor ingrese la contraseña' }]}
-                            >
-                                <Input.Password placeholder="Contraseña" />
-                            </Form.Item>
-                            <Form.Item
-                                name="roles"
-                                rules={[{ required: true, message: 'Por favor seleccione al menos un rol' }]}
-                            >
-                                <Select
-                                    mode="multiple"
-                                    placeholder="Seleccionar roles"
-                                >
-                                    {roles.map(role => (
-                                        <Select.Option key={role.name} value={role.name}>
-                                            {role.name}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                        </>
-                    )}
+                    <Form.Item
+                        name="telefono"
+                        label="Teléfono"
+                        rules={[
+                            { required: true, message: 'Por favor ingrese el número de teléfono' },
+                            // Puedes añadir reglas de validación adicionales aquí según tus requisitos
+                        ]}
+                    >
+                        <Input placeholder="Número de teléfono" />
+                    </Form.Item>
+
                     <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            {isEditing ? "Guardar Cambios" : "Agregar"}
+                        <Button key="submit" type="primary" htmlType="submit">
+                            {isEditing ? 'Guardar Cambios' : 'Agregar Profesor'}
                         </Button>
                     </Form.Item>
                 </Form>
@@ -299,4 +312,4 @@ const UsersTable = () => {
     );
 };
 
-export default UsersTable;
+export default ProfesoresTable;

@@ -9,7 +9,7 @@ import { LogoutOutlined,
   HomeOutlined,
   BookFilled,
   FireFilled,
-  DropboxCircleFilled
+  UserOutlined
     } from '@ant-design/icons'; // Importamos el icono de logout
 import { useNavigate, Link } from "react-router-dom";
 import logo from '../../../assets/uteq3.png';
@@ -43,8 +43,12 @@ const NotFound = () => {
           navigate('/Usuarios');
         break;
         case '5':
+          navigate('/Profesores');
+        break;
+        case '6':
           <DrawerComponent/>
         break;
+        
       default:
         break;
     }
@@ -65,7 +69,8 @@ const NotFound = () => {
             { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
             { key: '3', icon: <FireFilled />, label: 'Servicios' },
-            { key: '4', icon: <DropboxCircleFilled />, label: 'Usuarios' },
+            { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
+            { key: '5', icon: <UserOutlined />, label: 'Profesores' },
           ]}
         />
         <div style={{ flex: 1 }}></div>
@@ -74,7 +79,7 @@ const NotFound = () => {
           mode="inline"
           onClick={({ key }) => handleMenuClick(key)}
           items={[
-            { key: '5', icon: <DrawerComponent/>, label: `${user.username}` },
+            { key: '6', icon: <DrawerComponent/>, label: `${user.username}` },
           ]}
         />
         <div className="spacer" />
@@ -106,11 +111,13 @@ const NotFound = () => {
             <h1>Desarrollo</h1>
             <h2>La pagina es inexistente  :c</h2>
             <p>Próximamente</p>
-            <Footer style={{ textAlign: 'center', marginTop:200 }}>
+            <Footer style={{ textAlign: 'center', marginTop:400 }}>
               <div>
-                  <Link to="/" style={{ margin: '0 10px', color:'black' }}>Inicio</Link>
-                  <Link to="/Admisiones" style={{ margin: '0 10px', color:'black' }}>Admisiones</Link>
-                  <Link to="/servicios" style={{ margin: '0 10px', color:'black' }}>Servicios</Link>
+              <Link to="/" style={{ margin: '0 10px', color: 'black' }}>Inicio</Link>
+                            <Link to="/Admisiones" style={{ margin: '0 10px', color: 'black' }}>Admisiones</Link>
+                            <Link to="/servicios" style={{ margin: '0 10px', color: 'black' }}>Servicios</Link>
+                            <Link to="/Usuarios" style={{ margin: '0 10px', color: 'black' }}>Usuarios</Link>
+                            <Link to="/Profesores" style={{ margin: '0 10px', color: 'black' }}>Profesores</Link>
               </div>
               <div style={{ marginTop: '20px' }}>
                   Uteq 2.0 ©2024 Created by TeamAura
