@@ -5,7 +5,7 @@ import usersService from '../../../services/profesorService';  // Servicio para 
 
 const { Option } = Select;
 
-const NewOfertaForm = forwardRef(({ visible, onCreate, onCancel, existingNames }, ref) => {
+const NewOfertaForm = forwardRef(({ visible, onCreate, onEdit, onCancel, editing, oferta, existingNames }, ref) => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [profesores, setProfesores] = useState([]);
@@ -16,7 +16,14 @@ const NewOfertaForm = forwardRef(({ visible, onCreate, onCancel, existingNames }
 
     useEffect(() => {
         fetchProfesores();
-    }, []);
+        if (editing && oferta) {
+            form.setFieldsValue({
+                nombre: oferta.nombre,
+                activo: oferta.activo,
+                profesores: oferta.profesores,
+            });
+        }
+    }, [editing, oferta]);
 
     const fetchProfesores = async () => {
         try {
@@ -24,7 +31,7 @@ const NewOfertaForm = forwardRef(({ visible, onCreate, onCancel, existingNames }
             setProfesores(response);
         } catch (error) {
             console.error('Error al obtener los profesores:', error);
-            notification.error({ message: 'Error al obtener los profesores', placement: 'bottomRight' });
+            notification.error({ message: 'Error al obtener los profesores' });
         }
     };
 
@@ -32,41 +39,49 @@ const NewOfertaForm = forwardRef(({ visible, onCreate, onCancel, existingNames }
         try {
             setLoading(true);
             const token = localStorage.getItem('token');
-    
             const values = await form.validateFields();
-            const oferta = {
+            const newOferta = {
                 nombre: values.nombre,
                 activo: values.activo,
-                profesores: values.profesores,  // Asegúrate de que los profesores seleccionados se asignan aquí
+                profesores: values.profesores, 
             };
-    
-            if (existingNames.includes(oferta.nombre)) {
-                notification.error({ message: 'El nombre ya existe', placement: 'bottomRight' });
+
+            if (existingNames.includes(newOferta.nombre) && (!editing || (editing && newOferta.nombre !== oferta.nombre))) {
+                notification.error({ message: 'El nombre ya existe' });
                 setLoading(false);
                 return;
             }
-    
-            await ofertaEducativaService.addOfertaEducativa(token, oferta); // Asegúrate de que esto envía los profesores correctamente
-            notification.success({ message: 'Oferta educativa creada con éxito', placement: 'bottomRight' });
+
+            if (editing) {
+                await ofertaEducativaService.updateOfertaEducativa(oferta._id, newOferta, token);
+                onEdit();
+            } else {
+                await ofertaEducativaService.addOfertaEducativa(token, newOferta);
+                notification.success({
+                    message: 'Oferta Educativa Agregada',
+                    description: 'Oferta Educativa agregada correctamente.',
+                });
+                onCreate();
+            }
+
             form.resetFields();
-            onCreate();
             onCancel();
         } catch (error) {
-            console.error('Error al crear oferta educativa:', error);
-            notification.error({ message: 'Error al crear oferta educativa', placement: 'bottomRight' });
+            console.error('Error al manejar la oferta educativa:', error);
+            notification.error({ message: 'Error al manejar la oferta educativa' });
         } finally {
             setLoading(false);
         }
     };
-    
+
     const handleCancel = () => {
-        form.resetFields(); // Restablecer los campos del formulario cuando se cancela
+        form.resetFields(); 
         onCancel();
     };
 
     return (
         <Modal
-            title="Agregar Nueva Oferta Educativa"
+            title={editing ? "Editar Oferta Educativa" : "Agregar Nueva Oferta Educativa"}
             visible={visible}
             onCancel={handleCancel}
             footer={null}
@@ -111,7 +126,7 @@ const NewOfertaForm = forwardRef(({ visible, onCreate, onCancel, existingNames }
                 </Form.Item>
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <Button type="primary" htmlType="submit" loading={loading} style={{ width: '140px', marginRight: '16px' }}>
-                        Crear Oferta
+                        {editing ? 'Guardar Cambios' : 'Crear Oferta'}
                     </Button>
                     <Button onClick={handleCancel} style={{ width: '140px' }}>
                         Cancelar
