@@ -60,7 +60,7 @@ const OfertasEducativasTable = () => {
 
     const deleteOferta = async (id) => {
         try {
-            await ofertaEducativaService.deleteOferta(id, token);
+            await ofertaEducativaService.deleteOfertaEducativa(id, token);
             fetchOfertas();
             showDeleteNotification();
         } catch (error) {
