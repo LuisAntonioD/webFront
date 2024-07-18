@@ -4,14 +4,14 @@ import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined, Boo
 import { useNavigate, Link } from "react-router-dom";
 import logo from '../../../assets/uteq3.png';
 import DrawerComponent from '../../Drawer';
-import ProfesoresTable from '../../Profesores/ProfesoresTabla/ProfesoresTable'; // Ajusta la importación según la estructura de tu proyecto
+import ProfesoresTable from '../../OfertasEducativas/OfertasTabla/OfertasEducativasTable'; // Ajusta la importación según la estructura de tu proyecto
 // import NewProfesorForm from '../../../components/Profesores/ProfesoresTabla/Profesores/newProfesor'; // Importa el formulario NewProfesorForm
 import { useAuth } from '../../../hooks/useAuth'; // Asegúrate de importar useAuth si lo necesitas
 //import { profesoresService } from '../../../services/profesorService'; // Asegúrate de importar profesoresService si lo necesitas
 
 const { Header, Sider, Content, Footer } = Layout;
 
-const ProfesoresPage = () => {
+const OfertaEducativaPage = () => {
     const { user, logout } = useAuth();
     const [collapsed, setCollapsed] = useState(false); // Define collapsed como estado local
     const { colorBgContainer } = theme.useToken().token;
@@ -25,36 +25,36 @@ const ProfesoresPage = () => {
     const handleMenuClick = (key) => {
         switch (key) {
             case '1':
-              navigate('/');
-              break;
+                navigate('/');
+                break;
             case '2':
-              navigate('/Admisiones');
-              break;
+                navigate('/Admisiones');
+                break;
             case '3':
-              navigate('/servicios');
-              break;
-              case '4':
+                navigate('/servicios');
+                break;
+            case '4':
                 navigate('/Usuarios');
                 break;
-                case '5':
-          navigate('/Profesores');
-        break;
-        case '6':
-            navigate('/OfertaEducativa');
-          break;
-        case '7':
-          <DrawerComponent/>
-        break;
+            case '5':
+                navigate('/Profesores');
+                break;
+            case '6':
+                navigate('/OfertaEducativa');
+                break;
+            case '7':
+                <DrawerComponent />
+                break;
             default:
-              break;
-          }
+                break;
+        }
     };
 
     const handleAddProfesor = () => {
         setModalVisible(true); // Abre el modal para agregar un nuevo profesor
     };
 
-    const handleCancelAddProfesor = () => {
+    const handleCancelAddOfertasEducativas = () => {
         setModalVisible(false); // Cierra el modal para agregar un nuevo profesor
     };
 
@@ -76,6 +76,7 @@ const ProfesoresPage = () => {
                             { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
                             { key: '5', icon: <UserOutlined />, label: 'Profesores' }, 
                             { key: '6', icon: <UserOutlined />, label: 'OfertaEducativa' }, 
+
                         ]}
                     />
                     <div style={{ flex: 1 }}></div>
@@ -130,8 +131,6 @@ const ProfesoresPage = () => {
                             <Link to="/Usuarios" style={{ margin: '0 10px', color: 'black' }}>Usuarios</Link>
                             <Link to="/Profesores" style={{ margin: '0 10px', color: 'black' }}>Profesores</Link>
 
-                            <Link to="/OfertaEducativa" style={{ margin: '0 10px', color: 'black' }}>Oferta Educativa</Link>
-
                         </div>
                         <div style={{ marginTop: '20px' }}>
                             Uteq 2.0 ©2024 Created by TeamAura
@@ -143,4 +142,4 @@ const ProfesoresPage = () => {
     );
 };
 
-export default ProfesoresPage;
+export default OfertaEducativaPage;

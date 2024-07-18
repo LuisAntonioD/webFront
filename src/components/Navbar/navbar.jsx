@@ -14,7 +14,7 @@ const Navbar = () => {
         setSelectedKey('');
     };
 
-    const tabNames = ["Inicio", "Admisiones", "Servicios", "Contactos", "Profesores"];
+    const tabNames = ["Inicio", "Admisiones", "Servicios", "Contactos", "Profesores", "Oferta Educativa"];
 
     const items = tabNames.map((name, index) => ({
         key: index + 1,
@@ -22,6 +22,7 @@ const Navbar = () => {
         url: index === 0 ? "/" : `/${name.toLowerCase()}`,
     }));
 
+    console.log(items);
     return (
         <>
             <Header className='header-content'>
@@ -44,9 +45,6 @@ const Navbar = () => {
                             <Link to={item.url} className='menu-link'>{item.label}</Link>
                         </Menu.Item>
                     ))}
-                    <Menu.Item key="6" onClick={() => setSelectedKey('6')}>
-                        <Link to="/profesores" className='menu-link'>Profesores</Link>
-                    </Menu.Item>
                 </Menu>
                 <DrawerComponent />
             </Header>
