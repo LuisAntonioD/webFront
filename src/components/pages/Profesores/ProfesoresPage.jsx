@@ -73,11 +73,9 @@ const ProfesoresPage = () => {
                         items={[
                             { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
                             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
-                            { key: '3', icon: <FireFilled />, label: 'Servicios' },
                             { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
                             { key: '5', icon: <UserOutlined />, label: 'Profesores' }, 
                             { key: '6', icon: <UserOutlined />, label: 'OfertaEducativa' }, 
-
                         ]}
                     />
                     <div style={{ flex: 1 }}></div>
