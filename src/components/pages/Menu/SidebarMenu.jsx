@@ -32,7 +32,7 @@ const SidebarMenu = ({ user, collapsed, setCollapsed, handleMenuClick, logout })
                 mode="inline"
                 onClick={({ key }) => handleMenuClick(key)}
                 items={[
-                    { key: '7', icon: <DrawerComponent />, label: `${user.username}` },
+                    { key: '7', icon: <DrawerComponent />, label: `${user.username}`},
                 ]}
             />
             <div className="spacer" />
