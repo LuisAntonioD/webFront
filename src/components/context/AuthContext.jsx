@@ -29,8 +29,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-
-
     const login = async (token) => {
         try {
             console.log('Obteniendo', token);
