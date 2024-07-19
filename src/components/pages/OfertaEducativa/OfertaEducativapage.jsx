@@ -79,13 +79,12 @@ const OfertaEducativaPage = () => {
 
                         ]}
                     />
-                    <div style={{ flex: 1 }}></div>
                     <Menu
                         theme="dark"
                         mode="inline"
                         onClick={({ key }) => handleMenuClick(key)}
                         items={[
-                            { key: '6', icon: <DrawerComponent />, label: `${user.username}` },
+                            { key: '7', icon: <DrawerComponent />, label: `${user.username}` },
                         ]}
                     />
                     <div className="spacer" />

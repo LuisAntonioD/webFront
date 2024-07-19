@@ -25,29 +25,29 @@ const ProfesoresPage = () => {
     const handleMenuClick = (key) => {
         switch (key) {
             case '1':
-              navigate('/');
-              break;
+                navigate('/');
+                break;
             case '2':
-              navigate('/Admisiones');
-              break;
+                navigate('/Admisiones');
+                break;
             case '3':
-              navigate('/servicios');
-              break;
-              case '4':
+                navigate('/servicios');
+                break;
+            case '4':
                 navigate('/Usuarios');
                 break;
-                case '5':
-          navigate('/Profesores');
-        break;
-        case '6':
-            navigate('/OfertaEducativa');
-          break;
-        case '7':
-          <DrawerComponent/>
-        break;
+            case '5':
+                navigate('/Profesores');
+                break;
+            case '6':
+                navigate('/OfertaEducativa');
+                break;
+            case '7':
+                <DrawerComponent />
+                break;
             default:
-              break;
-          }
+                break;
+        }
     };
 
     const handleAddProfesor = () => {
@@ -74,8 +74,8 @@ const ProfesoresPage = () => {
                             { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
                             { key: '2', icon: <BookFilled />, label: 'Admisiones' },
                             { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
-                            { key: '5', icon: <UserOutlined />, label: 'Profesores' }, 
-                            { key: '6', icon: <UserOutlined />, label: 'OfertaEducativa' }, 
+                            { key: '5', icon: <UserOutlined />, label: 'Profesores' },
+                            { key: '6', icon: <UserOutlined />, label: 'OfertaEducativa' },
                         ]}
                     />
                     <div style={{ flex: 1 }}></div>
@@ -84,7 +84,7 @@ const ProfesoresPage = () => {
                         mode="inline"
                         onClick={({ key }) => handleMenuClick(key)}
                         items={[
-                            { key: '6', icon: <DrawerComponent />, label: `${user.username}` },
+                            { key: '7', icon: <DrawerComponent />, label: `${user.username}` },
                         ]}
                     />
                     <div className="spacer" />
