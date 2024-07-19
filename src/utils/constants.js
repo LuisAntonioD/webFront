@@ -1,5 +1,5 @@
 export const ENV = {
-    API_URL: "https://lizard-server.vercel.app",
+    API_URL: "http://localhost:3000",
     //http://localhost:3000
     //https://lizard-server.vercel.app
         ENDPOINTS:{
@@ -11,7 +11,8 @@ export const ENV = {
             UPDATE: 'api/admision',
             ROLES: 'api/roles',
             PROFESORES:'api/profesores',
-            OFERTAEDUCATIVA: 'api/oferta'
+            OFERTAEDUCATIVA: 'api/oferta',
+            OFERTAS_RELACIONADAS: 'api/admision/:id/ofertas',
         },
         STORAGE: {
             TOKEN: "token",
