@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
+
 export const useMenuConfig = () => {
     const navigate = useNavigate();
 
