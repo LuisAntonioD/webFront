@@ -32,6 +32,35 @@
     border: 1px solid var(--border-color);
     margin-bottom: 20px; /* Añade un margen inferior para separar de otros elementos */
 }
+/* ProductsTable.css */
+
+/* Asegúrate de que el modal tenga suficiente ancho */
+.ant-modal-body {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* Asegúrate de que la tabla ocupe el 100% del ancho del modal */
+.ant-table {
+    width: 100%;
+}
+
+/* Asegúrate de que la tabla se desplace horizontalmente cuando sea necesario */
+.ant-table-container {
+    overflow-x: auto;
+}
+/* ProductsTable.css */
+
+.consultar-button {
+    background-color: #4d4912; /* Color de fondo del botón */
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+}
+
+.consultar-button:hover {
+    background-color: #45a049; /* Color de fondo cuando el botón es hover */
+}
+
 
 .formato-tabla {
     width: 100%;

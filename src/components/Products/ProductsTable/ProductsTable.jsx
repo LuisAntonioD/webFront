@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Modal, Button, Input, Switch, notification } from 'antd';
-import { RiDeleteBin6Line, RiEdit2Line, RiAddLine } from 'react-icons/ri';
+import { Modal, Button, Input, Switch, notification, Table } from 'antd';
+import { RiDeleteBin6Line, RiEdit2Line, RiAddLine, RiEyeLine } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import './ProductsTable.css';
 import authService from '../../../services/admisiones';
+import ofertaEducativaService from '../../../services/OfertaEducativaService'; // Importa el servicio para obtener ofertas educativas
 import { AuthContext } from '../../context/AuthContext';
 
 const ProductsTable = () => {
@@ -15,8 +16,10 @@ const ProductsTable = () => {
     const [currentProduct, setCurrentProduct] = useState(null);
     const [newName, setNewName] = useState('');
     const [newActivo, setNewActivo] = useState(false);
-    const [registroError, setRegisterError] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [relatedOffers, setRelatedOffers] = useState([]); // Estado para las ofertas educativas
+    const [isOffersModalVisible, setIsOffersModalVisible] = useState(false); // Estado para el modal de ofertas educativas
+    const [noOffersMessage, setNoOffersMessage] = useState(''); // Estado para el mensaje de no ofertas
     const { user, token } = useContext(AuthContext);
 
     useEffect(() => {
@@ -33,6 +36,25 @@ const ProductsTable = () => {
             }
         } catch (err) {
             setError('Error al obtener los datos de la API');
+            console.error(err);
+        }
+    };
+
+    const fetchRelatedOffers = async (admisionId) => {
+        try {
+            const response = await ofertaEducativaService.getRelatedOffers(admisionId);
+            if (Array.isArray(response.data)) {
+                setRelatedOffers(response.data);
+                if (response.data.length === 0) {
+                    setNoOffersMessage('No hay ofertas educativas en esta admisión');
+                } else {
+                    setNoOffersMessage('');
+                }
+            } else {
+                setError('La respuesta de la API no es un arreglo');
+            }
+        } catch (err) {
+            setError('Error al obtener las ofertas educativas');
             console.error(err);
         }
     };
@@ -81,7 +103,6 @@ const ProductsTable = () => {
         } else {
             console.error('Error:', error.message);
         }
-        setRegisterError(true);
     };
 
     const showDeleteNotification = () => {
@@ -148,6 +169,16 @@ const ProductsTable = () => {
         });
     };
 
+    const showOffersModal = async (admisionId) => {
+        await fetchRelatedOffers(admisionId);
+        setIsOffersModalVisible(true);
+    };
+
+    const handleOffersModalCancel = () => {
+        setIsOffersModalVisible(false);
+        setNoOffersMessage(''); // Limpia el mensaje al cerrar el modal
+    };
+
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
@@ -156,6 +187,30 @@ const ProductsTable = () => {
     if (error) {
         return <div>{error}</div>;
     }
+
+    const offersColumns = [
+        { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
+        { title: 'Estado', dataIndex: 'activo', key: 'activo', render: (activo) => (activo ? 'Activo' : 'Inactivo') },
+        { title: 'Fecha de Creación', dataIndex: 'createdAt', key: 'createdAt', render: (createdAt) => formatDate(createdAt) },
+        { title: 'Fecha de Actualización', dataIndex: 'updatedAt', key: 'updatedAt', render: (updatedAt) => formatDate(updatedAt) },
+    ];
+
+    const columns = [
+        { title: 'ID', dataIndex: '_id', key: '_id' },
+        { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
+        { title: 'Estado', dataIndex: 'activo', key: 'activo', render: (activo) => (activo ? 'Activo' : 'Inactivo') },
+        {
+            title: 'Acciones',
+            key: 'acciones',
+            render: (_, record) => (
+                <div className="actions">
+                    <Button icon={<RiEyeLine />} onClick={() => showOffersModal(record._id)} />
+                    <Button icon={<RiEdit2Line />} onClick={() => showModal('edit', record)} />
+                    <Button icon={<RiDeleteBin6Line />} onClick={() => confirmDeleteAdmision(record._id)} />
+                </div>
+            ),
+        },
+    ];
 
     return (
         <div className="products-table-page">
@@ -206,6 +261,13 @@ const ProductsTable = () => {
                                             >
                                                 Editar
                                             </Button>
+                                            <Button
+                                                className="action-button consultar-button"
+                                                onClick={() => showOffersModal(product._id)}
+                                                icon={<RiEyeLine />}
+                                            >
+                                                Consultar 
+                                            </Button>
                                         </>
                                     )}
                                 </td>
@@ -219,23 +281,43 @@ const ProductsTable = () => {
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
-                okText="Guardar"
-                cancelText="Cancelar"
+                confirmLoading={loading}
             >
                 <Input
+                    placeholder="Nombre"
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
-                    placeholder="Nombre de la admisión"
-                    style={{ marginBottom: 16 }}
                 />
-                <br />
-                <label style={{ marginRight: 8 }}>Activo:</label>
-                <Switch checked={newActivo} onChange={(checked) => setNewActivo(checked)} />
+                <Switch
+                    checkedChildren="Activo"
+                    unCheckedChildren="Inactivo"
+                    checked={newActivo}
+                    onChange={(checked) => setNewActivo(checked)}
+                />
+            </Modal>
+            <Modal
+                title="Ofertas Educativas Relacionadas"
+                visible={isOffersModalVisible}
+                onCancel={handleOffersModalCancel}
+                footer={[
+                    <Button key="close" onClick={handleOffersModalCancel}>
+                        Cerrar
+                    </Button>,
+                ]}
+            >
+                {noOffersMessage ? (
+                    <p>{noOffersMessage}</p>
+                ) : (
+                    <Table
+                        columns={offersColumns}
+                        dataSource={relatedOffers}
+                        rowKey="_id"
+                        pagination={false}
+                    />
+                )}
             </Modal>
         </div>
     );
 };
 
 export default ProductsTable;
-
-
