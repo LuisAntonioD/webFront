@@ -158,8 +158,6 @@ const ProductsTable = () => {
         return <div>{error}</div>;
     }
 
-
-
     const columns = [
         { title: "ID", dataKey: "_id" },
         { title: "Nombre", dataKey: "nombre" },

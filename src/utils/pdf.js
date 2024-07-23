@@ -13,6 +13,9 @@ export const generatePDF = (title, columns, data, userlogeado) => {
     const formattedDate = formatDate(currentDate);
 
     doc.text(title, 14, 20);
+ 
+   // Este solo funciona con Profesores
+   //const rows = data.map(row => columns.map(col => row[col.dataIndex]));
 
     doc.autoTable({
         head: [columns.map(col => col.title)],

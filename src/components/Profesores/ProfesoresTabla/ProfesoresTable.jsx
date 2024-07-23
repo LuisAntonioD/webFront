@@ -6,6 +6,7 @@ import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import profesorService from '../../../services/profesorService';
 import { AuthContext } from '../../context/AuthContext';
+import { generatePDF } from '../../../utils/pdf';
 
 const ProfesoresTable = () => {
     const [users, setUsers] = useState([]);
@@ -166,6 +167,23 @@ const ProfesoresTable = () => {
         return <div>{error}</div>;
     }
 
+    const columns = [
+        { title: 'Nombre', dataIndex: 'nombre' },
+        { title: 'Apellidos', dataIndex: 'apellidos' },
+        { title: 'Numero Empleado', dataIndex: 'numeroEmpleado' },
+        { title: 'Correo', dataIndex: 'correo' },
+        { title: 'Fecha de Nacimiento', dataIndex: 'fechaNacimiento', render: formatDate },
+    ];
+
+    const data2 = users.map(prof => ({
+        nombre: prof.nombre,
+        apellidos: prof.apellidos,
+        numeroEmpleado: prof.numeroEmpleado,
+        correo: prof.correo,
+        fechaNacimiento: formatDate(prof.fechaNacimiento),
+    }));
+
+
     return (
         <div className="users-table-page">
             <div className="buttons-container">
@@ -177,6 +195,14 @@ const ProfesoresTable = () => {
                 >
                     Agregar Profesor
                 </Button>
+                <Button
+                type="secondary"
+                icon={<RiAddLine />}
+                onClick={() => generatePDF('Reporte de Profesores', columns, data2, user)}
+                
+            >
+                Generar Reporte
+            </Button>
             </div>
             <div className="table-container table-wrapper">
                 <table className="formato-tabla">
