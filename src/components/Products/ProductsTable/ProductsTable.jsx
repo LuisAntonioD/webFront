@@ -6,6 +6,7 @@ import { ENV } from '../../../utils/constants';
 import './ProductsTable.css';
 import authService from '../../../services/admisiones';
 import { AuthContext } from '../../context/AuthContext';
+import { generatePDF } from '../../../utils/pdf';
 
 const ProductsTable = () => {
     const [products, setProducts] = useState([]);
@@ -157,6 +158,23 @@ const ProductsTable = () => {
         return <div>{error}</div>;
     }
 
+
+
+    const columns = [
+        { title: "ID", dataKey: "_id" },
+        { title: "Nombre", dataKey: "nombre" },
+        { title: "Fecha de creación", dataKey: "createdAt" },
+        { title: "Activo", dataKey: "activo" },
+    ];
+
+    const data = products.map(product => ({
+        _id: product._id,
+        nombre: product.nombre,
+        createdAt: formatDate(product.createdAt),
+        activo: product.activo ? 'Activo' : 'Inactivo',
+    }));
+
+
     return (
         <div className="products-table-page">
             {user && (
@@ -169,6 +187,13 @@ const ProductsTable = () => {
                     >
                         Agregar Admisión
                     </Button>
+                    <Button
+                type="secondary"
+                icon={<RiAddLine />}
+                onClick={() => generatePDF('Reporte de Admisiones', columns, data, user)}
+            >
+                Generar Reporte
+            </Button>
                 </div>
             )}
             <div className="table-container table-wrapper">

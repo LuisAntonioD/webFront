@@ -15,83 +15,34 @@
   import DrawerComponent from '../../Drawer';
   import Carrousel from '../Carousel/Carusel';
 
-  const { Header, Sider, Content, Footer } = Layout;
+import SidebarMenu from '../Menu/SidebarMenu';
+import { useMenuConfig } from '../Menu/HandleMenu';
+import FooterNav  from '../Menu/Footer.jsx';
+
+  const { Header,Content } = Layout;
 
   const Home = () => {
       const { user, logout } = useAuth();
       const [collapsed, setCollapsed] = useState(false);
     const { colorBgContainer, borderRadiusLG } = theme.useToken().token;
-    const navigate = useNavigate();
+    const handleMenuClick = useMenuConfig();
 
-    const handleLogoClick = () => {
-      setSelectedKey('');
-    };
-
-    const handleMenuClick = (key) => {
-      switch (key) {
-        case '1':
-          navigate('/');
-          break;
-        case '2':
-          navigate('/Admisiones');
-          break;
-        case '3':
-          navigate('/servicios');
-          break;
-          case '4':
-            navigate('/Usuarios');
-          break;
-          case '5':
-            navigate('/Profesores');
-          break;
-          case '6':
-            <DrawerComponent/>
-          break;
-        default:
-          break;
-      }
-    };
+  
 
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-          <Link to="/" className="logo" onClick={handleLogoClick}>
-            <img src={logo} alt="logo" />
-          </Link>
-          <Menu
-            theme="dark"
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            onClick={({ key }) => handleMenuClick(key)}
-            items={[
-              { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
-              { key: '2', icon: <BookFilled />, label: 'Admisiones' },
-              { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
-              { key: '5', icon: <UserOutlined />, label: 'Profesores' }, 
-              { key: '6', icon: <UserOutlined />, label: 'OfertaEducativa' }, 
-
-          ]}
-          />
-          <div style={{ flex: 1 }}></div>
-          <Menu
-            theme="dark"
-            mode="inline"
-            onClick={({ key }) => handleMenuClick(key)}
-            items={[
-              { key: '6', icon: <DrawerComponent/>, label: `${user.username}` },
-            ]}
-          />
-          <div className="spacer" />
-          <Button
-            className="logout-button"
-            onClick={() => logout()}
-            icon={<LogoutOutlined />}
-            style={{ width: '100%', textAlign: 'center', paddingLeft: '24px', paddingTop: '12px', paddingBottom: '12px' }}
-          >
-            Logout
-          </Button>
-        </Sider>
-        <Layout>
+            {user && (
+                <>
+                    <SidebarMenu 
+                        user={user} 
+                        collapsed={collapsed} 
+                        setCollapsed={setCollapsed} 
+                        handleMenuClick={handleMenuClick} 
+                        logout={logout} 
+                    />
+                </>
+            )}
+            <Layout>
           <Header style={{ padding: 0, background: colorBgContainer }}>
             <Button 
               type="text"
@@ -114,18 +65,7 @@
                 <Carrousel />
               </div>
             </div>
-            <Footer style={{ textAlign: 'center', marginTop:85  }}>
-              <div>
-              <Link to="/" style={{ margin: '0 10px', color: 'black' }}>Inicio</Link>
-                              <Link to="/Admisiones" style={{ margin: '0 10px', color: 'black' }}>Admisiones</Link>
-                              <Link to="/servicios" style={{ margin: '0 10px', color: 'black' }}>Servicios</Link>
-                              <Link to="/Usuarios" style={{ margin: '0 10px', color: 'black' }}>Usuarios</Link>
-                              <Link to="/Profesores" style={{ margin: '0 10px', color: 'black' }}>Profesores</Link>
-              </div>
-              <div style={{ marginTop: '16px' }}>
-                  Uteq 2.0 ©2024 Created by TeamAura
-              </div>
-          </Footer>
+            <FooterNav/>
           </Content>
           
         </Layout>
