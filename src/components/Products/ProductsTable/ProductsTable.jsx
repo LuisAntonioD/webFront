@@ -5,7 +5,7 @@ import { RiDeleteBin6Line, RiEdit2Line, RiAddLine, RiEyeLine } from 'react-icons
 import { ENV } from '../../../utils/constants';
 import './ProductsTable.css';
 import authService from '../../../services/admisiones';
-import ofertaEducativaService from '../../../services/OfertaEducativaService'; // Importa el servicio para obtener ofertas educativas
+import ofertaEducativaService from '../../../services/OfertaEducativaService';
 import { AuthContext } from '../../context/AuthContext';
 import { generatePDF } from '../../../utils/pdf';
 
@@ -18,9 +18,9 @@ const ProductsTable = () => {
     const [newName, setNewName] = useState('');
     const [newActivo, setNewActivo] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [relatedOffers, setRelatedOffers] = useState([]); // Estado para las ofertas educativas
-    const [isOffersModalVisible, setIsOffersModalVisible] = useState(false); // Estado para el modal de ofertas educativas
-    const [noOffersMessage, setNoOffersMessage] = useState(''); // Estado para el mensaje de no ofertas
+    const [relatedOffers, setRelatedOffers] = useState([]);
+    const [isOffersModalVisible, setIsOffersModalVisible] = useState(false);
+    const [noOffersMessage, setNoOffersMessage] = useState('');
     const { user, token } = useContext(AuthContext);
 
     useEffect(() => {
@@ -46,11 +46,7 @@ const ProductsTable = () => {
             const response = await ofertaEducativaService.getRelatedOffers(admisionId);
             if (Array.isArray(response.data)) {
                 setRelatedOffers(response.data);
-                if (response.data.length === 0) {
-                    setNoOffersMessage('No hay ofertas educativas en esta admisión');
-                } else {
-                    setNoOffersMessage('');
-                }
+                setNoOffersMessage(response.data.length === 0 ? 'No hay ofertas educativas en esta admisión' : '');
             } else {
                 setError('La respuesta de la API no es un arreglo');
             }
@@ -60,28 +56,69 @@ const ProductsTable = () => {
         }
     };
 
-    const addAdmision = async (values) => {
+    const addAdmision = async () => {
+        if (!newName.trim()) {
+            notification.error({
+                message: 'Error',
+                description: 'El nombre es requerido.',
+            });
+            return;
+        }
+
+        if (products.some(product => product.nombre === newName.trim())) {
+            notification.error({
+                message: 'Error',
+                description: 'Ya existe una admisión con este nombre.',
+            });
+            return;
+        }
+
         setLoading(true);
         try {
-            await authService.addProduct(values.newName, values.newActivo, token);
+            await authService.addProduct(newName.trim(), newActivo, token);
             fetchProducts();
+            notification.success({
+                message: 'Admisión Agregada',
+                description: 'La admisión ha sido agregada correctamente.',
+            });
         } catch (error) {
             handleApiError(error);
         } finally {
             setLoading(false);
+            handleCancel();
         }
     };
 
-    const editAdmision = async (id, values) => {
+    const editAdmision = async () => {
+        if (!newName.trim()) {
+            notification.error({
+                message: 'Error',
+                description: 'El nombre es requerido.',
+            });
+            return;
+        }
+
+        if (products.some(product => product.nombre === newName.trim() && product._id !== currentProduct._id)) {
+            notification.error({
+                message: 'Error',
+                description: 'Ya existe una admisión con este nombre.',
+            });
+            return;
+        }
+
         setLoading(true);
         try {
-            await authService.editProduct(id, values.newName, values.newActivo, token);
+            await authService.editProduct(currentProduct._id, newName.trim(), newActivo, token);
             fetchProducts();
-            showEditNotification();
+            notification.success({
+                message: 'Admisión Editada',
+                description: 'Los cambios han sido guardados correctamente para la admisión.',
+            });
         } catch (error) {
             handleApiError(error);
         } finally {
             setLoading(false);
+            handleCancel();
         }
     };
 
@@ -90,7 +127,10 @@ const ProductsTable = () => {
         try {
             await authService.deleteProduct(id, token);
             fetchProducts();
-            showDeleteNotification();
+            notification.success({
+                message: 'Admisión Eliminada',
+                description: 'La admisión ha sido eliminada correctamente.',
+            });
         } catch (error) {
             handleApiError(error);
         } finally {
@@ -99,24 +139,9 @@ const ProductsTable = () => {
     };
 
     const handleApiError = (error) => {
-        if (error.response) {
-            console.error('Error:', error.response.data);
-        } else {
-            console.error('Error:', error.message);
-        }
-    };
-
-    const showDeleteNotification = () => {
-        notification.success({
-            message: 'Admisión Eliminada',
-            description: 'La admisión ha sido eliminada correctamente.',
-        });
-    };
-
-    const showEditNotification = () => {
-        notification.success({
-            message: 'Admisión Editada',
-            description: 'Los cambios han sido guardados correctamente para la admisión.',
+        notification.error({
+            message: 'Error',
+            description: error.response ? error.response.data.message : error.message,
         });
     };
 
@@ -135,20 +160,11 @@ const ProductsTable = () => {
     };
 
     const handleOk = () => {
-        const values = {
-            newName,
-            newActivo,
-        };
-
         if (modalMode === 'add') {
-            addAdmision(values);
+            addAdmision();
         } else if (modalMode === 'edit' && currentProduct) {
-            editAdmision(currentProduct._id, values);
+            editAdmision();
         }
-
-        setIsModalVisible(false);
-        setNewName('');
-        setNewActivo(false);
     };
 
     const handleCancel = () => {
@@ -177,7 +193,7 @@ const ProductsTable = () => {
 
     const handleOffersModalCancel = () => {
         setIsOffersModalVisible(false);
-        setNoOffersMessage(''); // Limpia el mensaje al cerrar el modal
+        setNoOffersMessage('');
     };
 
     const formatDate = (dateString) => {
@@ -231,8 +247,7 @@ const ProductsTable = () => {
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Fecha de creación</th>
-                            <th>Activo</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -241,40 +256,19 @@ const ProductsTable = () => {
                             <tr key={product._id}>
                                 <td>{product._id}</td>
                                 <td>{product.nombre}</td>
-                                <td>{formatDate(product.createdAt)}</td>
                                 <td>{product.activo ? 'Activo' : 'Inactivo'}</td>
                                 <td>
-                                    {user && (
-                                        <>
-                                            <Button
-                                                className="action-button ant-btn-danger"
-                                                onClick={() => confirmDeleteAdmision(product._id)}
-                                                icon={<RiDeleteBin6Line />}
-                                            >
-                                                Eliminar
-                                            </Button>
-                                            <Button
-                                                className="action-button ant-btn-success"
-                                                onClick={() => showModal('edit', product)}
-                                                icon={<RiEdit2Line />}
-                                            >
-                                                Editar
-                                            </Button>
-                                            <Button
-                                                className="action-button consultar-button"
-                                                onClick={() => showOffersModal(product._id)}
-                                                icon={<RiEyeLine />}
-                                            >
-                                                Consultar 
-                                            </Button>
-                                        </>
-                                    )}
+                                    <Button icon={<RiEyeLine />} onClick={() => showOffersModal(product._id)} className="action-button consultar-button"> consultar  </Button>
+                                    <Button icon={<RiEdit2Line />} onClick={() => showModal('edit', product)} className="action-button ant-btn-success"> Editar </Button>
+                                    <Button icon={<RiDeleteBin6Line />} onClick={() => confirmDeleteAdmision(product._id)} className="action-button ant-btn-danger">Eliminar </Button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+
+            {/* Modal for Adding/Editing Admisión */}
             <Modal
                 title={modalMode === 'add' ? 'Agregar Admisión' : 'Editar Admisión'}
                 visible={isModalVisible}
@@ -287,25 +281,24 @@ const ProductsTable = () => {
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
                 />
-                <Switch
-                    checkedChildren="Activo"
-                    unCheckedChildren="Inactivo"
-                    checked={newActivo}
-                    onChange={(checked) => setNewActivo(checked)}
-                />
+                <div className="active-switch">
+                    <Switch
+                        checked={newActivo}
+                        onChange={(checked) => setNewActivo(checked)}
+                    />
+                    <span>{newActivo ? 'Activo' : 'Inactivo'}</span>
+                </div>
             </Modal>
+
+            {/* Modal for Viewing Related Offers */}
             <Modal
                 title="Ofertas Educativas Relacionadas"
                 visible={isOffersModalVisible}
                 onCancel={handleOffersModalCancel}
-                footer={[
-                    <Button key="close" onClick={handleOffersModalCancel}>
-                        Cerrar
-                    </Button>,
-                ]}
+                footer={null}
             >
                 {noOffersMessage ? (
-                    <p>{noOffersMessage}</p>
+                    <div>{noOffersMessage}</div>
                 ) : (
                     <Table
                         columns={offersColumns}
