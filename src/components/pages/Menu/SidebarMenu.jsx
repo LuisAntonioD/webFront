@@ -1,9 +1,10 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React, { useState } from 'react'; // Asegúrate de importar useState
+import { Link } from 'react-router-dom';
 import { Menu, Button, Layout } from 'antd';
 import { LogoutOutlined, HomeOutlined, BookFilled, FireFilled, UserOutlined } from '@ant-design/icons';
 import DrawerComponent from '../../Drawer';
 import logo from '../../../assets/uteq3.png';
+
 const { Sider } = Layout;
 
 const SidebarMenu = ({ user, collapsed, setCollapsed, handleMenuClick, logout }) => {

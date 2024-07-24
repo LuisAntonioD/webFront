@@ -219,6 +219,11 @@ const ProductsTable = () => {
         activo: product.activo ? 'Activo' : 'Inactivo',
     }));
 
+    const offersColumns = [
+        { title: "ID", dataIndex: "_id", key: "_id" },
+        { title: "Nombre", dataIndex: "nombre", key: "nombre" },
+        { title: "Estado", dataIndex: "activo", key: "activo" },
+    ];
 
     return (
         <div className="products-table-page">
@@ -233,12 +238,12 @@ const ProductsTable = () => {
                         Agregar Admisión
                     </Button>
                     <Button
-                type="secondary"
-                icon={<RiAddLine />}
-                onClick={() => generatePDF('Reporte de Admisiones', columns, data, user)}
-            >
-                Generar Reporte
-            </Button>
+                        type="secondary"
+                        icon={<RiAddLine />}
+                        onClick={() => generatePDF('Reporte de Admisiones', columns, data, user)}
+                    >
+                        Generar Reporte
+                    </Button>
                 </div>
             )}
             <div className="table-container table-wrapper">
