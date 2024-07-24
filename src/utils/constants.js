@@ -1,5 +1,5 @@
 export const ENV = {
-    API_URL: "http://localhost:3000",
+    API_URL: "https://lizard-server.vercel.app",
     //http://localhost:3000
     //https://lizard-server.vercel.app
         ENDPOINTS:{
