@@ -20,7 +20,6 @@ const UsersTable = () => {
     const [form] = Form.useForm();
     const [searchText, setSearchText] = useState('');
 
-
     useEffect(() => {
         fetchUsers();
         fetchRoles();
@@ -93,8 +92,6 @@ const UsersTable = () => {
             },
         });
     };
-
-    
 
     const handleAddUser = async (newUser) => {
         try {
@@ -182,6 +179,18 @@ const UsersTable = () => {
             user.email.toLowerCase().includes(searchText.toLowerCase())
     );
 
+    const columns = [
+        { title: "Nombre de Usuario", dataKey: "username" },
+        { title: "Correo Electrónico", dataKey: "email" },
+        { title: "Fecha de Creación", dataKey: "createdAt" }
+    ];
+
+    const data = filteredUsers.map(user => ({
+        username: user.username,
+        email: user.email,
+        createdAt: formatDate(user.createdAt)
+    }));
+
     return (
         <div className="users-table-page">
             <div className="buttons-container">
@@ -196,7 +205,7 @@ const UsersTable = () => {
                 <Button
                 type="secondary"
                 icon={<RiAddLine />}
-                onClick={() => generatePDF(users, user)}
+                onClick={() => generatePDF('Reporte de Usuarios', columns, data, user)}
             >
                 Generar Reporte
             </Button>

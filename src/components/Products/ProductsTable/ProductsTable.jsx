@@ -7,6 +7,7 @@ import './ProductsTable.css';
 import authService from '../../../services/admisiones';
 import ofertaEducativaService from '../../../services/OfertaEducativaService'; // Importa el servicio para obtener ofertas educativas
 import { AuthContext } from '../../context/AuthContext';
+import { generatePDF } from '../../../utils/pdf';
 
 const ProductsTable = () => {
     const [products, setProducts] = useState([]);
@@ -188,29 +189,20 @@ const ProductsTable = () => {
         return <div>{error}</div>;
     }
 
-    const offersColumns = [
-        { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
-        { title: 'Estado', dataIndex: 'activo', key: 'activo', render: (activo) => (activo ? 'Activo' : 'Inactivo') },
-        { title: 'Fecha de Creación', dataIndex: 'createdAt', key: 'createdAt', render: (createdAt) => formatDate(createdAt) },
-        { title: 'Fecha de Actualización', dataIndex: 'updatedAt', key: 'updatedAt', render: (updatedAt) => formatDate(updatedAt) },
+    const columns = [
+        { title: "ID", dataKey: "_id" },
+        { title: "Nombre", dataKey: "nombre" },
+        { title: "Fecha de creación", dataKey: "createdAt" },
+        { title: "Activo", dataKey: "activo" },
     ];
 
-    const columns = [
-        { title: 'ID', dataIndex: '_id', key: '_id' },
-        { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
-        { title: 'Estado', dataIndex: 'activo', key: 'activo', render: (activo) => (activo ? 'Activo' : 'Inactivo') },
-        {
-            title: 'Acciones',
-            key: 'acciones',
-            render: (_, record) => (
-                <div className="actions">
-                    <Button icon={<RiEyeLine />} onClick={() => showOffersModal(record._id)} />
-                    <Button icon={<RiEdit2Line />} onClick={() => showModal('edit', record)} />
-                    <Button icon={<RiDeleteBin6Line />} onClick={() => confirmDeleteAdmision(record._id)} />
-                </div>
-            ),
-        },
-    ];
+    const data = products.map(product => ({
+        _id: product._id,
+        nombre: product.nombre,
+        createdAt: formatDate(product.createdAt),
+        activo: product.activo ? 'Activo' : 'Inactivo',
+    }));
+
 
     return (
         <div className="products-table-page">
@@ -224,6 +216,13 @@ const ProductsTable = () => {
                     >
                         Agregar Admisión
                     </Button>
+                    <Button
+                type="secondary"
+                icon={<RiAddLine />}
+                onClick={() => generatePDF('Reporte de Admisiones', columns, data, user)}
+            >
+                Generar Reporte
+            </Button>
                 </div>
             )}
             <div className="table-container table-wrapper">
