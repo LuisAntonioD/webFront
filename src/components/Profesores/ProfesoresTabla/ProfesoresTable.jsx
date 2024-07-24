@@ -16,6 +16,7 @@ const ProfesoresTable = () => {
     const [isEmailUnique, setIsEmailUnique] = useState(true);
     const { user, token } = useContext(AuthContext);
     const [form] = Form.useForm();
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
         fetchUsers();
@@ -162,6 +163,19 @@ const ProfesoresTable = () => {
         return Promise.resolve();
     };
 
+    const handleSearchChange = (e) => {
+        setSearchText(e.target.value);
+    };
+
+    const filtrarprofesores = users.filter(
+        (user) =>
+            user.nombre.toLowerCase().includes(searchText.toLowerCase()) ||
+            user.apellidos.toLowerCase().includes(searchText.toLowerCase()) ||
+            user.numeroEmpleado.toLowerCase().includes(searchText.toLowerCase()) ||
+            user.correo.toLowerCase().includes(searchText.toLowerCase()) ||
+            formatDate(user.fechaNacimiento).toLowerCase().includes(searchText.toLowerCase())
+    );
+
     if (error) {
         return <div>{error}</div>;
     }
@@ -177,6 +191,12 @@ const ProfesoresTable = () => {
                 >
                     Agregar Profesor
                 </Button>
+                <Input
+                    placeholder="Buscar por Nombre, Apellidos, Número del Empleado, Correo o Fecha de Nacimiento"
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    style={{ marginBottom: 20, width: '600px' }}
+                />
             </div>
             <div className="table-container table-wrapper">
                 <table className="formato-tabla">
@@ -191,7 +211,7 @@ const ProfesoresTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((prof) => (
+                        {filtrarprofesores.map((prof) => (
                             <tr key={prof._id}>
                                 <td>{prof.nombre}</td>
                                 <td>{prof.apellidos}</td>

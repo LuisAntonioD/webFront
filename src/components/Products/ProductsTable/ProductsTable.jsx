@@ -22,6 +22,8 @@ const ProductsTable = () => {
     const [isOffersModalVisible, setIsOffersModalVisible] = useState(false);
     const [noOffersMessage, setNoOffersMessage] = useState('');
     const { user, token } = useContext(AuthContext);
+    const [searchText, setSearchText] = useState('');
+
 
     useEffect(() => {
         fetchProducts();
@@ -31,6 +33,7 @@ const ProductsTable = () => {
         try {
             const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.ADMISION}`);
             if (Array.isArray(response.data)) {
+                const filteredUsers = response.data.filter(u => u._id !== user._id);
                 setProducts(response.data);
             } else {
                 setError('La respuesta de la API no es un arreglo');
@@ -205,6 +208,17 @@ const ProductsTable = () => {
         return <div>{error}</div>;
     }
 
+    const handleSearchChange = (e) => {
+        setSearchText(e.target.value);
+    };
+    
+    const filtraradmisiones = products.filter(
+        (product) =>
+            product.nombre.toLowerCase().includes(searchText.toLowerCase()) ||
+            (product.activo ? 'activo' : 'inactivo').toLowerCase().includes(searchText.toLowerCase())
+    );
+    
+
     const columns = [
         { title: "ID", dataKey: "_id" },
         { title: "Nombre", dataKey: "nombre" },
@@ -212,12 +226,14 @@ const ProductsTable = () => {
         { title: "Activo", dataKey: "activo" },
     ];
 
-    const data = products.map(product => ({
+    const data = filtraradmisiones.map(product => ({
         _id: product._id,
         nombre: product.nombre,
         createdAt: formatDate(product.createdAt),
         activo: product.activo ? 'Activo' : 'Inactivo',
     }));
+
+    
 
     const offersColumns = [
         { title: "ID", dataIndex: "_id", key: "_id" },
@@ -244,6 +260,12 @@ const ProductsTable = () => {
                     >
                         Generar Reporte
                     </Button>
+                    <Input
+                        placeholder="Buscar por Nombre o Estatus"
+                        value={searchText}
+                        onChange={handleSearchChange}
+                        style={{ marginBottom: 20, width: '300px' }}
+                    />
                 </div>
             )}
             <div className="table-container table-wrapper">
@@ -257,7 +279,7 @@ const ProductsTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => (
+                        {filtraradmisiones.map((product) => (
                             <tr key={product._id}>
                                 <td>{product._id}</td>
                                 <td>{product.nombre}</td>
