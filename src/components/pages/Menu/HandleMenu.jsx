@@ -13,16 +13,14 @@ export const useMenuConfig = () => {
             case '2':
                 navigate('/Admisiones');
                 break;
+        
             case '3':
-                navigate('/servicios');
-                break;
-            case '4':
                 navigate('/Usuarios');
                 break;
-            case '5':
+            case '4':
                 navigate('/Profesores');
                 break;
-            case '6':
+            case '5':
                 navigate('/OfertaEducativa');
                 break;
             case '7':

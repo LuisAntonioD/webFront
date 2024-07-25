@@ -1,7 +1,7 @@
-import React, { useState } from 'react'; // Asegúrate de importar useState
+import React, { useState } from 'react'; 
 import { Link } from 'react-router-dom';
 import { Menu, Button, Layout } from 'antd';
-import { LogoutOutlined, HomeOutlined, BookFilled, FireFilled, UserOutlined } from '@ant-design/icons';
+import { LogoutOutlined, HomeOutlined, BookFilled, UserOutlined } from '@ant-design/icons';
 import DrawerComponent from '../../Drawer';
 import logo from '../../../assets/uteq3.png';
 
@@ -27,35 +27,35 @@ const SidebarMenu = ({ user, collapsed, setCollapsed, handleMenuClick, logout })
                 theme="dark"
                 mode="inline"
                 defaultSelectedKeys={['1']}
-                onClick={({ key }) => handleMenuClick(key)}
-                items={[
-                    { key: '1', icon: <HomeOutlined />, label: 'Inicio' },
-                    { key: '2', icon: <BookFilled />, label: 'Admisiones' },
-                    { key: '3', icon: <FireFilled />, label: 'Servicios' },
-                    { key: '4', icon: <UserOutlined />, label: 'Usuarios' },
-                    { key: '5', icon: <UserOutlined />, label: 'Profesores' },
-                    { key: '6', icon: <UserOutlined />, label: 'OfertaEducativa' },
-                ]}
-            />
-            <div style={{ flex: 1 }}></div>
-            <Menu
-                theme="dark"
-                mode="inline"
                 onClick={({ key }) => {
-                    if (key === '7') {
-                        handleDrawerOpen();
-                    } else {
+                    if (key !== '7') {
                         handleMenuClick(key);
                     }
                 }}
-                items={[
-                    {
-                        key: '7',
-                        icon: <UserOutlined />,
-                        label: user ? `${user.username}` : 'Cargando...',
-                    },
-                ]}
-            />
+            >
+                <Menu.Item key="1" icon={<HomeOutlined />}>
+                    <Link to="/">Inicio</Link>
+                </Menu.Item>
+                <Menu.Item key="2" icon={<BookFilled />}>
+                    <Link to="/admisiones">Admisiones</Link>
+                </Menu.Item>
+                <Menu.Item key="3" icon={<UserOutlined />}>
+                    <Link to="/usuarios">Usuarios</Link>
+                </Menu.Item>
+                <Menu.Item key="4" icon={<UserOutlined />}>
+                    <Link to="/profesores">Profesores</Link>
+                </Menu.Item>
+                <Menu.Item key="5" icon={<UserOutlined />}>
+                    <Link to="/ofertaeducativa">Oferta Educativa</Link>
+                </Menu.Item>
+                <Menu.Item
+                    key="7"
+                    icon={<UserOutlined />}
+                    onClick={handleDrawerOpen}
+                >
+                    {user ? `${user.username}` : 'Cargando...'}
+                </Menu.Item>
+            </Menu>
             <DrawerComponent open={drawerOpen} onClose={handleDrawerClose} />
             <div className="spacer" />
             <Button
