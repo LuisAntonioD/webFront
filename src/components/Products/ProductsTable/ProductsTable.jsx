@@ -18,6 +18,7 @@ const ProductsTable = () => {
     const [newActivo, setNewActivo] = useState(false);
     const [registroError, setRegisterError] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [searchText, setSearchText] = useState('');
     const { user, token } = useContext(AuthContext);
 
     useEffect(() => {
@@ -158,6 +159,16 @@ const ProductsTable = () => {
         return <div>{error}</div>;
     }
 
+    //Función para generar filtros
+    const handleSearchChange = (e) => {
+        setSearchText(e.target.value);
+    };
+
+    const filteredUsers = products.filter(
+        (product) =>
+            product.nombre.toLowerCase().includes(searchText.toLowerCase())
+    );
+
     const columns = [
         { title: "ID", dataKey: "_id" },
         { title: "Nombre", dataKey: "nombre" },
@@ -165,12 +176,19 @@ const ProductsTable = () => {
         { title: "Activo", dataKey: "activo" },
     ];
 
+    const data = filteredUsers.map(product => ({
+        nombre: product.nombre,
+        createdAt: formatDate(product.createdAt),
+        activo: product.activo ? 'Activo' : 'Inactivo'
+    }));
+
+    /*
     const data = products.map(product => ({
         _id: product._id,
         nombre: product.nombre,
         createdAt: formatDate(product.createdAt),
         activo: product.activo ? 'Activo' : 'Inactivo',
-    }));
+    }));**/
 
 
     return (
@@ -192,6 +210,12 @@ const ProductsTable = () => {
             >
                 Generar Reporte
             </Button>
+            <Input
+                placeholder="Buscar por nombre"
+                value={searchText}
+                onChange={handleSearchChange}
+                style={{ marginBottom: 20, width: '300px' }}
+            />
                 </div>
             )}
             <div className="table-container table-wrapper">
@@ -206,7 +230,7 @@ const ProductsTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => (
+                        {filteredUsers.map((product) => (
                             <tr key={product._id}>
                                 <td>{product._id}</td>
                                 <td>{product.nombre}</td>

@@ -169,10 +169,12 @@ const UsersTable = () => {
         return <div>{error}</div>;
     }
 
+    //Función para generar filtros
     const handleSearchChange = (e) => {
         setSearchText(e.target.value);
     };
 
+    //Funciones para generar PDF
     const filteredUsers = users.filter(
         (user) =>
             user.username.toLowerCase().includes(searchText.toLowerCase()) ||
