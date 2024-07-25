@@ -11,7 +11,8 @@ export const ENV = {
             UPDATE: 'api/admision',
             ROLES: 'api/roles',
             PROFESORES:'api/profesores',
-            OFERTAEDUCATIVA: 'api/oferta'
+            OFERTAEDUCATIVA: 'api/oferta',
+            OFERTAS_RELACIONADAS: 'api/admision/:id/ofertas',
         },
         STORAGE: {
             TOKEN: "token",

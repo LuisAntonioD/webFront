@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import DrawerComponent from '../../Drawer';
+
 
 export const useMenuConfig = () => {
     const navigate = useNavigate();
@@ -21,14 +23,14 @@ export const useMenuConfig = () => {
                 navigate('/Profesores');
                 break;
             case '6':
-                    navigate('/OfertaEducativa');
-                  break;
-            case '7':
-                  <DrawerComponent/>
+                navigate('/OfertaEducativa');
                 break;
-                    default:
-                      break;
-                  }
+            case '7':
+                <DrawerComponent />
+                break;
+            default:
+                break;
+        }
     };
 
     return handleMenuClick;

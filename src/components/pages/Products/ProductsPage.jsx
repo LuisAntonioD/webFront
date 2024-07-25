@@ -14,7 +14,6 @@ const ProductsPage = () => {
     const [collapsed, setCollapsed] = useState(false);
     const { colorBgContainer } = theme.useToken().token;
     const handleMenuClick = useMenuConfig();
-
     return (
         <Layout style={{ minHeight: '100vh' }}>
             {user && (

@@ -77,13 +77,16 @@ const deleteOfertaEducativa = async (id, token) => {
         throw error;
     }
 };
-
+const getRelatedOffers = (admisionId) => {
+    return axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.ADMISION}/${admisionId}/ofertas`);
+};
 // Esto exporta los métodos como un objeto por defecto
 const ofertaEducativaService = {
     getMe,
     getOfertasEducativas,
     addOfertaEducativa,
     updateOfertaEducativa,
+    getRelatedOffers,
     deleteOfertaEducativa
 
 };

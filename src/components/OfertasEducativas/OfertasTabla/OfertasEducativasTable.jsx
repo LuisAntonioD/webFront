@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Button, Modal, notification, Form } from 'antd';
+import { Button, Modal, notification, Form, Input } from 'antd';
 import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import ofertaEducativaService from '../../../services/OfertaEducativaService';
@@ -20,6 +20,9 @@ const OfertasEducativasTable = () => {
     const [token, setToken] = useState('');
     const { user } = useContext(AuthContext);
     const formRef = useRef();
+    const [searchText, setSearchText] = useState(''); 
+
+
 
     useEffect(() => {
         fetchOfertas();
@@ -134,14 +137,27 @@ const OfertasEducativasTable = () => {
         formRef.current.resetFormFields(); // Accede a resetFormFields a través de la referencia
     };
 
-    const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
+    const handleSearchChange = (e) => {
+        setSearchText(e.target.value);
     };
+
+    const filteredOfertas = ofertas.filter(oferta => {
+        const fechaCreacion = moment(oferta.createdAt).format('DD/MM/YYYY');
+        const nombresProfesores = getProfesorNames(oferta.profesores);
+        return (
+            oferta.nombre.toLowerCase().includes(searchText.toLowerCase()) ||
+            (oferta.activo ? 'activo' : 'inactivo').toLowerCase().includes(searchText.toLowerCase()) ||
+            fechaCreacion.toLowerCase().includes(searchText.toLowerCase()) ||
+            nombresProfesores.toLowerCase().includes(searchText.toLowerCase())
+        );
+    });
+    
 
     if (error) {
         return <div>{error}</div>;
     }
+
+    
 
     const existingNames = ofertas.map(oferta => oferta.nombre);
 
@@ -179,30 +195,29 @@ const OfertasEducativasTable = () => {
                 >
                     Agregar Oferta
                 </Button>
-                <Button
-                type="secondary"
-                icon={<RiAddLine />}
-                onClick={() => generatePDF('Reporte Oferta Educativa', columns, data, user)}
-            >
-                Generar Reporte
-            </Button>
+                <Input
+                    placeholder="Buscar por Nombre, Status, Fecha de Creación o Profesores"
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    style={{ marginBottom: 20, width: '450px' }}
+                />
             </div>
             <div className="table-container">
                 <table className="formato-tabla">
                     <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Activo</th>
+                            <th>Status</th>
                             <th>Fecha de Creación</th>
                             <th>Profesores</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {ofertas.map((oferta) => (
+                        {filteredOfertas.map((oferta) => (
                             <tr key={oferta._id}>
                                 <td>{oferta.nombre}</td>
-                                <td>{oferta.activo ? 'Sí' : 'No'}</td>
+                                <td>{oferta.activo ? 'Activo' : 'Inactivo'}</td>
                                 <td>{moment(oferta.createdAt).format('DD/MM/YYYY')}</td>
                                 <td>{getProfesorNames(oferta.profesores)}</td>
                                 <td>

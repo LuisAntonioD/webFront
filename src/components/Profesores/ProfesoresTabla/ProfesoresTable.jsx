@@ -17,6 +17,7 @@ const ProfesoresTable = () => {
     const [isEmailUnique, setIsEmailUnique] = useState(true);
     const { user, token } = useContext(AuthContext);
     const [form] = Form.useForm();
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
         fetchUsers();
@@ -163,6 +164,33 @@ const ProfesoresTable = () => {
         return Promise.resolve();
     };
 
+    const handleSearchChange = (e) => {
+        setSearchText(e.target.value);
+    };
+
+    const filtrarprofesores = users.filter((user) => {
+        const { nombre, apellidos, numeroEmpleado, correo, telefono, fechaNacimiento } = user;
+    
+        const nombreLower = nombre?.toLowerCase() || "";
+        const apellidosLower = apellidos?.toLowerCase() || "";
+        const numeroEmpleadoLower = numeroEmpleado?.toLowerCase() || "";
+        const correoLower = correo?.toLowerCase() || "";
+        const telefonoLower = telefono?.toLowerCase() || "";
+        const fechaNacimientoLower = formatDate(fechaNacimiento)?.toLowerCase() || "";
+    
+        const searchTextLower = searchText.toLowerCase();
+    
+        return (
+            nombreLower.includes(searchTextLower) ||
+            apellidosLower.includes(searchTextLower) ||
+            numeroEmpleadoLower.includes(searchTextLower) ||
+            correoLower.includes(searchTextLower) ||
+            telefonoLower.includes(searchTextLower) ||
+            fechaNacimientoLower.includes(searchTextLower)
+        );
+    });
+    
+
     if (error) {
         return <div>{error}</div>;
     }
@@ -195,6 +223,7 @@ const ProfesoresTable = () => {
                 >
                     Agregar Profesor
                 </Button>
+<<<<<<< HEAD
                 <Button
                 type="secondary"
                 icon={<RiAddLine />}
@@ -203,6 +232,14 @@ const ProfesoresTable = () => {
             >
                 Generar Reporte
             </Button>
+=======
+                <Input
+                    placeholder="Buscar por Nombre, Apellidos, Número del Empleado, Correo, Fecha de Nacimiento o Número Telefonico"
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    style={{ marginBottom: 20, width: '700px' }}
+                />
+>>>>>>> 02baa920e7afa302992f2f76eaef950877648a6f
             </div>
             <div className="table-container table-wrapper">
                 <table className="formato-tabla">
@@ -213,16 +250,18 @@ const ProfesoresTable = () => {
                             <th>Numero Empleado</th>
                             <th>Correo</th>
                             <th>Fecha de Nacimiento</th>
+                            <th>Número Telefonico</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((prof) => (
+                        {filtrarprofesores.map((prof) => (
                             <tr key={prof._id}>
                                 <td>{prof.nombre}</td>
                                 <td>{prof.apellidos}</td>
                                 <td>{prof.numeroEmpleado}</td>
                                 <td>{prof.correo}</td>
+                                <td>{prof.telefono}</td>
                                 <td>{formatDate(prof.fechaNacimiento)}</td>
                                 <td>
                                     <Button

@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
             const response = await usersService.getMe(token);
             setUser(response);
             setLoading(false);
-            console.log(response);
+            console.log('Si llega el usuario: ', response);
         } catch (error) {
             console.error(error);
             setLoading(false);

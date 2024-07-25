@@ -27,8 +27,6 @@ import FooterNav  from '../Menu/Footer.jsx';
     const { colorBgContainer, borderRadiusLG } = theme.useToken().token;
     const handleMenuClick = useMenuConfig();
 
-  
-
     return (
       <Layout style={{ minHeight: '100vh' }}>
             {user && (

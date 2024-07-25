@@ -3,11 +3,10 @@ import { Drawer, Avatar, Form, Input, Button, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { AuthContext } from '../context/AuthContext';
 import loginImage from '../../assets/perfil.png';
-import './DrawerComponent.css'; // Importa el archivo CSS
+import './DrawerComponent.css';
 
-const DrawerComponent = () => {
+const DrawerComponent = ({ open, onClose }) => {
     const { user, updateUserData } = useContext(AuthContext);
-    const [open, setOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState({
         username: '',
@@ -26,23 +25,6 @@ const DrawerComponent = () => {
             });
         }
     }, [user]);
-
-    const showDrawer = () => {
-        setOpen(true);
-    };
-
-    const onClose = () => {
-        setOpen(false);
-        setEditMode(false);
-        if (user) {
-            setFormData({
-                username: user.username,
-                email: user.email,
-                newPassword: '',
-                confirmNewPassword: ''
-            });
-        }
-    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -83,77 +65,69 @@ const DrawerComponent = () => {
     };
 
     return (
-        <>
-            <Avatar
-                onClick={showDrawer}
-                size={44}
-                style={{ backgroundColor: '#87d68', cursor: 'pointer', marginLeft: '-10px' }}
-                icon={<UserOutlined />}
-            />
-            <Drawer title="Perfil de Usuario" onClose={onClose} visible={open}>
-                {user ? (
-                    <div style={{ padding: '20px' }}>
-                        <center>
-                            <img src={loginImage} alt="perfil" className="profile-image" />
-                        </center>
-                        <Form layout="vertical">
-                            <Form.Item label="Nombre">
-                                <Input
-                                    name="username"
-                                    value={formData.username}
-                                    onChange={handleInputChange}
-                                    disabled={!editMode}
-                                />
-                            </Form.Item>
-                            <Form.Item label="Email">
-                                <Input
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    disabled={!editMode}
-                                />
-                            </Form.Item>
-                            {editMode && (
+        <Drawer title="Perfil de Usuario" onClose={onClose} open={open}>
+            {user ? (
+                <div style={{ padding: '20px' }}>
+                    <center>
+                        <img src={loginImage} alt="perfil" className="profile-image" />
+                    </center>
+                    <Form layout="vertical">
+                        <Form.Item label="Nombre">
+                            <Input
+                                name="username"
+                                value={formData.username}
+                                onChange={handleInputChange}
+                                disabled={!editMode}
+                            />
+                        </Form.Item>
+                        <Form.Item label="Email">
+                            <Input
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                disabled={!editMode}
+                            />
+                        </Form.Item>
+                        {editMode && (
+                            <>
+                                <Form.Item label="Nueva Contraseña">
+                                    <Input.Password
+                                        name="newPassword"
+                                        value={formData.newPassword}
+                                        onChange={handleInputChange}
+                                    />
+                                </Form.Item>
+                                <Form.Item label="Confirmar Nueva Contraseña">
+                                    <Input.Password
+                                        name="confirmNewPassword"
+                                        value={formData.confirmNewPassword}
+                                        onChange={handleInputChange}
+                                    />
+                                </Form.Item>
+                            </>
+                        )}
+                        <Form.Item>
+                            {editMode ? (
                                 <>
-                                    <Form.Item label="Nueva Contraseña">
-                                        <Input.Password
-                                            name="newPassword"
-                                            value={formData.newPassword}
-                                            onChange={handleInputChange}
-                                        />
-                                    </Form.Item>
-                                    <Form.Item label="Confirmar Nueva Contraseña">
-                                        <Input.Password
-                                            name="confirmNewPassword"
-                                            value={formData.confirmNewPassword}
-                                            onChange={handleInputChange}
-                                        />
-                                    </Form.Item>
-                                </>
-                            )}
-                            <Form.Item>
-                                {editMode ? (
-                                    <>
-                                        <Button type="primary" onClick={handleSubmit}>
-                                            Guardar
-                                        </Button>
-                                        <Button onClick={() => setEditMode(false)}>
-                                            Cancelar
-                                        </Button>
-                                    </>
-                                ) : (
-                                    <Button type="primary" onClick={toggleEditMode}>
-                                        Editar
+                                    <Button type="primary" onClick={handleSubmit}>
+                                        Guardar
                                     </Button>
-                                )}
-                            </Form.Item>
-                        </Form>
-                    </div>
-                ) : (
-                    <p>Error</p>
-                )}
-            </Drawer>
-        </>
+                                    <Button onClick={() => setEditMode(false)}>
+                                        Cancelar
+                                    </Button>
+                                </>
+                            ) : (
+                                <Button type="primary" onClick={toggleEditMode}>
+                                    Editar
+                                </Button>
+                            )}
+                        </Form.Item>
+                    </Form>
+                </div>
+            ) : (
+                <p>Error</p>
+            )}
+        </Drawer>
     );
 };
 

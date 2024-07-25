@@ -1,12 +1,23 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React, { useState } from 'react'; // Asegúrate de importar useState
+import { Link } from 'react-router-dom';
 import { Menu, Button, Layout } from 'antd';
 import { LogoutOutlined, HomeOutlined, BookFilled, FireFilled, UserOutlined } from '@ant-design/icons';
 import DrawerComponent from '../../Drawer';
 import logo from '../../../assets/uteq3.png';
-const { Header, Sider, Content, Footer } = Layout;
+
+const { Sider } = Layout;
 
 const SidebarMenu = ({ user, collapsed, setCollapsed, handleMenuClick, logout }) => {
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    const handleDrawerOpen = () => {
+        setDrawerOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setDrawerOpen(false);
+    };
+
     return (
         <Sider trigger={null} collapsible collapsed={collapsed}>
             <Link to="/" className="logo" onClick={() => handleMenuClick('')}>
@@ -30,11 +41,22 @@ const SidebarMenu = ({ user, collapsed, setCollapsed, handleMenuClick, logout })
             <Menu
                 theme="dark"
                 mode="inline"
-                onClick={({ key }) => handleMenuClick(key)}
+                onClick={({ key }) => {
+                    if (key === '7') {
+                        handleDrawerOpen();
+                    } else {
+                        handleMenuClick(key);
+                    }
+                }}
                 items={[
-                    { key: '7', icon: <DrawerComponent />, label: `${user.username}`},
+                    {
+                        key: '7',
+                        icon: <UserOutlined />,
+                        label: user ? `${user.username}` : 'Cargando...',
+                    },
                 ]}
             />
+            <DrawerComponent open={drawerOpen} onClose={handleDrawerClose} />
             <div className="spacer" />
             <Button
                 className="logout-button"

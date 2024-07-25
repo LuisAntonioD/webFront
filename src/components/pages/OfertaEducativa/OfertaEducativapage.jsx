@@ -7,7 +7,7 @@ import { useAuth } from '../../../hooks/useAuth'; // Asegúrate de importar useA
 //import { profesoresService } from '../../../services/profesorService'; // Asegúrate de importar profesoresService si lo necesitas
 import SidebarMenu from '../Menu/SidebarMenu';
 import { useMenuConfig } from '../Menu/HandleMenu';
-import FooterNav  from '../Menu/Footer.jsx';
+import FooterNav from '../Menu/Footer.jsx';
 
 const { Header, Content } = Layout;
 
@@ -28,18 +28,18 @@ const OfertaEducativaPage = () => {
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
-        {user && (
-            <>
-                <SidebarMenu 
-                    user={user} 
-                    collapsed={collapsed} 
-                    setCollapsed={setCollapsed} 
-                    handleMenuClick={handleMenuClick} 
-                    logout={logout} 
-                />
-            </>
-        )}
-        <Layout>
+            {user && (
+                <>
+                    <SidebarMenu
+                        user={user}
+                        collapsed={collapsed}
+                        setCollapsed={setCollapsed}
+                        handleMenuClick={handleMenuClick}
+                        logout={logout}
+                    />
+                </>
+            )}
+            <Layout>
                 <Header style={{ padding: 0, background: colorBgContainer }}>
                     <Button
                         type="text"

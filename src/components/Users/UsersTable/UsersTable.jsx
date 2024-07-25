@@ -212,7 +212,7 @@ const UsersTable = () => {
                 Generar Reporte
             </Button>
             <Input
-                placeholder="Buscar por nombre o correo"
+                placeholder="Buscar por Nombre o Correo"
                 value={searchText}
                 onChange={handleSearchChange}
                 style={{ marginBottom: 20, width: '300px' }}
