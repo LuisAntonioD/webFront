@@ -14,14 +14,24 @@ export const generatePDF = (title, columns, data, userlogeado) => {
 
     doc.text(title, 14, 20);
  
-   // Este solo funciona con Profesores
-   //const rows = data.map(row => columns.map(col => row[col.dataIndex]));
+    if(title === 'Reporte de Profesores'){
+        //Este solo funciona con Profesores
+   const rows = data.map(row => columns.map(col => row[col.dataIndex]));
+        doc.autoTable({
+            head: [columns.map(col => col.title)],
+            body: rows,
+            startY: 40,  
+        });
+    }else{
+        doc.autoTable({
+            head: [columns.map(col => col.title)],
+            body: data.map(item => columns.map(col => item[col.dataKey])),
+            startY: 40,  
+        });
+    }
+   
 
-    doc.autoTable({
-        head: [columns.map(col => col.title)],
-        body: data.map(item => columns.map(col => item[col.dataKey])),
-        startY: 40,  
-    });
+   
 
     doc.setFontSize(10);
     doc.text(`Generado por: ${userlogeado.username} (${userlogeado.email})`, 14, 30);

@@ -1,12 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import { Button, Modal, notification, Form } from 'antd';
 import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import ofertaEducativaService from '../../../services/OfertaEducativaService';
-import NewOfertaForm from '../OfertasForm/newOferta'; // Asegúrate de importar el formulario NewOfertaForm
+import NewOfertaForm from '../OfertasForm/newOferta';
+import { AuthContext } from '../../context/AuthContext';
 import '../OfertasTabla/OfertasTable.css';
+import { generatePDF } from '../../../utils/pdf';
 
 const OfertasEducativasTable = () => {
     const [ofertas, setOfertas] = useState([]);
@@ -15,7 +17,8 @@ const OfertasEducativasTable = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
-    const [token, setToken] = useState(''); // Asegúrate de obtener el token adecuadamente
+    const [token, setToken] = useState('');
+    const { user } = useContext(AuthContext);
     const formRef = useRef();
 
     useEffect(() => {
@@ -131,11 +134,35 @@ const OfertasEducativasTable = () => {
         formRef.current.resetFormFields(); // Accede a resetFormFields a través de la referencia
     };
 
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+
     if (error) {
         return <div>{error}</div>;
     }
 
     const existingNames = ofertas.map(oferta => oferta.nombre);
+
+
+    const columns = [
+        { title: "Nombre", dataKey: "nombre" },
+        { title: "activo", dataKey: "activo" },
+        { title: "Fecha de Creación", dataKey: "createdAt" },
+        { title: "Profesores", dataKey: "profesores" }
+
+    ];
+
+    const data = ofertas.map(oferta => ({
+        nombre: oferta.nombre,
+        activo: oferta.activo ? 'Activo' : 'Inactivo',
+        createdAt: formatDate(oferta.createdAt),
+        profesores: getProfesorNames(oferta.profesores)
+    }));
+
+
+
 
     return (
         <div className="ofertas-educativas-table-page">
@@ -152,6 +179,13 @@ const OfertasEducativasTable = () => {
                 >
                     Agregar Oferta
                 </Button>
+                <Button
+                type="secondary"
+                icon={<RiAddLine />}
+                onClick={() => generatePDF('Reporte Oferta Educativa', columns, data, user)}
+            >
+                Generar Reporte
+            </Button>
             </div>
             <div className="table-container">
                 <table className="formato-tabla">
