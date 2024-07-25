@@ -167,14 +167,28 @@ const ProfesoresTable = () => {
         setSearchText(e.target.value);
     };
 
-    const filtrarprofesores = users.filter(
-        (user) =>
-            user.nombre.toLowerCase().includes(searchText.toLowerCase()) ||
-            user.apellidos.toLowerCase().includes(searchText.toLowerCase()) ||
-            user.numeroEmpleado.toLowerCase().includes(searchText.toLowerCase()) ||
-            user.correo.toLowerCase().includes(searchText.toLowerCase()) ||
-            formatDate(user.fechaNacimiento).toLowerCase().includes(searchText.toLowerCase())
-    );
+    const filtrarprofesores = users.filter((user) => {
+        const { nombre, apellidos, numeroEmpleado, correo, telefono, fechaNacimiento } = user;
+    
+        const nombreLower = nombre?.toLowerCase() || "";
+        const apellidosLower = apellidos?.toLowerCase() || "";
+        const numeroEmpleadoLower = numeroEmpleado?.toLowerCase() || "";
+        const correoLower = correo?.toLowerCase() || "";
+        const telefonoLower = telefono?.toLowerCase() || "";
+        const fechaNacimientoLower = formatDate(fechaNacimiento)?.toLowerCase() || "";
+    
+        const searchTextLower = searchText.toLowerCase();
+    
+        return (
+            nombreLower.includes(searchTextLower) ||
+            apellidosLower.includes(searchTextLower) ||
+            numeroEmpleadoLower.includes(searchTextLower) ||
+            correoLower.includes(searchTextLower) ||
+            telefonoLower.includes(searchTextLower) ||
+            fechaNacimientoLower.includes(searchTextLower)
+        );
+    });
+    
 
     if (error) {
         return <div>{error}</div>;
@@ -192,10 +206,10 @@ const ProfesoresTable = () => {
                     Agregar Profesor
                 </Button>
                 <Input
-                    placeholder="Buscar por Nombre, Apellidos, Número del Empleado, Correo o Fecha de Nacimiento"
+                    placeholder="Buscar por Nombre, Apellidos, Número del Empleado, Correo, Fecha de Nacimiento o Número Telefonico"
                     value={searchText}
                     onChange={handleSearchChange}
-                    style={{ marginBottom: 20, width: '600px' }}
+                    style={{ marginBottom: 20, width: '700px' }}
                 />
             </div>
             <div className="table-container table-wrapper">
@@ -207,6 +221,7 @@ const ProfesoresTable = () => {
                             <th>Numero Empleado</th>
                             <th>Correo</th>
                             <th>Fecha de Nacimiento</th>
+                            <th>Número Telefonico</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -217,6 +232,7 @@ const ProfesoresTable = () => {
                                 <td>{prof.apellidos}</td>
                                 <td>{prof.numeroEmpleado}</td>
                                 <td>{prof.correo}</td>
+                                <td>{prof.telefono}</td>
                                 <td>{formatDate(prof.fechaNacimiento)}</td>
                                 <td>
                                     <Button
