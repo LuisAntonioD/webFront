@@ -316,8 +316,6 @@ const ProductsTable = () => {
                     <span>{newActivo ? 'Activo' : 'Inactivo'}</span>
                 </div>
             </Modal>
-
-            {/* Modal for Viewing Related Offers */}
             <Modal
                 title="Ofertas Educativas Relacionadas"
                 visible={isOffersModalVisible}
