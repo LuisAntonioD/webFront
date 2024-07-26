@@ -261,10 +261,10 @@ const ProductsTable = () => {
                         Generar Reporte
                     </Button>
                     <Input
-                        placeholder="Buscar por Nombre o Estatus"
+                        placeholder="Buscar ..."
                         value={searchText}
                         onChange={handleSearchChange}
-                        style={{ marginBottom: 20, width: '300px' }}
+                        style={{ marginBottom: 20, width: '200px' }}
                     />
                 </div>
             )}
