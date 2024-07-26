@@ -152,12 +152,14 @@ const OfertasEducativasTable = () => {
         );
     });
     
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
 
     if (error) {
         return <div>{error}</div>;
-    }
-
-    
+    }    
 
     const existingNames = ofertas.map(oferta => oferta.nombre);
 
@@ -170,15 +172,12 @@ const OfertasEducativasTable = () => {
 
     ];
 
-    const data = ofertas.map(oferta => ({
+    const data = filteredOfertas.map(oferta => ({
         nombre: oferta.nombre,
         activo: oferta.activo ? 'Activo' : 'Inactivo',
         createdAt: formatDate(oferta.createdAt),
         profesores: getProfesorNames(oferta.profesores)
     }));
-
-
-
 
     return (
         <div className="ofertas-educativas-table-page">
@@ -195,6 +194,13 @@ const OfertasEducativasTable = () => {
                 >
                     Agregar Oferta
                 </Button>
+                <Button
+                type="secondary"
+                icon={<RiAddLine />}
+                onClick={() => generatePDF('Reporte Ofertas educativas', columns, data, user)}
+            >
+                Generar Reporte
+            </Button>
                 <Input
                     placeholder="Buscar por Nombre, Status, Fecha de Creación o Profesores"
                     value={searchText}

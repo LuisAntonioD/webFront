@@ -203,7 +203,7 @@ const ProfesoresTable = () => {
         { title: 'Fecha de Nacimiento', dataIndex: 'fechaNacimiento', render: formatDate },
     ];
 
-    const data2 = users.map(prof => ({
+    const data2 = filtrarprofesores.map(prof => ({
         nombre: prof.nombre,
         apellidos: prof.apellidos,
         numeroEmpleado: prof.numeroEmpleado,
@@ -223,23 +223,19 @@ const ProfesoresTable = () => {
                 >
                     Agregar Profesor
                 </Button>
-<<<<<<< HEAD
                 <Button
                 type="secondary"
                 icon={<RiAddLine />}
                 onClick={() => generatePDF('Reporte de Profesores', columns, data2, user)}
-                
             >
                 Generar Reporte
             </Button>
-=======
                 <Input
                     placeholder="Buscar por Nombre, Apellidos, Número del Empleado, Correo, Fecha de Nacimiento o Número Telefonico"
                     value={searchText}
                     onChange={handleSearchChange}
                     style={{ marginBottom: 20, width: '700px' }}
                 />
->>>>>>> 02baa920e7afa302992f2f76eaef950877648a6f
             </div>
             <div className="table-container table-wrapper">
                 <table className="formato-tabla">
