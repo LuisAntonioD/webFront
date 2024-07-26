@@ -202,10 +202,10 @@ const OfertasEducativasTable = () => {
                 Generar Reporte
             </Button>
                 <Input
-                    placeholder="Buscar por Nombre, Status, Fecha de Creación o Profesores"
+                    placeholder="Buscar ..."
                     value={searchText}
                     onChange={handleSearchChange}
-                    style={{ marginBottom: 20, width: '450px' }}
+                    style={{ marginBottom: 20, width: '200px' }}
                 />
             </div>
             <div className="table-container">
