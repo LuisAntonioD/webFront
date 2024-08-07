@@ -99,7 +99,7 @@ const NewProfesorForm = ({ visible, onCreate, onCancel }) => {
                     <DatePicker format="DD/MM/YYYY" placeholder="DD/MM/YYYY" style={{ width: '100%' }} />
                 </Form.Item>
                 <Form.Item wrapperCol={{ span: 24 }}>
-                    <Button type="primary" htmlType="submit" loading={loading} style={{ width: '140px', marginRight: '16px' }}>
+                    <Button /*type="primary"*/ htmlType="submit" loading={loading} style={{ width: '140px', marginRight: '16px' }}>
                         Crear Profesor
                     </Button>
                     <Button onClick={handleCancel} style={{ width: '140px' }}>

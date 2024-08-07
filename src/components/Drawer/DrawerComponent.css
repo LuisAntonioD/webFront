@@ -51,3 +51,37 @@
     border-color: var(--hover-primary-color);
 }
 
+/* Estilos para los botones personalizados */
+.guardar {
+    background-color: #25f10a; /* Color de fondo del botón */
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+    margin-right: 16px; /* Espacio entre el botón de guardar y el de cancelar */
+}
+
+.guardar:hover {
+    background-color: #02df0d; /* Color de fondo cuando el botón es hover */
+    border: none; /* Sin borde */
+}
+
+.cancelar {
+    background-color: #f10a0a; /* Color de fondo del botón */
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+}
+
+.cancelar:hover {
+    background-color: #02df0d; /* Color de fondo cuando el botón es hover */
+    border: none; /* Sin borde */
+}
+
+.editar {
+    background-color: #12f10a; /* Color de fondo del botón */
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+}
+
+.editar:hover {
+    background-color: #02df0d; /* Color de fondo cuando el botón es hover */
+    border: none; /* Sin borde */
+}

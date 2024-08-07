@@ -1,0 +1,13 @@
+/* Para todos los botones en la aplicación */
+.ant-btn:focus, .ant-btn:active, .ant-btn:focus-visible {
+    box-shadow: none; /* Elimina el borde de enfoque */
+    outline: none; /* Elimina el contorno del botón */
+    border: none; /* Asegura que no haya borde */
+}
+
+/* Para los botones específicos dentro del modal */
+.ant-modal .ant-btn:focus, .ant-modal .ant-btn:active, .ant-modal .ant-btn:focus-visible {
+    box-shadow: none; /* Elimina el borde de enfoque */
+    outline: none; /* Elimina el contorno del botón */
+    border: none; /* Asegura que no haya borde */
+}

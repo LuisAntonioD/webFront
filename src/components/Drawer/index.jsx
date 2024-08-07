@@ -109,15 +109,15 @@ const DrawerComponent = ({ open, onClose }) => {
                         <Form.Item>
                             {editMode ? (
                                 <>
-                                    <Button type="primary" onClick={handleSubmit}>
+                                    <Button type="primary" onClick={handleSubmit} className='guardar'>
                                         Guardar
                                     </Button>
-                                    <Button onClick={() => setEditMode(false)}>
+                                    <Button onClick={() => setEditMode(false)} className='cancelar'>
                                         Cancelar
                                     </Button>
                                 </>
                             ) : (
-                                <Button type="primary" onClick={toggleEditMode}>
+                                <Button  onClick={toggleEditMode} className='editar'>
                                     Editar
                                 </Button>
                             )}

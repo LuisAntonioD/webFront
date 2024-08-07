@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from './AuthContext'; // Asegúrate de importar tu contexto de autenticación
 import { ProductTable } from './ProductTable'; // Importa tu componente o lógica de gestión de productos
 import axios from 'axios';
+import '../ProductsForm/ProductsForm.css';
 
 const UpdateForm = () => {
     const { login } = useContext(AuthContext);
@@ -62,7 +63,7 @@ const UpdateForm = () => {
                     checked={newActivo}
                     onChange={(e) => setNewActivo(e.target.checked)}
                 />
-                <button type="submit" disabled={loading}>
+                <button type="submit" className='actualizar' disabled={loading}>
                     {loading ? 'Actualizando...' : 'Actualizar'}
                 </button>
             </form>

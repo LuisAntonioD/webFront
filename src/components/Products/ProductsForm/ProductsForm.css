@@ -1,0 +1,56 @@
+:root {
+    --primary-color: #2ecc71;
+    --secondary-color: #3498db;
+    --neutral-color: #ecf0f1;
+    --text-color: #333;
+    --text-color-light: #fff;
+    --hover-primary-color: #27ae60;
+    --hover-secondary-color: #2980b9;
+}
+
+.actualizar {
+    background-color: var(--primary-color); /* Color de fondo del botón */
+    color: var(--text-color-light); /* Color del texto del botón */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Espaciado interno del botón */
+    font-size: 16px; /* Tamaño de fuente del botón */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+.actualizar:hover {
+    background-color: #6930c4; /* Color de fondo del botón */
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+    align-self: flex-start; /* Alinea el botón a la izquierda */
+}
+
+.actualizar:disabled {
+    background-color: #b2b2b2; /* Color de fondo cuando el botón está deshabilitado */
+    color: #7d7d7d; /* Color del texto cuando el botón está deshabilitado */
+    cursor: not-allowed; /* Cambia el cursor a no permitido cuando el botón está deshabilitado */
+}
+
+.actualizar {
+    background-color: #6930c4; /* Color de fondo del botón */
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+    align-self: flex-start; /* Alinea el botón a la izquierda */
+}
+
+.actualizar:hover {
+    background-color: #ff0000; /* Color de fondo cuando el botón es hover */
+    border: none; /* Sin borde */
+}
+/* Estilos específicos para el modal */
+.custom-modal .ant-modal-footer {
+    border-top: none; /* Opcional: elimina el borde superior del pie de página */
+}
+
+/* Estilos para el botón 'OK' */
+.custom-modal .ant-btn-primary {
+    background-color: #2ecc71; /* Color de fondo del botón OK (verde) */
+    border: none; /* Sin borde */
+    color: #fff; /* Color del texto del botón OK */
+}

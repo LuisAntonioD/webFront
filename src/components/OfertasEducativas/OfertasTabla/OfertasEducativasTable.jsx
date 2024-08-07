@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Button, Modal, notification, Form, Input } from 'antd';
-import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
+import { Button, Modal, notification, Input } from 'antd';
+import { RiAddLine, RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import ofertaEducativaService from '../../../services/OfertaEducativaService';
 import NewOfertaForm from '../OfertasForm/newOferta';
 import { AuthContext } from '../../context/AuthContext';
-import '../OfertasTabla/OfertasTable.css';
+import '../OfertasTabla/OfertasTable.css'; // Asegúrate de importar el CSS
 import { generatePDF } from '../../../utils/pdf';
+
 
 const OfertasEducativasTable = () => {
     const [ofertas, setOfertas] = useState([]);
@@ -21,8 +22,6 @@ const OfertasEducativasTable = () => {
     const { user } = useContext(AuthContext);
     const formRef = useRef();
     const [searchText, setSearchText] = useState(''); 
-
-
 
     useEffect(() => {
         fetchOfertas();
@@ -96,13 +95,12 @@ const OfertasEducativasTable = () => {
             okText: 'Eliminar',
             okType: 'danger',
             cancelText: 'Cancelar',
+            className: 'custom-confirm-modal', // Clase personalizada para el modal
             onOk() {
                 deleteOferta(id);
             },
         });
     };
-
-    
 
     const showEditModal = (oferta) => {
         setCurrentUser(oferta);
@@ -163,13 +161,11 @@ const OfertasEducativasTable = () => {
 
     const existingNames = ofertas.map(oferta => oferta.nombre);
 
-
     const columns = [
         { title: "Nombre", dataKey: "nombre" },
         { title: "activo", dataKey: "activo" },
         { title: "Fecha de Creación", dataKey: "createdAt" },
         { title: "Profesores", dataKey: "profesores" }
-
     ];
 
     const data = filteredOfertas.map(oferta => ({
@@ -184,7 +180,6 @@ const OfertasEducativasTable = () => {
             <div className="buttons-container">
                 <Button
                     className="add-button"
-                    type="primary"
                     icon={<RiAddLine />}
                     onClick={() => {
                         setCurrentUser(null);
@@ -195,12 +190,13 @@ const OfertasEducativasTable = () => {
                     Agregar Oferta
                 </Button>
                 <Button
-                type="secondary"
-                icon={<RiAddLine />}
-                onClick={() => generatePDF('Reporte Ofertas educativas', columns, data, user)}
-            >
-                Generar Reporte
-            </Button>
+                    className="generate-button"
+                    type="secondary"
+                    icon={<RiAddLine />}
+                    onClick={() => generatePDF('Reporte Ofertas educativas', columns, data, user)}
+                >
+                    Generar Reporte
+                </Button>
                 <Input
                     placeholder="Buscar ..."
                     value={searchText}
@@ -227,19 +223,22 @@ const OfertasEducativasTable = () => {
                                 <td>{moment(oferta.createdAt).format('DD/MM/YYYY')}</td>
                                 <td>{getProfesorNames(oferta.profesores)}</td>
                                 <td>
-                                    <Button
-                                        className="action-button ant-btn-danger"
-                                        onClick={() => confirmDeleteOferta(oferta._id)}
-                                        icon={<RiDeleteBin6Line />}
-                                    >
-                                        Eliminar
-                                    </Button>
-                                    <Button
-                                        className="action-button ant-btn-success"
-                                        onClick={() => showEditModal(oferta)}
-                                    >
-                                        Editar
-                                    </Button>
+                                    <div className="actions-container">
+                                        <Button
+                                            className="action-button ant-btn-danger"
+                                            onClick={() => confirmDeleteOferta(oferta._id)}
+                                            icon={<RiDeleteBin6Line />}
+                                        >
+                                            Eliminar
+                                        </Button>
+                                        <Button
+                                            className="action-button ant-btn-success"
+                                            onClick={() => showEditModal(oferta)}
+                                            icon={<RiEdit2Line />}
+                                        >
+                                            Editar
+                                        </Button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

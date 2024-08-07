@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Button, Modal, notification, Form, Input, Select } from 'antd';
-import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
+import { RiAddLine, RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import usersService from '../../../services/users';
 import { AuthContext } from '../../context/AuthContext';
@@ -87,6 +87,7 @@ const UsersTable = () => {
             okText: 'Eliminar',
             okType: 'danger',
             cancelText: 'Cancelar',
+            className: 'custom-confirm-modal', // Clase personalizada para el modal
             onOk() {
                 deleteUser(id);
             },
@@ -198,14 +199,15 @@ const UsersTable = () => {
             <div className="buttons-container">
                 <Button
                     className="add-button"
-                    type="primary"
+                    //type="primary"
                     icon={<RiAddLine />}
                     onClick={() => setIsModalVisible(true)}
                 >
                     Agregar Usuario
                 </Button>
                 <Button
-                type="secondary"
+              type="secondary"
+               className="generate-button"
                 icon={<RiAddLine />}
                 onClick={() => generatePDF('Reporte de Usuarios', columns, data, user)}
             >
@@ -247,6 +249,7 @@ const UsersTable = () => {
                                     <Button
                                         className="action-button ant-btn-success"
                                         onClick={() => showEditModal(user)}
+                                        icon={<RiEdit2Line />}
                                     >
                                         Editar
                                     </Button>
@@ -257,77 +260,90 @@ const UsersTable = () => {
                 </table>
             </div>
             <Modal
-                title={isEditing ? "Editar Usuario" : "Agregar Usuario"}
-                visible={isModalVisible}
-                onCancel={handleCancel}
-                footer={null}
-            >
-                <Form
-                    form={form}
-                    onFinish={isEditing ? handleEditUser : handleAddUser}
+    title={isEditing ? "Editar Usuario" : "Agregar Usuario"}
+    visible={isModalVisible}
+    onCancel={handleCancel}
+    footer={null}
+>
+    <Form
+        form={form}
+        onFinish={isEditing ? handleEditUser : handleAddUser}
+    >
+        <Form.Item
+            name="username"
+            rules={[
+                { required: true, message: 'Por favor ingrese el nombre de usuario' },
+                { pattern: /^[a-zA-Z\s]+$/, message: 'El nombre solo debe contener letras y espacios' }
+            ]}
+        >
+            <Input placeholder="Nombre de usuario" />
+        </Form.Item>
+        <Form.Item
+            name="email"
+            rules={[
+                { required: true, message: 'Por favor ingrese el correo electrónico' },
+                { type: 'email', message: 'Por favor ingrese un correo electrónico válido' },
+                ({ getFieldValue }) => ({
+                    validator(_, value) {
+                        const isCurrentEmailUnique = users.every(u => u._id === currentUser?._id || u.correo !== value);
+                        if (isCurrentEmailUnique) {
+                            return Promise.resolve();
+                        }
+                        return Promise.reject('El correo electrónico ya está en uso');
+                    },
+                }),
+            ]}
+        >
+            <Input
+                type="email"
+                placeholder="Correo electrónico"
+                disabled={!isEmailUnique && isEditing}
+            />
+        </Form.Item>
+        {!isEditing && (
+            <>
+                <Form.Item
+                    name="password"
+                    rules={[{ required: true, message: 'Por favor ingrese la contraseña' }]}
                 >
-                    <Form.Item
-                        name="username"
-                        rules={[
-                            { required: true, message: 'Por favor ingrese el nombre de usuario' },
-                            { pattern: /^[a-zA-Z\s]+$/, message: 'El nombre solo debe contener letras y espacios' }
-                        ]}                    >
-                        <Input placeholder="Nombre de usuario" />
-                    </Form.Item>
-                    <Form.Item
-                        name="email"
-                        rules={[
-                            { required: true, message: 'Por favor ingrese el correo electrónico' },
-                            { type: 'email', message: 'Por favor ingrese un correo electrónico válido' },
-                            ({ getFieldValue }) => ({
-                                validator(_, value) {
-                                    const isCurrentEmailUnique = users.every(u => u._id === currentUser?._id || u.correo !== value);
-                                    if (isCurrentEmailUnique) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject('El correo electrónico ya está en uso');
-                                },
-                            }),
-                        ]}
+                    <Input.Password placeholder="Contraseña" />
+                </Form.Item>
+                <Form.Item
+                    name="roles"
+                    rules={[{ required: true, message: 'Por favor seleccione al menos un rol' }]}
+                >
+                    <Select
+                        mode="multiple"
+                        placeholder="Seleccionar roles"
                     >
-                        <Input
-                            type="email"
-                            placeholder="Correo electrónico"
-                            disabled={!isEmailUnique && isEditing}
-                        />
-                    </Form.Item>
-                    {!isEditing && (
-                        <>
-                            <Form.Item
-                                name="password"
-                                rules={[{ required: true, message: 'Por favor ingrese la contraseña' }]}
-                            >
-                                <Input.Password placeholder="Contraseña" />
-                            </Form.Item>
-                            <Form.Item
-                                name="roles"
-                                rules={[{ required: true, message: 'Por favor seleccione al menos un rol' }]}
-                            >
-                                <Select
-                                    mode="multiple"
-                                    placeholder="Seleccionar roles"
-                                >
-                                    {roles.map(role => (
-                                        <Select.Option key={role.name} value={role.name}>
-                                            {role.name}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                        </>
-                    )}
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            {isEditing ? "Guardar Cambios" : "Agregar"}
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </Modal>
+                        {roles.map(role => (
+                            <Select.Option key={role.name} value={role.name}>
+                                {role.name}
+                            </Select.Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+            </>
+        )}
+        <Form.Item>
+            <div className="modal-footer-buttons">
+                <Button
+                    className="cancel-button"
+                    onClick={handleCancel}
+                >
+                    Cancelar
+                </Button>
+                <Button
+                    className="save-button"
+                    htmlType="submit"
+                >
+                    {isEditing ? "Guardar Cambios" : "Agregar"}
+                </Button>
+            </div>
+        </Form.Item>
+    </Form>
+</Modal>
+
         </div>
     );
 };

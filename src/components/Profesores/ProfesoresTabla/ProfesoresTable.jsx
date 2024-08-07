@@ -2,11 +2,12 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import { Button, Modal, notification, Form, Input, DatePicker } from 'antd';
-import { RiAddLine, RiDeleteBin6Line } from 'react-icons/ri';
+import { RiAddLine,RiEdit2Line, RiDeleteBin6Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import profesorService from '../../../services/profesorService';
 import { AuthContext } from '../../context/AuthContext';
 import { generatePDF } from '../../../utils/pdf';
+import '../../Profesores/ProfesoresTabla/Profesores.css';
 
 const ProfesoresTable = () => {
     const [users, setUsers] = useState([]);
@@ -80,6 +81,7 @@ const ProfesoresTable = () => {
             okText: 'Eliminar',
             okType: 'danger',
             cancelText: 'Cancelar',
+            className: 'custom-confirm-modal', // Clase personalizada para el modal
             onOk() {
                 deleteProfesor(id);
             },
@@ -214,29 +216,31 @@ const ProfesoresTable = () => {
 
     return (
         <div className="users-table-page">
-            <div className="buttons-container">
-                <Button
-                    className="add-button"
-                    type="primary"
-                    icon={<RiAddLine />}
-                    onClick={() => setIsModalVisible(true)}
-                >
-                    Agregar Profesor
-                </Button>
-                <Button
-                type="secondary"
-                icon={<RiAddLine />}
-                onClick={() => generatePDF('Reporte de Profesores', columns, data2, user)}
-            >
-                Generar Reporte
-            </Button>
-                <Input
-                    placeholder="Buscar ..."
-                    value={searchText}
-                    onChange={handleSearchChange}
-                    style={{ marginBottom: 20, width: '200px' }}
-                />
-            </div>
+           <div className="buttons-container">
+    <Button
+        className="add-button"
+        type="primary"
+        icon={<RiAddLine />}
+        onClick={() => setIsModalVisible(true)}
+    >
+        Agregar Profesor
+    </Button>
+    <Button
+        className="generate-button"
+        type="secondary"
+        icon={<RiAddLine />}
+        onClick={() => generatePDF('Reporte de Profesores', columns, data2, user)}
+    >
+        Generar Reporte
+    </Button>
+    <Input
+        placeholder="Buscar ..."
+        value={searchText}
+        onChange={handleSearchChange}
+        style={{ marginBottom: 20, width: '200px' }}
+    />
+</div>
+
             <div className="table-container table-wrapper">
                 <table className="formato-tabla">
                     <thead>
@@ -245,8 +249,8 @@ const ProfesoresTable = () => {
                             <th>Apellidos</th>
                             <th>Numero Empleado</th>
                             <th>Correo</th>
+                            <th>Número Telefonico </th>
                             <th>Fecha de Nacimiento</th>
-                            <th>Número Telefonico</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -260,6 +264,7 @@ const ProfesoresTable = () => {
                                 <td>{prof.telefono}</td>
                                 <td>{formatDate(prof.fechaNacimiento)}</td>
                                 <td>
+                                <div className="actions-container">
                                     <Button
                                         className="action-button ant-btn-danger"
                                         onClick={() => confirmDeleteProfesor(prof._id)}
@@ -270,9 +275,11 @@ const ProfesoresTable = () => {
                                     <Button
                                         className="action-button ant-btn-success"
                                         onClick={() => showEditModal(prof)}
+                                        icon={<RiEdit2Line />}
                                     >
                                         Editar
                                     </Button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -280,95 +287,106 @@ const ProfesoresTable = () => {
                 </table>
             </div>
             <Modal
-                title={isEditing ? "Editar Profesor" : "Agregar Profesor"}
-                visible={isModalVisible}
-                onCancel={handleCancel}
-                footer={null}
+            title={isEditing ? "Editar Profesor" : "Agregar Profesor"}
+            visible={isModalVisible}
+            onCancel={handleCancel}
+            footer={null}
+        >
+            <Form
+                form={form}
+                onFinish={isEditing ? handleEditUser : handleAddUser}
             >
-                <Form
-                    form={form}
-                    onFinish={isEditing ? handleEditUser : handleAddUser}
+                <Form.Item
+                    name="nombre"
+                    label="Nombre"
+                    rules={[
+                        { required: true, message: 'Por favor ingrese el nombre del profesor' },
+                        { pattern: /^[a-zA-Z\s]+$/, message: 'El nombre solo debe contener letras y espacios' }
+                    ]}
                 >
-                    <Form.Item
-                        name="nombre"
-                        label="Nombre"
-                        rules={[
-                            { required: true, message: 'Por favor ingrese el nombre del profesor' },
-                            { pattern: /^[a-zA-Z\s]+$/, message: 'El nombre solo debe contener letras y espacios' }
-                        ]}
-                    >
-                        <Input placeholder="Nombre del profesor" />
-                    </Form.Item>
-                    <Form.Item
-                        name="apellidos"
-                        label="Apellidos"
-                        rules={[
-                            { required: true, message: 'Por favor ingrese los apellidos del profesor' },
-                            { pattern: /^[a-zA-Z\s]+$/, message: 'Los apellidos solo deben contener letras y espacios' }
-                        ]}
-                    >
-                        <Input placeholder="Apellidos del profesor" />
-                    </Form.Item>
-                    <Form.Item
-                        name="numeroEmpleado"
-                        label="Numero de Empleado"
-                        rules={[
-                            { required: true, message: 'Por favor ingrese el número de empleado' },
-                            { pattern: /^\d{10}$/, message: 'El número de empleado debe ser numérico y de 10 dígitos' },
-                        ]}
-                    >
-                        <Input placeholder="Numero de empleado" />
-                    </Form.Item>
-                    <Form.Item
-                        name="correo"
-                        label="Correo"
-                        rules={[
-                            { required: true, message: 'Por favor ingrese el correo electrónico' },
-                            { type: 'email', message: 'Por favor ingrese un correo electrónico válido' },
-                            ({ getFieldValue }) => ({
-                                validator(_, value) {
-                                    const isCurrentEmailUnique = users.every(u => u._id === currentUser?._id || u.correo !== value);
-                                    if (isCurrentEmailUnique) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject('El correo electrónico ya está en uso');
-                                },
-                            }),
-                        ]}
-                    >
-                        <Input placeholder="Correo electrónico" />
-                    </Form.Item>
-                    <Form.Item
-                        name="fechaNacimiento"
-                        label="Fecha de Nacimiento"
-                        rules={[
-                            { required: true, message: 'Por favor selecciona la fecha de nacimiento' },
-                            { validator: validateFechaNacimiento },
-                        ]}
-                    >
-                        <DatePicker
-                            format="DD/MM/YYYY"
-                            placeholder="Selecciona la fecha"
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        name="telefono"
-                        label="Teléfono"
-                        rules={[
-                            { required: true, message: 'Por favor ingrese el número de teléfono' },
-                            // Puedes añadir reglas de validación adicionales aquí según tus requisitos
-                        ]}
-                    >
-                        <Input placeholder="Número de teléfono" />
-                    </Form.Item>
+                    <Input placeholder="Nombre del profesor" />
+                </Form.Item>
+                <Form.Item
+                    name="apellidos"
+                    label="Apellidos"
+                    rules={[
+                        { required: true, message: 'Por favor ingrese los apellidos del profesor' },
+                        { pattern: /^[a-zA-Z\s]+$/, message: 'Los apellidos solo deben contener letras y espacios' }
+                    ]}
+                >
+                    <Input placeholder="Apellidos del profesor" />
+                </Form.Item>
+                <Form.Item
+                    name="numeroEmpleado"
+                    label="Numero de Empleado"
+                    rules={[
+                        { required: true, message: 'Por favor ingrese el número de empleado' },
+                        { pattern: /^\d{10}$/, message: 'El número de empleado debe ser numérico y de 10 dígitos' },
+                    ]}
+                >
+                    <Input placeholder="Numero de empleado" />
+                </Form.Item>
+                <Form.Item
+                    name="correo"
+                    label="Correo"
+                    rules={[
+                        { required: true, message: 'Por favor ingrese el correo electrónico' },
+                        { type: 'email', message: 'Por favor ingrese un correo electrónico válido' },
+                        ({ getFieldValue }) => ({
+                            validator(_, value) {
+                                const isCurrentEmailUnique = users.every(u => u._id === currentUser?._id || u.correo !== value);
+                                if (isCurrentEmailUnique) {
+                                    return Promise.resolve();
+                                }
+                                return Promise.reject('El correo electrónico ya está en uso');
+                            },
+                        }),
+                    ]}
+                >
+                    <Input placeholder="Correo electrónico" />
+                </Form.Item>
+                <Form.Item
+                    name="fechaNacimiento"
+                    label="Fecha de Nacimiento"
+                    rules={[
+                        { required: true, message: 'Por favor selecciona la fecha de nacimiento' },
+                        { validator: validateFechaNacimiento },
+                    ]}
+                >
+                    <DatePicker
+                        format="DD/MM/YYYY"
+                        placeholder="Selecciona la fecha"
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="telefono"
+                    label="Teléfono"
+                    rules={[
+                        { required: true, message: 'Por favor ingrese el número de teléfono' },
+                        // Puedes añadir reglas de validación adicionales aquí según tus requisitos
+                    ]}
+                >
+                    <Input placeholder="Número de teléfono" />
+                </Form.Item>
 
-                    <Form.Item>
-                        <Button key="submit" type="primary" htmlType="submit">
-                            {isEditing ? 'Guardar Cambios' : 'Agregar Profesor'}
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </Modal>
+                <Form.Item style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+                    <Button 
+                        type="default" 
+                        onClick={handleCancel} 
+                        style={{ backgroundColor: '#fff', border: 'none', color: '#000', marginRight: '10px' }}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button 
+                        key="submit" 
+                        type="primary" 
+                        htmlType="submit"
+                    >
+                        {isEditing ? 'Guardar Cambios' : 'Agregar Profesor'}
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Modal>
         </div>
     );
 };

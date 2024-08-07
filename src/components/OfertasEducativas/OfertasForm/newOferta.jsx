@@ -2,6 +2,7 @@ import React, { useState, useEffect, useImperativeHandle, forwardRef } from 'rea
 import { Modal, Form, Input, Button, Switch, Select, notification } from 'antd';
 import ofertaEducativaService from '../../../services/OfertaEducativaService';
 import usersService from '../../../services/profesorService';  // Servicio para obtener profesores
+import '../OfertasForm/newOferta.css';
 
 const { Option } = Select;
 
@@ -125,12 +126,21 @@ const NewOfertaForm = forwardRef(({ visible, onCreate, onEdit, onCancel, editing
                     </Select>
                 </Form.Item>
                 <Form.Item wrapperCol={{ span: 24 }}>
-                    <Button type="primary" htmlType="submit" loading={loading} style={{ width: '140px', marginRight: '16px' }}>
-                        {editing ? 'Guardar Cambios' : 'Crear Oferta'}
-                    </Button>
-                    <Button onClick={handleCancel} style={{ width: '140px' }}>
-                        Cancelar
-                    </Button>
+                <Button
+    type="primary"
+    htmlType="submit"
+    loading={loading}
+    style={{ width: '140px', marginRight: '16px', boxShadow: 'none', outline: 'none', border: 'none' }}
+>
+    {editing ? 'Guardar Cambios' : 'Crear Oferta'}
+</Button>
+<Button
+    onClick={handleCancel}
+    style={{ width: '140px', boxShadow: 'none', outline: 'none', border: 'none' }}
+>
+    Cancelar
+</Button>
+
                 </Form.Item>
             </Form>
         </Modal>

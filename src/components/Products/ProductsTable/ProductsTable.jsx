@@ -183,11 +183,13 @@ const ProductsTable = () => {
             okText: 'Eliminar',
             okType: 'danger',
             cancelText: 'Cancelar',
+            className: 'custom-confirm-modal', // Clase personalizada para el modal
             onOk() {
                 deleteAdmision(id);
             },
         });
     };
+    
 
     const showOffersModal = async (admisionId) => {
         await fetchRelatedOffers(admisionId);
@@ -247,13 +249,14 @@ const ProductsTable = () => {
                 <div className="buttons-container">
                     <Button
                         className="add-button"
-                        type="primary"
+                        //type="primary"
                         onClick={() => showModal('add', null)}
                         icon={<RiAddLine />}
                     >
                         Agregar Admisión
                     </Button>
                     <Button
+                     className="generate-button"
                         type="secondary"
                         icon={<RiAddLine />}
                         onClick={() => generatePDF('Reporte de Admisiones', columns, data, user)}
@@ -297,29 +300,32 @@ const ProductsTable = () => {
 
             {/* Modal for Adding/Editing Admisión */}
             <Modal
-                title={modalMode === 'add' ? 'Agregar Admisión' : 'Editar Admisión'}
-                visible={isModalVisible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                confirmLoading={loading}
-            >
-                <Input
-                    placeholder="Nombre"
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
-                />
-                <div className="active-switch">
-                    <Switch
-                        checked={newActivo}
-                        onChange={(checked) => setNewActivo(checked)}
-                    />
-                    <span>{newActivo ? 'Activo' : 'Inactivo'}</span>
-                </div>
-            </Modal>
+    title={modalMode === 'add' ? 'Agregar Admisión' : 'Editar Admisión'}
+    visible={isModalVisible}
+    onOk={handleOk}
+    onCancel={handleCancel}
+    confirmLoading={loading}
+    className="custom-modal" // Clase personalizada para el modal
+>
+    <Input
+        placeholder="Nombre"
+        value={newName}
+        onChange={(e) => setNewName(e.target.value)}
+    />
+    <div className="active-switch">
+        <Switch
+            checked={newActivo}
+            onChange={(checked) => setNewActivo(checked)}
+        />
+        <span>{newActivo ? 'Activo' : 'Inactivo'}</span>
+    </div>
+</Modal>
+
             <Modal
                 title="Ofertas Educativas Relacionadas"
                 visible={isOffersModalVisible}
-                onCancel={handleOffersModalCancel}
+                
+                onCancel={handleOffersModalCancel  }
                 footer={null}
             >
                 {noOffersMessage ? (
