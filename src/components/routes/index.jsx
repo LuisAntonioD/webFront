@@ -22,6 +22,10 @@ const AppRoutes = () => {
         { path: '/Usuarios', element: <PrivateRoute element={UsersPage} /> },
         { path: '/profesores', element: <PrivateRoute element={ProfesoresPage} /> },
         { path: '/OfertaEducativa', element: <PrivateRoute element={OfertaEducativaPage} /> },
+        { path: '/mostrarofertas', element: <OfertaEducativaPage />},
+        { path: '/mostraradmisiones', element: <ProductsPage /> }, 
+
+
         { path: '*', element: <NotFound /> }, // Ruta para páginas no encontradas
     ]);
 

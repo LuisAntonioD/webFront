@@ -9,8 +9,11 @@ const ImageLogin = () => {
       <img src={loginImage} alt="Login" />
       {/* Agrega un enlace a la página de productos */}
       <div className="button-container">
-        <Link to="/productos">
+        <Link to="/mostraradmisiones">
           <button className="ver-productos-btn">Nuestras Admisiones</button>
+        </Link>
+        <Link to="/mostrarofertas">
+          <button className="ver-productos-btn">Nuestras Ofertas</button>
         </Link>
       </div>
     </div>

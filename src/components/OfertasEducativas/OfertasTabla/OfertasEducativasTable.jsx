@@ -10,7 +10,6 @@ import { AuthContext } from '../../context/AuthContext';
 import '../OfertasTabla/OfertasTable.css'; // Asegúrate de importar el CSS
 import { generatePDF } from '../../../utils/pdf';
 
-
 const OfertasEducativasTable = () => {
     const [ofertas, setOfertas] = useState([]);
     const [profesores, setProfesores] = useState([]);
@@ -21,7 +20,7 @@ const OfertasEducativasTable = () => {
     const [token, setToken] = useState('');
     const { user } = useContext(AuthContext);
     const formRef = useRef();
-    const [searchText, setSearchText] = useState(''); 
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
         fetchOfertas();
@@ -149,7 +148,7 @@ const OfertasEducativasTable = () => {
             nombresProfesores.toLowerCase().includes(searchText.toLowerCase())
         );
     });
-    
+
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
@@ -157,7 +156,7 @@ const OfertasEducativasTable = () => {
 
     if (error) {
         return <div>{error}</div>;
-    }    
+    }
 
     const existingNames = ofertas.map(oferta => oferta.nombre);
 
@@ -177,33 +176,35 @@ const OfertasEducativasTable = () => {
 
     return (
         <div className="ofertas-educativas-table-page">
-            <div className="buttons-container">
-                <Button
-                    className="add-button"
-                    icon={<RiAddLine />}
-                    onClick={() => {
-                        setCurrentUser(null);
-                        setIsEditing(false);
-                        setIsModalVisible(true);
-                    }}
-                >
-                    Agregar Oferta
-                </Button>
-                <Button
-                    className="generate-button"
-                    type="secondary"
-                    icon={<RiAddLine />}
-                    onClick={() => generatePDF('Reporte Ofertas educativas', columns, data, user)}
-                >
-                    Generar Reporte
-                </Button>
-                <Input
-                    placeholder="Buscar ..."
-                    value={searchText}
-                    onChange={handleSearchChange}
-                    style={{ marginBottom: 20, width: '200px' }}
-                />
-            </div>
+            {user && (
+                <div className="buttons-container">
+                    <Button
+                        className="add-button"
+                        icon={<RiAddLine />}
+                        onClick={() => {
+                            setCurrentUser(null);
+                            setIsEditing(false);
+                            setIsModalVisible(true);
+                        }}
+                    >
+                        Agregar Oferta
+                    </Button>
+                    <Button
+                        className="generate-button"
+                        type="secondary"
+                        icon={<RiAddLine />}
+                        onClick={() => generatePDF('Reporte Ofertas educativas', columns, data, user)}
+                    >
+                        Generar Reporte
+                    </Button>
+                    <Input
+                        placeholder="Buscar ..."
+                        value={searchText}
+                        onChange={handleSearchChange}
+                        style={{ marginBottom: 20, width: '200px' }}
+                    />
+                </div>
+            )}
             <div className="table-container">
                 <table className="formato-tabla">
                     <thead>
@@ -212,7 +213,7 @@ const OfertasEducativasTable = () => {
                             <th>Status</th>
                             <th>Fecha de Creación</th>
                             <th>Profesores</th>
-                            <th>Acciones</th>
+                            {user && <th>Acciones</th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -222,24 +223,26 @@ const OfertasEducativasTable = () => {
                                 <td>{oferta.activo ? 'Activo' : 'Inactivo'}</td>
                                 <td>{moment(oferta.createdAt).format('DD/MM/YYYY')}</td>
                                 <td>{getProfesorNames(oferta.profesores)}</td>
-                                <td>
-                                    <div className="actions-container">
-                                        <Button
-                                            className="action-button ant-btn-danger"
-                                            onClick={() => confirmDeleteOferta(oferta._id)}
-                                            icon={<RiDeleteBin6Line />}
-                                        >
-                                            Eliminar
-                                        </Button>
-                                        <Button
-                                            className="action-button ant-btn-success"
-                                            onClick={() => showEditModal(oferta)}
-                                            icon={<RiEdit2Line />}
-                                        >
-                                            Editar
-                                        </Button>
-                                    </div>
-                                </td>
+                                {user && (
+                                    <td>
+                                        <div className="actions-container">
+                                            <Button
+                                                className="action-button ant-btn-danger"
+                                                onClick={() => confirmDeleteOferta(oferta._id)}
+                                                icon={<RiDeleteBin6Line />}
+                                            >
+                                                Eliminar
+                                            </Button>
+                                            <Button
+                                                className="action-button ant-btn-success"
+                                                onClick={() => showEditModal(oferta)}
+                                                icon={<RiEdit2Line />}
+                                            >
+                                                Editar
+                                            </Button>
+                                        </div>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                     </tbody>
@@ -247,7 +250,7 @@ const OfertasEducativasTable = () => {
             </div>
             <NewOfertaForm
                 ref={formRef}
-                onCreate={fetchOfertas}  //Llamar la funcion fetchOfertas que sirve para volver a cargar la tabla
+                onCreate={fetchOfertas}  // Llamar la funcion fetchOfertas que sirve para volver a cargar la tabla
                 onEdit={handleEditOferta}
                 visible={isModalVisible}
                 onCancel={handleCancel}

@@ -33,8 +33,8 @@ const ProductsTable = () => {
         try {
             const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.ADMISION}`);
             if (Array.isArray(response.data)) {
-                const filteredUsers = response.data.filter(u => u._id !== user._id);
-                setProducts(response.data);
+                const filteredUsers = response.data.filter(u => u._id !== user?._id);
+                setProducts(filteredUsers);
             } else {
                 setError('La respuesta de la API no es un arreglo');
             }
@@ -43,6 +43,7 @@ const ProductsTable = () => {
             console.error(err);
         }
     };
+    
 
     const fetchRelatedOffers = async (admisionId) => {
         try {
@@ -278,7 +279,7 @@ const ProductsTable = () => {
                             <th>ID</th>
                             <th>Nombre</th>
                             <th>Estado</th>
-                            <th>Acciones</th>
+                            {user && <th>Acciones</th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -287,11 +288,11 @@ const ProductsTable = () => {
                                 <td>{product._id}</td>
                                 <td>{product.nombre}</td>
                                 <td>{product.activo ? 'Activo' : 'Inactivo'}</td>
-                                <td>
+                                {user && ( <td>
                                     <Button icon={<RiEyeLine />} onClick={() => showOffersModal(product._id)} className="action-button consultar-button"> consultar  </Button>
                                     <Button icon={<RiEdit2Line />} onClick={() => showModal('edit', product)} className="action-button ant-btn-success"> Editar </Button>
                                     <Button icon={<RiDeleteBin6Line />} onClick={() => confirmDeleteAdmision(product._id)} className="action-button ant-btn-danger">Eliminar </Button>
-                                </td>
+                                </td>)}
                             </tr>
                         ))}
                     </tbody>
