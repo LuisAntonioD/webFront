@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth.js';
 import { Button, Layout, theme } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import ProductsTable from '../../Products/ProductsTable/ProductsTable';
-import SidebarMenu from '../Menu/SidebarMenu';
-import { useMenuConfig } from '../Menu/HandleMenu';
+import AdmisionesTable from '../../Admisiones/Admisiones/AdmisionesTable.jsx';
+import SidebarMenu from '../Menu/SidebarMenu.jsx';
+import { useMenuConfig } from '../Menu/HandleMenu.jsx';
 import FooterNav  from '../Menu/Footer.jsx';
 
 const { Header, Content } = Layout;
 
-const ProductsPage = () => {
+const AdmisionesPage = () => {
     const { user, logout } = useAuth();
     const [collapsed, setCollapsed] = useState(false);
     const { colorBgContainer } = theme.useToken().token;
@@ -44,7 +44,7 @@ const ProductsPage = () => {
                     }}
                 >
                     <div className="products-page-container">
-                        <ProductsTable />
+                        <AdmisionesTable />
                     </div>
                     <FooterNav/>
                 </Content>
@@ -53,4 +53,4 @@ const ProductsPage = () => {
     );
 };
 
-export default ProductsPage;
+export default AdmisionesPage;

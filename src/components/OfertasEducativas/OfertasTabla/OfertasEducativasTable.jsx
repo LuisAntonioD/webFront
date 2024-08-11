@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import { Button, Modal, notification, Input } from 'antd';
+import {DownloadOutlined} from '@ant-design/icons';
 import { RiAddLine, RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import ofertaEducativaService from '../../../services/OfertaEducativaService';
@@ -192,7 +193,7 @@ const OfertasEducativasTable = () => {
                     <Button
                         className="generate-button"
                         type="secondary"
-                        icon={<RiAddLine />}
+                        icon={<DownloadOutlined />}
                         onClick={() => generatePDF('Reporte Ofertas educativas', columns, data, user)}
                     >
                         Generar Reporte

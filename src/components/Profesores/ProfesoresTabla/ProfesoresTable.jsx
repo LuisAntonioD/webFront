@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import { Button, Modal, notification, Form, Input, DatePicker } from 'antd';
+import {DownloadOutlined} from '@ant-design/icons';
 import { RiAddLine,RiEdit2Line, RiDeleteBin6Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import profesorService from '../../../services/profesorService';
@@ -228,7 +229,7 @@ const ProfesoresTable = () => {
     <Button
         className="generate-button"
         type="secondary"
-        icon={<RiAddLine />}
+        icon={<DownloadOutlined />}
         onClick={() => generatePDF('Reporte de Profesores', columns, data2, user)}
     >
         Generar Reporte

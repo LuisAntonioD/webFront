@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Modal, Button, Input, Switch, notification, Table } from 'antd';
+import { Modal, Button, Input, Switch, notification, Table, Select, Form } from 'antd';
+import {DownloadOutlined} from '@ant-design/icons';
 import { RiDeleteBin6Line, RiEdit2Line, RiAddLine, RiEyeLine } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
-import './ProductsTable.css';
+import './AdmisionesTable.css';
 import authService from '../../../services/admisiones';
 import ofertaEducativaService from '../../../services/OfertaEducativaService';
 import { AuthContext } from '../../context/AuthContext';
@@ -23,6 +24,33 @@ const ProductsTable = () => {
     const [noOffersMessage, setNoOffersMessage] = useState('');
     const { user, token } = useContext(AuthContext);
     const [searchText, setSearchText] = useState('');
+    const { Option } = Select;
+    const [newOfertas, setNewOfertas] = useState([]);
+    const [ofertas, setOfertas] = useState([]);
+    const [selectedOfertas, setSelectedOfertas] = useState([]);
+
+    
+
+    // Obtener las ofertas educativas activas al cargar el componente
+    useEffect(() => {
+        const fetchOfertasEducativas = async () => {
+            try {
+                const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.OFERTAEDUCATIVA}`);
+                // Filtrar solo las ofertas que están activas
+                const ofertasActivas = response.data.filter(oferta => oferta.activo);
+                setOfertas(ofertasActivas);
+            } catch (error) {
+                console.error('Error al obtener las ofertas educativas:', error);
+            }
+        };
+
+        fetchOfertasEducativas();
+    }, []);
+
+    const handleChange = (value) => {
+        setSelectedOfertas(value);
+    };
+
 
 
     useEffect(() => {
@@ -50,6 +78,7 @@ const ProductsTable = () => {
             const response = await ofertaEducativaService.getRelatedOffers(admisionId);
             if (Array.isArray(response.data)) {
                 setRelatedOffers(response.data);
+                console.log(response.data)
                 setNoOffersMessage(response.data.length === 0 ? 'No hay ofertas educativas en esta admisión' : '');
             } else {
                 setError('La respuesta de la API no es un arreglo');
@@ -79,7 +108,7 @@ const ProductsTable = () => {
 
         setLoading(true);
         try {
-            await authService.addProduct(newName.trim(), newActivo, token);
+            await authService.addProduct(newName.trim(), newActivo, selectedOfertas, token);
             fetchProducts();
             notification.success({
                 message: 'Admisión Agregada',
@@ -112,7 +141,7 @@ const ProductsTable = () => {
 
         setLoading(true);
         try {
-            await authService.editProduct(currentProduct._id, newName.trim(), newActivo, token);
+            await authService.editProduct(currentProduct._id, newName.trim(), newActivo, selectedOfertas, token);
             fetchProducts();
             notification.success({
                 message: 'Admisión Editada',
@@ -149,19 +178,25 @@ const ProductsTable = () => {
         });
     };
 
-    const showModal = (mode, product) => {
-        if (mode === 'edit') {
-            setCurrentProduct(product);
-            setNewName(product.nombre);
-            setNewActivo(product.activo);
-        } else {
-            setCurrentProduct(null);
-            setNewName('');
-            setNewActivo(false);
-        }
-        setModalMode(mode);
-        setIsModalVisible(true);
-    };
+const showModal = (mode, product) => {
+    if (mode === 'edit') {
+        setCurrentProduct(product);
+        setNewName(product.nombre);
+        setNewActivo(product.activo);
+
+        // Filtra ofertas inactivas de selectedOfertas
+        const activeOfertas = product.ofertas.filter(ofertaId => ofertas.some(oferta => oferta._id === ofertaId && oferta.activo));
+        setSelectedOfertas(activeOfertas); // Inicializa selectedOfertas con ofertas activas
+    } else {
+        setCurrentProduct(null);
+        setNewName('');
+        setNewOfertas([]);
+        setSelectedOfertas([]); // Limpia selectedOfertas
+        setNewActivo(false);
+    }
+    setModalMode(mode);
+    setIsModalVisible(true);
+};
 
     const handleOk = () => {
         if (modalMode === 'add') {
@@ -241,7 +276,7 @@ const ProductsTable = () => {
     const offersColumns = [
         { title: "ID", dataIndex: "_id", key: "_id" },
         { title: "Nombre", dataIndex: "nombre", key: "nombre" },
-        { title: "Estado", dataIndex: "activo", key: "activo" },
+        { title: "Estado", dataIndex: "activo", key: "activo", render: (text) => (text ? 'Activo' : 'Inactivo') },
     ];
 
     return (
@@ -259,7 +294,7 @@ const ProductsTable = () => {
                     <Button
                      className="generate-button"
                         type="secondary"
-                        icon={<RiAddLine />}
+                        icon={<DownloadOutlined />}
                         onClick={() => generatePDF('Reporte de Admisiones', columns, data, user)}
                     >
                         Generar Reporte
@@ -301,26 +336,46 @@ const ProductsTable = () => {
 
             {/* Modal for Adding/Editing Admisión */}
             <Modal
-    title={modalMode === 'add' ? 'Agregar Admisión' : 'Editar Admisión'}
-    visible={isModalVisible}
-    onOk={handleOk}
-    onCancel={handleCancel}
-    confirmLoading={loading}
-    className="custom-modal" // Clase personalizada para el modal
->
-    <Input
-        placeholder="Nombre"
-        value={newName}
-        onChange={(e) => setNewName(e.target.value)}
-    />
-    <div className="active-switch">
-        <Switch
-            checked={newActivo}
-            onChange={(checked) => setNewActivo(checked)}
-        />
-        <span>{newActivo ? 'Activo' : 'Inactivo'}</span>
-    </div>
-</Modal>
+                title={modalMode === 'add' ? 'Agregar Admisión' : 'Editar Admisión'}
+                visible={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                confirmLoading={loading}
+                className="custom-modal" // Clase personalizada para el modal
+            >
+                <Input
+                    placeholder="Nombre"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    style={{ marginBottom: '16px' }} 
+                />
+                <Select
+                    mode="multiple"
+                    placeholder="Selecciona ofertas"
+                    value={selectedOfertas}
+                    onChange={handleChange}
+                    style={{ width: '100%', marginBottom: '16px'  }}
+                >
+                    {ofertas.map((oferta) => (
+                        <Option key={oferta._id} value={oferta._id}>
+                            {oferta.nombre}
+                        </Option>
+                    ))}
+                </Select>
+
+
+                
+
+                <Form.Item
+                    name="activo"
+                    label="Estado"
+                    valuePropName="checked"
+                    initialValue={true}
+                >
+                    <Switch checkedChildren="Encendido" unCheckedChildren="Apagado" checked={newActivo}
+                        onChange={(checked) => setNewActivo(checked)}/>
+                </Form.Item>
+            </Modal>
 
             <Modal
                 title="Ofertas Educativas Relacionadas"

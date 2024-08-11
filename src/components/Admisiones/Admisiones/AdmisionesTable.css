@@ -34,7 +34,7 @@ button:focus-visible,.add-button ,
 }
 
 .add-button {
-    background-color: #d1971b; /* Color de fondo del botón */
+    background-color: #63A621; /* Color de fondo del botón */
     color: rgb(0, 0, 0); /* Color del texto del botón */
     border: none; /* Sin borde */
     align-self: flex-start; /* Alinea el botón a la izquierda */
@@ -124,18 +124,18 @@ button:focus-visible,.add-button ,
 }
 
 .action-button.ant-btn-danger {
-    background-color: #01f352af; /* Color de fondo del botón */
+    background-color: #F43E3E; /* Color de fondo del botón */
     color: rgb(0, 0, 0); /* Color del texto del botón */
     border: none; /* Sin borde */
 }
 
 .action-button.ant-btn-danger:hover {
-    background-color: #ff0000; /* Color de fondo cuando el botón es hover */
+    background-color: #F43E3E; /* Color de fondo cuando el botón es hover */
     border: none; /* Sin borde */
 }
 
 .action-button.ant-btn-success {
-    background-color: #01f352af; /* Color de fondo del botón */
+    background-color: #0468BF; /* Color de fondo del botón */
     color: rgb(0, 0, 0); /* Color del texto del botón */
     border: none; /* Sin borde */
 }
@@ -147,7 +147,7 @@ button:focus-visible,.add-button ,
 }
 
 .consultar-button {
-    background-color: #4d4912; /* Color de fondo del botón */
+    background-color: #F1B705; /* Color de fondo del botón */
     color: rgb(0, 0, 0); /* Color del texto del botón */
     border: none; /* Sin borde */
 }

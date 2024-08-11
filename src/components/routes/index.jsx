@@ -4,7 +4,7 @@ import { useRoutes } from 'react-router-dom';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
-import ProductsPage from '../pages/Products/ProductsPage';
+import AdmisionesPage from '../pages/Admisiones/AdmisionesPage';
 import NotFound from '../pages/Config/NotFound';
 import { useAuth } from '../../hooks/useAuth';
 import ProfesoresPage from '../pages/Profesores/ProfesoresPage';
@@ -17,13 +17,13 @@ const AppRoutes = () => {
         { path: '/', element: <PrivateRoute element={Home} /> },
         { path: '/login', element: <Login /> },
         { path: '/register', element: <Register /> },
-        { path: '/productos', element: <PrivateRoute element={ProductsPage} /> },
-        { path: '/Admisiones', element: <PrivateRoute element={ProductsPage} /> },
+        { path: '/productos', element: <PrivateRoute element={AdmisionesPage} /> },
+        { path: '/Admisiones', element: <PrivateRoute element={AdmisionesPage} /> },
         { path: '/Usuarios', element: <PrivateRoute element={UsersPage} /> },
         { path: '/profesores', element: <PrivateRoute element={ProfesoresPage} /> },
         { path: '/OfertaEducativa', element: <PrivateRoute element={OfertaEducativaPage} /> },
         { path: '/mostrarofertas', element: <OfertaEducativaPage />},
-        { path: '/mostraradmisiones', element: <ProductsPage /> }, 
+        { path: '/mostraradmisiones', element: <AdmisionesPage /> }, 
 
 
         { path: '*', element: <NotFound /> }, // Ruta para páginas no encontradas
