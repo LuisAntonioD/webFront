@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Button, Layout } from 'antd';
 import { LogoutOutlined, HomeOutlined, BookFilled, UserOutlined } from '@ant-design/icons';
@@ -48,12 +48,14 @@ const SidebarMenu = ({ user, collapsed, setCollapsed, handleMenuClick, logout })
                 <Menu.Item key="5" icon={<UserOutlined />}>
                     <Link to="/ofertaeducativa">Oferta Educativa</Link>
                 </Menu.Item>
-
                 <Menu.Item key="6" icon={<UserOutlined />}>
                     <Link to="/materias">Materias</Link>
                 </Menu.Item>
+                <Menu.Item key="7" icon={<UserOutlined />}>
+                    <Link to="/cursos">Cursos</Link>
+                </Menu.Item>
                 <Menu.Item
-                    key="7"
+                    key="8"
                     icon={<UserOutlined />}
                     onClick={handleDrawerOpen}
                 >
