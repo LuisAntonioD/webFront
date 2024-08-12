@@ -26,7 +26,7 @@ const AppRoutes = () => {
         { path: '/profesores', element: <PrivateRoute element={ProfesoresPage} /> },
         { path: '/OfertaEducativa', element: <PrivateRoute element={OfertaEducativaPage} /> },
         { path: '/mostrarofertas', element: <OfertaEducativaPage />},
-        { path: '/mostraradmisiones', element: <ProductsPage /> },
+        { path: '/mostraradmisiones', element: <AdmisionesPage /> },
         { path: '/materias', element: <PrivateRoute element={MateriasPage} />  },
      
 

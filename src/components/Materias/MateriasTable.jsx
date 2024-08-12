@@ -5,7 +5,7 @@ import { RiDeleteBin6Line, RiEdit2Line, RiAddLine } from 'react-icons/ri';
 import { ENV } from '../../utils/constants';
 import MateriasForm from '../Materias/MateriasForm/MateriasForm';
 import { AuthContext } from '../context/AuthContext';
-import '../Products/ProductsTable/ProductsTable.css'; // Reutilizar estilos
+import '../Admisiones/ProductsForm/ProductsForm.css'; // Reutilizar estilos
 
 const MateriasTable = () => {
     const { token } = useContext(AuthContext);
