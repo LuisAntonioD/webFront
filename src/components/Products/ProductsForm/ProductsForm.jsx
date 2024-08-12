@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from './AuthContext'; // Asegúrate de importar tu contexto de autenticación
 import { ProductTable } from './ProductTable'; // Importa tu componente o lógica de gestión de productos
 import axios from 'axios';
-import '../ProductsForm/ProductsForm.css';
+import '../ProductsTable/ProductsTable.css';
 
 const UpdateForm = () => {
     const { login } = useContext(AuthContext);

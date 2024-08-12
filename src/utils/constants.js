@@ -13,6 +13,8 @@ export const ENV = {
             PROFESORES:'api/profesores',
             OFERTAEDUCATIVA: 'api/oferta',
             OFERTAS_RELACIONADAS: 'api/admision/:id/ofertas',
+            MATERIAS: 'api/materias',
+            
         },
         STORAGE: {
             TOKEN: "token",

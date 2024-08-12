@@ -13,6 +13,7 @@ const FooterNav = () => {
                 <Link to="/OfertaEducativa" style={{ margin: '0 10px', color: 'black' }}>Oferta Educativa</Link>
                 <Link to="/Usuarios" style={{ margin: '0 10px', color: 'black' }}>Usuarios</Link>
                 <Link to="/Profesores" style={{ margin: '0 10px', color: 'black' }}>Profesores</Link>
+                <Link to="/materias" style={{ margin: '0 10px', color: 'black' }}>materias</Link>
             </div>
             <div style={{ marginTop: '20px' }}>
                 Uteq 2.0 ©2024 Created by TeamAura
