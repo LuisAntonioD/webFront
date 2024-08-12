@@ -1,0 +1,245 @@
+/* Aplicando estilos de ProductsTable.css a MateriasTable.css */
+
+/* Asegúrate de que los botones no muestren el borde negro */
+button,
+.ant-btn,
+button:focus,
+button:active,
+.ant-btn:focus,
+.ant-btn:active,
+button:focus-visible,
+.add-button,
+.ant-btn:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Estilos específicos para los botones de acción */
+.action-button,
+.add-button,
+.consultar-button,
+.generate-button {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Estilos ya presentes en el archivo */
+.products-table-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: var(--neutral-color);
+    min-height: calc(100vh - 64px); /* Ajusta según la altura de tu barra de navegación */
+}
+
+/* Adaptar el botón 'Add' */
+.add-button {
+    background-color: #d1971b; /* Color de fondo del botón */
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+    align-self: flex-start; /* Alinea el botón a la izquierda */
+}
+
+.add-button:hover {
+    background-color: #ff0000; /* Color de fondo cuando el botón es hover */
+    border: none; /* Sin borde */
+}
+
+/* Contenedor de la tabla */
+.table-container {
+    width: 100%;
+    max-width: 90%; /* Ajusta según el porcentaje deseado */
+    overflow-x: auto;
+    background-color: var(--text-color-light);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px; /* Añade un margen inferior para separar de otros elementos */
+}
+
+/* Tabla con formato */
+.formato-tabla {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 16px;
+    text-align: center;
+    background-color: var(--text-color-light);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0 auto; /* Centra la tabla en la página */
+}
+
+.formato-tabla thead {
+    background-color: var(--text-color);
+    color: var(--text-color-light);
+    font-weight: bold;
+}
+
+.formato-tabla th,
+.formato-tabla td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.formato-tabla th {
+    border-right: 1px solid var(--border-color);
+}
+
+.formato-tabla th:last-child {
+    border-right: none;
+}
+
+.formato-tabla tbody tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.formato-tabla tbody tr:nth-of-type(even) {
+    background-color: var(--neutral-color);
+}
+
+.formato-tabla tbody tr:hover {
+    background-color: var(--hover-color);
+}
+
+.formato-tabla tbody tr:last-of-type {
+    border-bottom: none;
+}
+
+.formato-tabla td {
+    border-right: 1px solid var(--border-color);
+}
+
+.formato-tabla td:last-child {
+    border-right: none;
+}
+
+/* Estilos para botones de acción */
+.action-button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 120px;
+    color: var(--text-color-light);
+    border: none; /* Sin borde */
+}
+
+.action-button.ant-btn-danger {
+    background-color: #01f352af; /* Color de fondo del botón */
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+}
+
+.action-button.ant-btn-danger:hover {
+    background-color: #ff0000; /* Color de fondo cuando el botón es hover */
+    border: none; /* Sin borde */
+}
+
+.action-button.ant-btn-success {
+    background-color: #01f352af; /* Color de fondo del botón */
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+}
+
+.action-button.ant-btn-success:hover {
+    background-color: #45a049; /* Color de fondo cuando el botón es hover */
+    border: none; /* Sin borde */
+}
+
+.consultar-button {
+    background-color: #4d4912; /* Color de fondo del botón */
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+}
+
+.consultar-button:hover {
+    background-color: #45a049; /* Color de fondo cuando el botón es hover */
+    border: none; /* Sin borde */
+}
+
+.generate-button {
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+}
+
+.generate-button:hover {
+    border: none; /* Sin borde */
+}
+
+/* Estilos para el modal */
+.ant-modal-body {
+    text-align: left;
+}
+
+.actualizar {
+    background-color: #6930c4; /* Color de fondo del botón */
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+    align-self: flex-start; /* Alinea el botón a la izquierda */
+}
+
+.actualizar:hover {
+    background-color: #ff0000; /* Color de fondo cuando el botón es hover */
+    border: none; /* Sin borde */
+}
+
+/* Estilos específicos para el modal */
+.custom-modal .ant-modal-footer {
+    border-top: none; /* Opcional: elimina el borde superior del pie de página */
+}
+
+/* Estilos para el botón 'OK' */
+.custom-modal .ant-btn-primary {
+    background-color: #2ecc71; /* Color de fondo del botón OK (verde) */
+    border: none; /* Sin borde */
+    color: #fff; /* Color del texto del botón OK */
+}
+
+.custom-modal .ant-btn-primary:hover {
+    background-color: #27ae60; /* Color de fondo cuando el botón OK es hover */
+    border: none; /* Sin borde */
+}
+
+/* Estilos para el botón 'Cancel' */
+.custom-modal .ant-btn-default {
+    background-color: #e74c3c; /* Color de fondo del botón Cancel (rojo) */
+    color: #fff; /* Color del texto del botón Cancel */
+    border: none; /* Sin borde */
+}
+
+.custom-modal .ant-btn-default:hover {
+    background-color: #c0392b; /* Color de fondo cuando el botón Cancel es hover */
+    border: none; /* Sin borde */
+}
+
+/* Estilos específicos para el modal de confirmación */
+.custom-confirm-modal .ant-modal-footer {
+    border-top: none; /* Opcional: elimina el borde superior del pie de página */
+}
+
+/* Estilos para el botón 'Cancelar' */
+.custom-confirm-modal .ant-btn-default {
+    background-color: #fff; /* Color de fondo del botón Cancelar (blanco) */
+    border: none; /* Sin borde */
+    color: #000; /* Color del texto del botón Cancelar */
+}
+
+.custom-confirm-modal .ant-btn-default:hover {
+    background-color: #f0f0f0; /* Color de fondo cuando el botón Cancelar es hover */
+    border: none; /* Sin borde */
+    color: #000; /* Color del texto cuando el botón Cancelar es hover */
+}
+
+/* Estilos para el botón 'Eliminar' */
+.custom-confirm-modal .ant-btn-danger {
+    background-color: #e74c3c; /* Color de fondo del botón Eliminar (rojo) */
+    border-color: #e74c3c; /* Color del borde del botón Eliminar */
+    color: #fff; /* Color del texto del botón Eliminar */
+}
+
+.custom-confirm-modal .ant-btn-danger:hover {
+    background-color: #c0392b; /* Color de fondo cuando el botón Eliminar es hover */
+    border-color: #c0392b; /* Color del borde cuando el botón Eliminar es hover */
+}

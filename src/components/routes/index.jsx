@@ -11,6 +11,9 @@ import ProfesoresPage from '../pages/Profesores/ProfesoresPage';
 import UsersPage from '../pages/Usuarios/Users';
 import OfertaEducativaPage from '../pages/OfertaEducativa/OfertaEducativapage';
 import PrivateRoute from './PrivateRoute'; // Importa el componente PrivateRoute
+//import Materias from '../Materias/MateriasTable'; // Importa el componente PrivateRoute
+
+import MateriasPage from '../pages/Materias/MateriasPage'; // Importa el componente PrivateRoute
 
 const AppRoutes = () => {
     let routes = useRoutes([
@@ -23,7 +26,9 @@ const AppRoutes = () => {
         { path: '/profesores', element: <PrivateRoute element={ProfesoresPage} /> },
         { path: '/OfertaEducativa', element: <PrivateRoute element={OfertaEducativaPage} /> },
         { path: '/mostrarofertas', element: <OfertaEducativaPage />},
-        { path: '/mostraradmisiones', element: <AdmisionesPage /> }, 
+        { path: '/mostraradmisiones', element: <ProductsPage /> },
+        { path: '/materias', element: <PrivateRoute element={MateriasPage} />  },
+     
 
 
         { path: '*', element: <NotFound /> }, // Ruta para páginas no encontradas

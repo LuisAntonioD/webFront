@@ -48,6 +48,10 @@ const SidebarMenu = ({ user, collapsed, setCollapsed, handleMenuClick, logout })
                 <Menu.Item key="5" icon={<UserOutlined />}>
                     <Link to="/ofertaeducativa">Oferta Educativa</Link>
                 </Menu.Item>
+
+                <Menu.Item key="6" icon={<UserOutlined />}>
+                    <Link to="/materias">Materias</Link>
+                </Menu.Item>
                 <Menu.Item
                     key="7"
                     icon={<UserOutlined />}

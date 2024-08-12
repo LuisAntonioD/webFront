@@ -23,6 +23,9 @@ export const useMenuConfig = () => {
             case '5':
                 navigate('/OfertaEducativa');
                 break;
+                case '6':
+                    navigate('/materias');
+                    break;
             case '7':
                 <DrawerComponent />
                 break;
