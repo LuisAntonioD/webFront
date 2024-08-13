@@ -1,14 +1,52 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Button, Modal, notification, Input } from 'antd';
-import { RiDeleteBin6Line, RiEdit2Line, RiAddLine } from 'react-icons/ri';
+import { RiDeleteBin6Line, RiEdit2Line, RiAddLine, RiFileTextLine } from 'react-icons/ri';
 import { ENV } from '../../utils/constants';
 import MateriasForm from '../Materias/MateriasForm/MateriasForm';
 import { AuthContext } from '../context/AuthContext';
 import '../Admisiones/ProductsForm/ProductsForm.css'; // Reutilizar estilos
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+const generatePDF = (title, columns, data, userlogeado) => {
+    const doc = new jsPDF();
+
+    // Obtener la fecha actual y formatearla
+    const currentDate = new Date();
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+    const formattedDate = formatDate(currentDate);
+
+    doc.text(title, 14, 20);
+
+    // Transforma los datos para el PDF
+    const rows = data.map(row => columns.map(col => {
+        if (col.dataIndex === 'ofertasEducativas') {
+            // Convierte array de objetos a una cadena de nombres
+            return row[col.dataIndex].map(oferta => oferta.nombre).join(', ');
+        }
+        return row[col.dataIndex] || '';
+    }));
+
+    doc.autoTable({
+        head: [columns.map(col => col.title)],
+        body: rows,
+        startY: 40,
+    });
+
+    doc.setFontSize(10);
+    doc.text(`Generado por: ${userlogeado.username} (${userlogeado.email})`, 14, 30);
+    doc.text(`Fecha de Generación: ${formattedDate}`, 14, 35);
+
+    doc.save(`${title.replace(/\s+/g, '_').toLowerCase()}.pdf`);
+};
+
 
 const MateriasTable = () => {
-    const { token } = useContext(AuthContext);
+    const { token, user } = useContext(AuthContext);
     const [materias, setMaterias] = useState([]);
     const [editingMateria, setEditingMateria] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -79,7 +117,7 @@ const MateriasTable = () => {
 
     const handleSave = async () => {
         setIsModalVisible(false);
-        fetchMaterias();
+        await fetchMaterias(); // Espera a que se actualicen las materias
     };
 
     const handleSearchChange = (e) => {
@@ -94,14 +132,29 @@ const MateriasTable = () => {
         return ofertas.map((oferta) => oferta.nombre).join(', ');
     };
 
+    const handleGenerateReport = () => {
+        const columns = [
+            { title: 'ID', dataIndex: '_id' },
+            { title: 'Nombre', dataIndex: 'nombre' },
+            { title: 'Descripción', dataIndex: 'descripcion' },
+            { title: 'Ofertas Educativas', dataIndex: 'ofertasEducativas' },
+        ];
+        generatePDF('Reporte de Materias', columns, materias, user);
+    };
+    
+
     return (
         <div className="products-table-page"> {/* Utiliza el mismo contenedor */}
             <div className="buttons-container">
                 <Button className="add-button" type="primary" onClick={handleAdd} icon={<RiAddLine />} style={{backgroundColor: '#27ae60'}}>
                     Agregar Materia
                 </Button>
+                <Button className="report-button" type="default" onClick={handleGenerateReport} icon={<RiFileTextLine />} style={{backgroundColor: '#3498db', color: 'white'}}>
+                    Generar Reporte
+                </Button>
                 <Input
                     placeholder="Buscar ..."
+                       className="search-input"
                     value={searchText}
                     onChange={handleSearchChange}
                     style={{ marginBottom: 20, width: '200px' }}

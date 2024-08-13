@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { Button, Modal, notification, Input } from 'antd';
 import {DownloadOutlined} from '@ant-design/icons';
-import { RiAddLine, RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
+import { RiAddLine, RiDeleteBin6Line, RiEdit2Line, RiFileTextLine } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import ofertaEducativaService from '../../../services/OfertaEducativaService';
 import NewOfertaForm from '../OfertasForm/newOferta';
@@ -194,13 +194,14 @@ const OfertasEducativasTable = () => {
                     <Button
                         className="generate-button"
                         type="secondary"
-                        icon={<DownloadOutlined />}
+                        icon={<RiFileTextLine />} style={{backgroundColor: '#3498db', color: 'white'}}
                         onClick={() => generatePDF('Reporte Ofertas educativas', columns, data, user)}
                     >
                         Generar Reporte
                     </Button>
                     <Input
                         placeholder="Buscar ..."
+                           className="search-input"
                         value={searchText}
                         onChange={handleSearchChange}
                         style={{ marginBottom: 20, width: '200px' }}

@@ -20,15 +20,27 @@ button:focus-visible,
     padding: 20px;
     background-color: var(--neutral-color);
     min-height: calc(100vh - 64px); /* Ajusta según la altura de tu barra de navegación */
+    
 }
 
 /* Estilos del botón de agregar */
 .add-button {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: var(--text-color-light);
-    margin-bottom: 20px; /* Añade margen inferior para separar del contenido */
-    align-self: flex-start; /* Alinea el botón a la izquierda */
+ 
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
+}
+.search-input {
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
+}
+
+/* Asegúrate de que todos los elementos tengan una altura consistente */
+.controls-container .ant-btn, .controls-container .ant-input {
+    height: 40px; /* Ajusta la altura según sea necesario */
+}
+.generate-button {
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
 }
 
 .add-button:hover {

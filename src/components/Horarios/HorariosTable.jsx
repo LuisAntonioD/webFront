@@ -207,6 +207,7 @@ const HorariosTable = () => {
                 </Button>
                 <Input
                     placeholder="Buscar ..."
+                       className="search-input"
                     value={searchText}
                     onChange={handleSearchChange}
                     style={{ marginBottom: 20, width: '200px' }}

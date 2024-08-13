@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Button, Modal, notification, Form, Input, Select } from 'antd';
 import {DownloadOutlined} from '@ant-design/icons';
-import { RiAddLine, RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
+import { RiAddLine, RiDeleteBin6Line, RiEdit2Line , RiFileTextLine} from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import usersService from '../../../services/users';
 import { AuthContext } from '../../context/AuthContext';
@@ -210,13 +210,14 @@ const UsersTable = () => {
                 <Button
               type="secondary"
                className="generate-button"
-               icon={<DownloadOutlined />}
+               icon={<RiFileTextLine />} style={{backgroundColor: '#3498db', color: 'white'}}
                 onClick={() => generatePDF('Reporte de Usuarios', columns, data, user)}
             >
                 Generar Reporte
             </Button>
             <Input
                 placeholder="Buscar ..."
+                   className="search-input"
                 value={searchText}
                 onChange={handleSearchChange}
                 style={{ marginBottom: 20, width: '200px' }}

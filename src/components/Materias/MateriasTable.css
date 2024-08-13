@@ -40,6 +40,17 @@ button:focus-visible,
     color: rgb(0, 0, 0); /* Color del texto del botón */
     border: none; /* Sin borde */
     align-self: flex-start; /* Alinea el botón a la izquierda */
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
+}
+.search-input {
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
+}
+
+/* Asegúrate de que todos los elementos tengan una altura consistente */
+.controls-container .ant-btn, .controls-container .ant-input {
+    height: 40px; /* Ajusta la altura según sea necesario */
 }
 
 .add-button:hover {

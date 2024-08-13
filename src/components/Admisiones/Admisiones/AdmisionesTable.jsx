@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Modal, Button, Input, Switch, notification, Table, Select, Form } from 'antd';
 import {DownloadOutlined} from '@ant-design/icons';
-import { RiDeleteBin6Line, RiEdit2Line, RiAddLine, RiEyeLine } from 'react-icons/ri';
+import { RiDeleteBin6Line, RiEdit2Line, RiAddLine, RiEyeLine , RiFileTextLine} from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import './AdmisionesTable.css';
 import authService from '../../../services/admisiones';
@@ -295,12 +295,15 @@ const showModal = (mode, product) => {
                     <Button
                      className="generate-button"
                         type="secondary"
+                        
                         icon={<DownloadOutlined />}
                         onClick={() => generatePDF('Reporte de Admisiones', columns, data, user)}
+                        style={{backgroundColor: '#3498db', color: 'white'}}
                     >
                         Generar Reporte
                     </Button>
                     <Input
+                       className="search-input"
                         placeholder="Buscar ..."
                         value={searchText}
                         onChange={handleSearchChange}

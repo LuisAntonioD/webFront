@@ -46,3 +46,7 @@
     border: none; /* Sin borde */
     padding: 5px 10px; /* Ajusta el padding si es necesario */
 }
+.search-input {
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
+}

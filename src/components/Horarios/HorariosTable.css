@@ -46,3 +46,36 @@
     border: none; /* Sin borde */
     padding: 5px 10px; /* Ajusta el padding si es necesario */
 }
+
+.horarios-table-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: var(--neutral-color);
+    min-height: calc(100vh - 64px); /* Ajusta según la altura de tu barra de navegación */
+}
+
+
+
+.search-input {
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
+}
+
+/* Asegúrate de que todos los elementos tengan una altura consistente */
+.controls-container .ant-btn, .controls-container .ant-input {
+    height: 40px; /* Ajusta la altura según sea necesario */
+}
+
+.add-button {
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
+}
+
+/* Estilos específicos para el botón 'Generar Reporte' */
+.report-button {
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
+}

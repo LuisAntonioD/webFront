@@ -1,11 +1,42 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Button, Modal, notification, Form, Input, Select } from 'antd';
-import { RiAddLine, RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
+import { RiAddLine, RiDeleteBin6Line, RiEdit2Line, RiFileTextLine } from 'react-icons/ri';
 import { ENV } from '../../utils/constants';
 import cursosService from '../../services/cursos';
 import { AuthContext } from '../context/AuthContext';
 import './Cursos.css';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+// Función para generar el PDF
+const generatePDF = (title, columns, data, userlogeado) => {
+    const doc = new jsPDF();
+
+    // Obtener la fecha actual y formatearla
+    const currentDate = new Date();
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+    const formattedDate = formatDate(currentDate);
+
+    doc.text(title, 14, 20);
+
+    const rows = data.map(row => columns.map(col => row[col.dataIndex] || ''));
+
+    doc.autoTable({
+        head: [columns.map(col => col.title)],
+        body: rows,
+        startY: 40,
+    });
+
+    doc.setFontSize(10);
+    doc.text(`Generado por: ${userlogeado.username} (${userlogeado.email})`, 14, 30);
+    doc.text(`Fecha de Generación: ${formattedDate}`, 14, 35);
+
+    doc.save(`${title.replace(/\s+/g, '_').toLowerCase()}.pdf`);
+};
 
 const CursosTable = () => {
     const [cursos, setCursos] = useState([]);
@@ -178,6 +209,14 @@ const CursosTable = () => {
             curso.nombre.toLowerCase().includes(searchText.toLowerCase())
     );
 
+    const handleGenerateReport = () => {
+        const columns = [
+            { title: 'Nombre del Curso', dataIndex: 'nombre' },
+            { title: 'Fecha de Creación', dataIndex: 'createdAt' },
+        ];
+        generatePDF('Reporte de Cursos', columns, cursos, user);
+    };
+
     return (
         <div className="cursos-table-page">
             <div className="buttons-container">
@@ -189,8 +228,18 @@ const CursosTable = () => {
                 >
                     Agregar Curso
                 </Button>
+                <Button
+                
+                    className="report-button"
+                    icon={<RiFileTextLine />}
+                    onClick={handleGenerateReport}
+                    style={{backgroundColor: '#3498db', color: 'white'}}
+                >
+                    Generar Reporte
+                </Button>
                 <Input
                     placeholder="Buscar ..."
+                      className="search-input"
                     value={searchText}
                     onChange={handleSearchChange}
                     style={{ marginBottom: 20, width: '200px' }}
@@ -202,7 +251,7 @@ const CursosTable = () => {
                     <thead>
                         <tr>
                             <th>Nombre del Curso</th>
-                            <th>Fecha de creación</th>
+                            <th>Fecha de Creación</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>

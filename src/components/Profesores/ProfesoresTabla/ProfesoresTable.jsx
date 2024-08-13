@@ -3,8 +3,8 @@ import axios from 'axios';
 import moment from 'moment';
 import { Button, Modal, notification, Form, Input, DatePicker } from 'antd';
 import {DownloadOutlined} from '@ant-design/icons';
-import { RiAddLine,RiEdit2Line, RiDeleteBin6Line } from 'react-icons/ri';
-import { ENV } from '../../../utils/constants';PDF-Modulos-Faltantes
+import { RiAddLine,RiEdit2Line, RiDeleteBin6Line,RiFileTextLine } from 'react-icons/ri';
+import { ENV } from '../../../utils/constants';
 import profesorService from '../../../services/profesorService';
 import { AuthContext } from '../../context/AuthContext';
 import { generatePDF } from '../../../utils/pdf';
@@ -230,13 +230,14 @@ const ProfesoresTable = () => {
     <Button
         className="generate-button"
         type="secondary"
-        icon={<DownloadOutlined />}
+        icon={<RiFileTextLine />} style={{backgroundColor: '#3498db', color: 'white'}}
         onClick={() => generatePDF('Reporte de Profesores', columns, data2, user)}
     >
         Generar Reporte
     </Button>
     <Input
         placeholder="Buscar ..."
+           className="search-input"
         value={searchText}
         onChange={handleSearchChange}
         style={{ marginBottom: 20, width: '200px' }}

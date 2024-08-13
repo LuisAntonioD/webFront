@@ -29,6 +29,12 @@ button:focus-visible,
     color: var(--text-color-light);
     margin-bottom: 20px; /* Añade margen inferior para separar del contenido */
     align-self: flex-start; /* Alinea el botón a la izquierda */
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
+}
+.report-button {
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
 }
 
 .add-button:hover {

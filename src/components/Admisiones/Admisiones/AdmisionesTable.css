@@ -10,6 +10,11 @@ button:focus-visible,.add-button ,
     outline: none !important;
     box-shadow: none !important;
 }
+.search-input {
+    margin-left: 20px; /* Espacio a la izquierda del input de búsqueda */
+    padding: 5px; /* Ajuste del padding si es necesario */
+}
+
 
 /* Estilos específicos para los botones de acción */
 .action-button,
