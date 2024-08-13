@@ -11,25 +11,26 @@ export const getHorarios = async () => {
     }
 };
 
-const addHorario = async (dia, horaInicio, horaFin, token) => {
+const addHorario = async (token) => {
     try {
         const response = await axios.post(
-            'https://lizard-server.vercel.app/api/horarios',
-            { dia, horaInicio, horaFin },
+            `${ENV.API_URL}/${ENV.ENDPOINTS.HORARIOS}`,
+            { fecha: "2024-08-01", horaInicio: "09:00", horaFinal: "10:00" },
             { headers: { 'x-access-token': token } }
         );
         return response.data;
     } catch (error) {
         console.error('Error en addHorario:', error.response ? error.response.data : error.message);
-        throw error; 
+        throw error;
     }
 };
 
+
 const editHorario = async (id, updatedHorario, token) => {
     return axios.put(`${ENV.API_URL}/${ENV.ENDPOINTS.HORARIOS}/${id}`, {
-        dia: updatedHorario.dia,
+        fecha: updatedHorario.dia,
         horaInicio: updatedHorario.horaInicio,
-        horaFin: updatedHorario.horaFin,
+        horaFinal: updatedHorario.horaFin,
         profesor: updatedHorario.profesor,  // Asignación del profesor al horario
     }, {
         headers: {

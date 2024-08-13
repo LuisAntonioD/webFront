@@ -2,14 +2,14 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Modal, Button, Input, Switch, notification, Table } from 'antd';
 import { RiDeleteBin6Line, RiEdit2Line, RiAddLine, RiEyeLine } from 'react-icons/ri';
-import { ENV } from '../../../utils/constants';
-import './ProductsTable.css';
-import authService from '../../../services/admisiones';
-import ofertaEducativaService from '../../../services/OfertaEducativaService';
-import { AuthContext } from '../../context/AuthContext';
-import { generatePDF } from '../../../utils/pdf';
+import { ENV } from '../../utils/constants';
+//import './ProductsTable.css';
+//import authService from '../../../services/admisiones';
+//import ofertaEducativaService from '../../../services/OfertaEducativaService';
+import { AuthContext } from '../context/AuthContext';
+//import { generatePDF } from '../../../utils/pdf';
 
-const ProductsTable = () => {
+const MateriasTable = () => {
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -31,7 +31,7 @@ const ProductsTable = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.ADMISION}`);
+            const response = await axios.get(`${ENV.API_URL}/${ENV.ENDPOINTS.MATERIAS}`);
             if (Array.isArray(response.data)) {
                 const filteredUsers = response.data.filter(u => u._id !== user?._id);
                 setProducts(filteredUsers);
@@ -225,8 +225,23 @@ const ProductsTable = () => {
     const columns = [
         { title: "ID", dataKey: "_id" },
         { title: "Nombre", dataKey: "nombre" },
-        { title: "Fecha de creación", dataKey: "createdAt" },
-        { title: "Activo", dataKey: "activo" },
+        {
+            title: 'Descripción',
+            dataIndex: 'descripcion',
+            key: 'descripcion',
+        },
+        {
+            title: 'Ofertas Educativas',
+            dataIndex: 'ofertasEducativas',
+            key: 'ofertasEducativas',
+            render: (ofertasEducativas) => (
+                <ul>
+                    {ofertasEducativas.map((oferta) => (
+                        <li key={oferta._id}>{oferta.nombre}</li>
+                    ))}
+                </ul>
+            ),
+        },
     ];
 
     const data = filtraradmisiones.map(product => ({
@@ -241,7 +256,23 @@ const ProductsTable = () => {
     const offersColumns = [
         { title: "ID", dataIndex: "_id", key: "_id" },
         { title: "Nombre", dataIndex: "nombre", key: "nombre" },
-        { title: "Estado", dataIndex: "activo", key: "activo" },
+        {
+            title: 'Descripción',
+            dataIndex: 'descripcion',
+            key: 'descripcion',
+        },
+        {
+            title: 'Ofertas Educativas',
+            dataIndex: 'ofertasEducativas',
+            key: 'ofertasEducativas',
+            render: (ofertasEducativas) => (
+                <ul>
+                    {ofertasEducativas.map((oferta) => (
+                        <li key={oferta._id}>{oferta.nombre}</li>
+                    ))}
+                </ul>
+            ),
+        },
     ];
 
     return (
@@ -254,7 +285,7 @@ const ProductsTable = () => {
                         onClick={() => showModal('add', null)}
                         icon={<RiAddLine />}
                     >
-                        Agregar Admisión
+                           Agregar Materia
                     </Button>
                     <Button
                      className="generate-button"
@@ -287,7 +318,9 @@ const ProductsTable = () => {
                             <tr key={product._id}>
                                 <td>{product._id}</td>
                                 <td>{product.nombre}</td>
-                                <td>{product.activo ? 'Activo' : 'Inactivo'}</td>
+                                <td>{product.descripcion}</td>
+                                
+                              
                                 {user && ( <td>
                                     <Button icon={<RiEyeLine />} onClick={() => showOffersModal(product._id)} className="action-button consultar-button"> consultar  </Button>
                                     <Button icon={<RiEdit2Line />} onClick={() => showModal('edit', product)} className="action-button ant-btn-success"> Editar </Button>
@@ -344,4 +377,24 @@ const ProductsTable = () => {
     );
 };
 
-export default ProductsTable;
+export default MateriasTable;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

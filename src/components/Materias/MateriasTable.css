@@ -1,3 +1,5 @@
+/* Aplicando estilos de ProductsTable.css a MateriasTable.css */
+
 /* Asegúrate de que los botones no muestren el borde negro */
 button,
 .ant-btn,
@@ -5,7 +7,8 @@ button:focus,
 button:active,
 .ant-btn:focus,
 .ant-btn:active,
-button:focus-visible,.add-button ,
+button:focus-visible,
+.add-button,
 .ant-btn:focus-visible {
     outline: none !important;
     box-shadow: none !important;
@@ -14,12 +17,10 @@ button:focus-visible,.add-button ,
 /* Estilos específicos para los botones de acción */
 .action-button,
 .add-button,
-.consultar-button,.add-button ,
+.consultar-button,
 .generate-button {
     outline: none !important;
     box-shadow: none !important;
-    
-    
 }
 
 /* Estilos ya presentes en el archivo */
@@ -33,6 +34,7 @@ button:focus-visible,.add-button ,
     min-height: calc(100vh - 64px); /* Ajusta según la altura de tu barra de navegación */
 }
 
+/* Adaptar el botón 'Add' */
 .add-button {
     background-color: #d1971b; /* Color de fondo del botón */
     color: rgb(0, 0, 0); /* Color del texto del botón */
@@ -45,6 +47,7 @@ button:focus-visible,.add-button ,
     border: none; /* Sin borde */
 }
 
+/* Contenedor de la tabla */
 .table-container {
     width: 100%;
     max-width: 90%; /* Ajusta según el porcentaje deseado */
@@ -56,6 +59,7 @@ button:focus-visible,.add-button ,
     margin-bottom: 20px; /* Añade un margen inferior para separar de otros elementos */
 }
 
+/* Tabla con formato */
 .formato-tabla {
     width: 100%;
     border-collapse: separate;
@@ -67,8 +71,6 @@ button:focus-visible,.add-button ,
     overflow: hidden;
     margin: 0 auto; /* Centra la tabla en la página */
 }
-
-/* Resto de estilos permanecen iguales */
 
 .formato-tabla thead {
     background-color: var(--text-color);
@@ -115,6 +117,7 @@ button:focus-visible,.add-button ,
     border-right: none;
 }
 
+/* Estilos para botones de acción */
 .action-button {
     margin-right: 10px;
     margin-bottom: 10px;
@@ -139,7 +142,6 @@ button:focus-visible,.add-button ,
     color: rgb(0, 0, 0); /* Color del texto del botón */
     border: none; /* Sin borde */
 }
-
 
 .action-button.ant-btn-success:hover {
     background-color: #45a049; /* Color de fondo cuando el botón es hover */
@@ -166,9 +168,11 @@ button:focus-visible,.add-button ,
     border: none; /* Sin borde */
 }
 
+/* Estilos para el modal */
 .ant-modal-body {
     text-align: left;
 }
+
 .actualizar {
     background-color: #6930c4; /* Color de fondo del botón */
     color: rgb(0, 0, 0); /* Color del texto del botón */
@@ -180,6 +184,7 @@ button:focus-visible,.add-button ,
     background-color: #ff0000; /* Color de fondo cuando el botón es hover */
     border: none; /* Sin borde */
 }
+
 /* Estilos específicos para el modal */
 .custom-modal .ant-modal-footer {
     border-top: none; /* Opcional: elimina el borde superior del pie de página */
@@ -195,24 +200,20 @@ button:focus-visible,.add-button ,
 .custom-modal .ant-btn-primary:hover {
     background-color: #27ae60; /* Color de fondo cuando el botón OK es hover */
     border: none; /* Sin borde */
-
 }
 
 /* Estilos para el botón 'Cancel' */
 .custom-modal .ant-btn-default {
     background-color: #e74c3c; /* Color de fondo del botón Cancel (rojo) */
-
     color: #fff; /* Color del texto del botón Cancel */
     border: none; /* Sin borde */
 }
 
 .custom-modal .ant-btn-default:hover {
     background-color: #c0392b; /* Color de fondo cuando el botón Cancel es hover */
-  
     border: none; /* Sin borde */
 }
 
-/*aqui empiezan los del modal en const*/
 /* Estilos específicos para el modal de confirmación */
 .custom-confirm-modal .ant-modal-footer {
     border-top: none; /* Opcional: elimina el borde superior del pie de página */

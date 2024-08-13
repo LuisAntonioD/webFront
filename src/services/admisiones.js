@@ -11,10 +11,11 @@ export const getAdmisions = async () => {
     }
 };
 
-const addProduct = async (newName, newActivo, token) => {
+const addProduct = async (newName, newActivo, newOfertas, token) => {
     return axios.post(`${ENV.API_URL}/${ENV.ENDPOINTS.ADMISION}`, {
         nombre: newName,
         activo: newActivo,
+        ofertas: newOfertas
     }, {
         headers: {
             'x-access-token': token
@@ -22,10 +23,11 @@ const addProduct = async (newName, newActivo, token) => {
     });
 };
 
-const editProduct = async (id, newName, newActivo, token) => {
+const editProduct = async (id, newName, newActivo, newOfertas, token) => {
     return axios.put(`${ENV.API_URL}/${ENV.ENDPOINTS.UPDATE}/${id}`, {
         nombre: newName,
         activo: newActivo,
+        ofertas: newOfertas
     }, {
         headers: {
             'x-access-token': token

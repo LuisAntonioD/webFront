@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Button, Modal, notification, Form, Input, Select } from 'antd';
+import {DownloadOutlined} from '@ant-design/icons';
 import { RiAddLine, RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
 import usersService from '../../../services/users';
@@ -208,7 +209,7 @@ const UsersTable = () => {
                 <Button
               type="secondary"
                className="generate-button"
-                icon={<RiAddLine />}
+               icon={<DownloadOutlined />}
                 onClick={() => generatePDF('Reporte de Usuarios', columns, data, user)}
             >
                 Generar Reporte

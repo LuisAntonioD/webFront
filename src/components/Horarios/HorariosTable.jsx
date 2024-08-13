@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Button, Modal, notification, Form, Input, DatePicker, TimePicker } from 'antd';
+import { Button, Modal, notification, Form, Input, DatePicker, TimePicker, Select } from 'antd';
 import { RiAddLine, RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
 import { ENV } from '../../utils/constants';
 import horariosService from '../../services/horarios';
 import { AuthContext } from '../context/AuthContext';
 import './HorariosTable.css';
+import moment from 'moment';
+
 
 const HorariosTable = () => {
     const [horarios, setHorarios] = useState([]);
@@ -98,8 +100,10 @@ const HorariosTable = () => {
     };
 
     const handleAddHorario = async (values) => {
-        const { dia, horaInicio, horaFin } = values;
-        if (!dia || !horaInicio || !horaFin) {
+        console.log(values);
+        const { fecha, horaInicio, horaFinal } = values;
+        console.log("Datos a enviar:", { fecha, horaInicio, horaFinal });
+        if (!fecha || !horaInicio || !horaFinal) {
             notification.error({
                 message: 'Error',
                 description: 'El día y las horas de inicio y fin son requeridos.',
@@ -107,7 +111,7 @@ const HorariosTable = () => {
             return;
         }
         try {
-            await horariosService.addHorario({ dia, horaInicio, horaFin }, token);
+            await horariosService.addHorario({ fecha, horaInicio, horaFinal }, token);
             fetchHorarios();
             setIsModalVisible(false);
             form.resetFields();
@@ -125,12 +129,12 @@ const HorariosTable = () => {
     };
 
     const handleEditHorario = async (values) => {
-        const { dia, horaInicio, horaFin, profesores } = values;
+        const { fecha, horaInicio, horaFinal, profesores } = values;
         try {
             const updatedHorario = {
-                dia,
+                fecha,
                 horaInicio,
-                horaFin,
+                horaFinal,
                 profesores: profesores || [],
             };
             await horariosService.editHorario(currentHorario._id, updatedHorario, token);
@@ -150,16 +154,25 @@ const HorariosTable = () => {
     };
 
     const showEditModal = (horario) => {
+        console.log('Horario a editar:', horario); // Imprime el horario para verificar
+    
+        // Verifica si `profesores` está definido y es un array, si no, inicialízalo como un array vacío
+        const profesoresIds = Array.isArray(horario.profesores) 
+            ? horario.profesores.map(prof => prof._id) 
+            : [];
+    
         setCurrentHorario(horario);
         setIsEditing(true);
         setIsModalVisible(true);
+    
         form.setFieldsValue({
-            dia: horario.dia,
-            horaInicio: horario.horaInicio,
-            horaFin: horario.horaFin,
-            profesores: horario.profesores.map(prof => prof._id),
+            fecha: moment(horario.fecha, 'YYYY-MM-DD'),
+            horaInicio: moment(horario.horaInicio, 'HH:mm'),
+            horaFinal: moment(horario.horaFinal, 'HH:mm'),
+            profesores: profesoresIds,
         });
     };
+    
 
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -179,8 +192,8 @@ const HorariosTable = () => {
 
     const filteredHorarios = horarios.filter(
         (horario) =>
-            horario.dia.toLowerCase().includes(searchText.toLowerCase())
-    );
+            (horario.dia || '').toLowerCase().includes(searchText.toLowerCase())
+    );    
 
     return (
         <div className="horarios-table-page">
@@ -213,9 +226,9 @@ const HorariosTable = () => {
                     <tbody>
                         {filteredHorarios.map((horario) => (
                             <tr key={horario._id}>
-                                <td>{horario.dia}</td>
+                                <td>{horario.fecha}</td>
                                 <td>{horario.horaInicio}</td>
-                                <td>{horario.horaFin}</td>
+                                <td>{horario.horaFinal}</td>
                                 <td>
                                     <Button
                                         className="action-button ant-btn-danger"
@@ -248,8 +261,8 @@ const HorariosTable = () => {
                     onFinish={isEditing ? handleEditHorario : handleAddHorario}
                 >
                     <Form.Item
-                        label="Día"
-                        name="dia"
+                        label="fecha"
+                        name="fecha"
                         rules={[
                             { required: true, message: 'Por favor selecciona un día' },
                         ]}
@@ -267,14 +280,14 @@ const HorariosTable = () => {
                     </Form.Item>
                     <Form.Item
                         label="Hora de Fin"
-                        name="horaFin"
+                        name="horaFinal"
                         rules={[
                             { required: true, message: 'Por favor selecciona la hora de fin' },
                         ]}
                     >
                         <TimePicker placeholder="Hora de fin" format="HH:mm" />
                     </Form.Item>
-                    {!isEditing && (
+                    {isEditing && (
                         <Form.Item
                             label="Profesores"
                             name="profesores"

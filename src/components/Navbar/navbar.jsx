@@ -14,7 +14,7 @@ const Navbar = () => {
         setSelectedKey('');
     };
 
-    const tabNames = ["Inicio", "Admisiones", "Servicios", "Contactos", "Profesores", "Oferta Educativa"];
+    const tabNames = ["Inicio", "Admisiones", "Servicios", "Contactos", "Profesores", "Oferta Educativa", "Materias"];
 
     const items = tabNames.map((name, index) => ({
         key: index + 1,
