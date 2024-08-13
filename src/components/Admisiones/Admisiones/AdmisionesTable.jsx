@@ -4,7 +4,7 @@ import { Modal, Button, Input, Switch, notification, Table, Select, Form } from 
 import {DownloadOutlined} from '@ant-design/icons';
 import { RiDeleteBin6Line, RiEdit2Line, RiAddLine, RiEyeLine } from 'react-icons/ri';
 import { ENV } from '../../../utils/constants';
-import './AdmisionesTable.css'; // A ver si jala
+import './AdmisionesTable.css';
 import authService from '../../../services/admisiones';
 import ofertaEducativaService from '../../../services/OfertaEducativaService';
 import { AuthContext } from '../../context/AuthContext';
