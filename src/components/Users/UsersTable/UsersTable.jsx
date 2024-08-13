@@ -203,6 +203,7 @@ const UsersTable = () => {
                     //type="primary"
                     icon={<RiAddLine />}
                     onClick={() => setIsModalVisible(true)}
+                    style={{backgroundColor: '#27ae60'}}
                 >
                     Agregar Usuario
                 </Button>
@@ -244,6 +245,7 @@ const UsersTable = () => {
                                         className="action-button ant-btn-danger"
                                         onClick={() => confirmDeleteUser(user._id)}
                                         icon={<RiDeleteBin6Line />}
+                                        style={{backgroundColor: '#0468BF'}}
                                     >
                                         Eliminar
                                     </Button>
@@ -251,6 +253,7 @@ const UsersTable = () => {
                                         className="action-button ant-btn-success"
                                         onClick={() => showEditModal(user)}
                                         icon={<RiEdit2Line />}
+                                        style={{backgroundColor: '#ff0000'}}
                                     >
                                         Editar
                                     </Button>

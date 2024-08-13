@@ -185,6 +185,7 @@ const CursosTable = () => {
                     className="add-button"
                     icon={<RiAddLine />}
                     onClick={() => setIsModalVisible(true)}
+                    style={{backgroundColor: '#27ae60'}}
                 >
                     Agregar Curso
                 </Button>
@@ -215,6 +216,7 @@ const CursosTable = () => {
                                         className="action-button ant-btn-danger"
                                         onClick={() => confirmDeleteCurso(curso._id)}
                                         icon={<RiDeleteBin6Line />}
+                                        style={{backgroundColor: '#ff0000'}}
                                     >
                                         Eliminar
                                     </Button>
@@ -222,6 +224,7 @@ const CursosTable = () => {
                                         className="action-button ant-btn-success"
                                         onClick={() => showEditModal(curso)}
                                         icon={<RiEdit2Line />}
+                                        style={{backgroundColor: '#0468BF'}}
                                     >
                                         Editar/Agregar
                                     </Button>
