@@ -15,6 +15,7 @@ export const ENV = {
         OFERTAS_RELACIONADAS: 'api/admision/:id/ofertas',
         MATERIAS: 'api/materias',
         CURSOS: 'api/cursos',
+        HORARIOS: 'api/fechas',
     },
     STORAGE: {
         TOKEN: "token",

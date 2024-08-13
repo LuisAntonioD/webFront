@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Button, Modal, notification, Form, Input, DatePicker, TimePicker, Select } from 'antd';
-import { RiAddLine, RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
+import { RiAddLine, RiDeleteBin6Line, RiEdit2Line, RiFileTextLine } from 'react-icons/ri';
 import { ENV } from '../../utils/constants';
 import horariosService from '../../services/horarios';
 import { AuthContext } from '../context/AuthContext';
 import './HorariosTable.css';
 import moment from 'moment';
-
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const HorariosTable = () => {
     const [horarios, setHorarios] = useState([]);
@@ -100,9 +101,7 @@ const HorariosTable = () => {
     };
 
     const handleAddHorario = async (values) => {
-        console.log(values);
         const { fecha, horaInicio, horaFinal } = values;
-        console.log("Datos a enviar:", { fecha, horaInicio, horaFinal });
         if (!fecha || !horaInicio || !horaFinal) {
             notification.error({
                 message: 'Error',
@@ -154,9 +153,6 @@ const HorariosTable = () => {
     };
 
     const showEditModal = (horario) => {
-        console.log('Horario a editar:', horario); // Imprime el horario para verificar
-    
-        // Verifica si `profesores` está definido y es un array, si no, inicialízalo como un array vacío
         const profesoresIds = Array.isArray(horario.profesores) 
             ? horario.profesores.map(prof => prof._id) 
             : [];
@@ -173,7 +169,6 @@ const HorariosTable = () => {
         });
     };
     
-
     const handleCancel = () => {
         setIsModalVisible(false);
         setIsEditing(false);
@@ -193,7 +188,45 @@ const HorariosTable = () => {
     const filteredHorarios = horarios.filter(
         (horario) =>
             (horario.dia || '').toLowerCase().includes(searchText.toLowerCase())
-    );    
+    );
+
+    const generatePDF = (title, columns, data, userlogeado) => {
+        const doc = new jsPDF();
+
+        // Obtener la fecha actual y formatearla
+        const currentDate = new Date();
+        const formatDate = (dateString) => {
+            const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        };
+        const formattedDate = formatDate(currentDate);
+
+        doc.text(title, 14, 20);
+
+        // Transforma los datos para el PDF
+        const rows = data.map(row => columns.map(col => row[col.dataIndex] || ''));
+
+        doc.autoTable({
+            head: [columns.map(col => col.title)],
+            body: rows,
+            startY: 40,
+        });
+
+        doc.setFontSize(10);
+        doc.text(`Generado por: ${userlogeado.username} (${userlogeado.email})`, 14, 30);
+        doc.text(`Fecha de Generación: ${formattedDate}`, 14, 35);
+
+        doc.save(`${title.replace(/\s+/g, '_').toLowerCase()}.pdf`);
+    };
+
+    const handleGenerateReport = () => {
+        const columns = [
+            { title: 'Fecha', dataIndex: 'fecha' },
+            { title: 'Hora de Inicio', dataIndex: 'horaInicio' },
+            { title: 'Hora de Fin', dataIndex: 'horaFinal' },
+        ];
+        generatePDF('Reporte de Horarios', columns, horarios, user);
+    };
 
     return (
         <div className="horarios-table-page">
@@ -205,9 +238,18 @@ const HorariosTable = () => {
                 >
                     Nuevo Horario
                 </Button>
+                <Button
+                    className="report-button"
+                    type="default"
+                    onClick={handleGenerateReport}
+                    icon={<RiFileTextLine />}
+                    style={{ backgroundColor: '#3498db', color: 'white' }}
+                >
+                    Generar Reporte
+                </Button>
                 <Input
                     placeholder="Buscar ..."
-                       className="search-input"
+                    className="search-input"
                     value={searchText}
                     onChange={handleSearchChange}
                     style={{ marginBottom: 20, width: '200px' }}
