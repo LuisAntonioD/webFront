@@ -13,7 +13,7 @@ export const useMenuConfig = () => {
             case '2':
                 navigate('/Admisiones');
                 break;
-        
+
             case '3':
                 navigate('/Usuarios');
                 break;
@@ -30,6 +30,9 @@ export const useMenuConfig = () => {
                 navigate('/cursos');
                 break;
             case '8':
+                navigate('/horarios');
+                break;
+            case '9':
                 <DrawerComponent />
                 break;
             default:

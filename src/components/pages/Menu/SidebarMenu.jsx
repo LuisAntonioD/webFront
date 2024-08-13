@@ -54,8 +54,11 @@ const SidebarMenu = ({ user, collapsed, setCollapsed, handleMenuClick, logout })
                 <Menu.Item key="7" icon={<UserOutlined />}>
                     <Link to="/cursos">Cursos</Link>
                 </Menu.Item>
+                <Menu.Item key="8" icon={<UserOutlined />}>
+                    <Link to="/horarios">Horarios</Link>
+                </Menu.Item>
                 <Menu.Item
-                    key="8"
+                    key="9"
                     icon={<UserOutlined />}
                     onClick={handleDrawerOpen}
                 >

@@ -8,6 +8,7 @@ import AdmisionesPage from '../pages/Admisiones/AdmisionesPage';
 import NotFound from '../pages/Config/NotFound';
 import { useAuth } from '../../hooks/useAuth';
 import ProfesoresPage from '../pages/Profesores/ProfesoresPage';
+import HorariosPage from '../pages/Horarios/HorariosPage';
 import UsersPage from '../pages/Usuarios/Users';
 import OfertaEducativaPage from '../pages/OfertaEducativa/OfertaEducativapage';
 import PrivateRoute from './PrivateRoute'; // Importa el componente PrivateRoute
@@ -24,6 +25,7 @@ const AppRoutes = () => {
         { path: '/Usuarios', element: <PrivateRoute element={UsersPage} /> },
         { path: '/profesores', element: <PrivateRoute element={ProfesoresPage} /> },
         { path: '/OfertaEducativa', element: <PrivateRoute element={OfertaEducativaPage} /> },
+        { path: '/horarios', element: <PrivateRoute element={HorariosPage} /> },
         { path: '/cursos', element: <PrivateRoute element={CursosPage} /> },
         { path: '/mostrarofertas', element: <OfertaEducativaPage />},
         { path: '/mostraradmisiones', element: <AdmisionesPage /> },

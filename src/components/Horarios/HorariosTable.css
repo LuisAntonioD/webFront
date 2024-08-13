@@ -1,0 +1,48 @@
+.generate-button {
+    color: rgb(0, 0, 0); /* Color del texto del botón */
+    border: none; /* Sin borde */
+}
+
+.generate-button:hover {
+    border: none; /* Sin borde */
+}
+/* Estilos específicos para el modal de confirmación */
+.custom-confirm-modal .ant-modal-footer {
+    border-top: none; /* Opcional: elimina el borde superior del pie de página */
+}
+
+/* Estilos para el botón 'Cancelar' */
+.custom-confirm-modal .ant-btn-default {
+    background-color: #fff; /* Color de fondo del botón Cancelar (blanco) */
+    border: none; /* Sin borde */
+    color: #000; /* Color del texto del botón Cancelar */
+}
+
+.custom-confirm-modal .ant-btn-default:hover {
+    background-color: #f0f0f0; /* Color de fondo cuando el botón Cancelar es hover */
+    border: none; /* Sin borde */
+    color: #000; /* Color del texto cuando el botón Cancelar es hover */
+}
+
+/* Estilos para el botón 'Eliminar' */
+.custom-confirm-modal .ant-btn-danger {
+    background-color: #e74c3c; /* Color de fondo del botón Eliminar (rojo) */
+    border-color: #e74c3c; /* Color del borde del botón Eliminar */
+    color: #fff; /* Color del texto del botón Eliminar */
+}
+
+.custom-confirm-modal .ant-btn-danger:hover {
+    background-color: #c0392b; /* Color de fondo cuando el botón Eliminar es hover */
+    border-color: #c0392b; /* Color del borde cuando el botón Eliminar es hover */
+}
+
+.actions-container {
+    display: flex;
+    gap: 10px; /* Espacio entre los botones */
+    align-items: center; /* Alinea los botones verticalmente en el centro */
+}
+
+.action-button {
+    border: none; /* Sin borde */
+    padding: 5px 10px; /* Ajusta el padding si es necesario */
+}
