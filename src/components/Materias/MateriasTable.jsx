@@ -97,7 +97,7 @@ const MateriasTable = () => {
     return (
         <div className="products-table-page"> {/* Utiliza el mismo contenedor */}
             <div className="buttons-container">
-                <Button className="add-button" type="primary" onClick={handleAdd} icon={<RiAddLine />}>
+                <Button className="add-button" type="primary" onClick={handleAdd} icon={<RiAddLine />} style={{backgroundColor: '#27ae60'}}>
                     Agregar Materia
                 </Button>
                 <Input
@@ -130,6 +130,7 @@ const MateriasTable = () => {
                                         icon={<RiEdit2Line />}
                                         onClick={() => handleEdit(materia)}
                                         className="action-button ant-btn-success"
+                                        style={{backgroundColor: '#0468BF'}}
                                     >
                                         Editar
                                     </Button>
@@ -137,6 +138,7 @@ const MateriasTable = () => {
                                         icon={<RiDeleteBin6Line />}
                                         onClick={() => confirmDeleteMateria(materia._id)}
                                         className="action-button ant-btn-danger"
+                                        style={{backgroundColor: '#ff0000'}}
                                     >
                                         Eliminar
                                     </Button>

@@ -223,6 +223,7 @@ const ProfesoresTable = () => {
         type="primary"
         icon={<RiAddLine />}
         onClick={() => setIsModalVisible(true)}
+        style={{backgroundColor: '#27ae60'}}
     >
         Agregar Profesor
     </Button>
@@ -270,6 +271,7 @@ const ProfesoresTable = () => {
                                         className="action-button ant-btn-danger"
                                         onClick={() => confirmDeleteProfesor(prof._id)}
                                         icon={<RiDeleteBin6Line />}
+                                        style={{backgroundColor: '#ff0000'}}
                                     >
                                         Eliminar
                                     </Button>
@@ -277,6 +279,7 @@ const ProfesoresTable = () => {
                                         className="action-button ant-btn-success"
                                         onClick={() => showEditModal(prof)}
                                         icon={<RiEdit2Line />}
+                                        style={{backgroundColor: '#0468BF'}}
                                     >
                                         Editar
                                     </Button>

@@ -187,6 +187,7 @@ const OfertasEducativasTable = () => {
                             setIsEditing(false);
                             setIsModalVisible(true);
                         }}
+                        style={{backgroundColor: '#27ae60'}}
                     >
                         Agregar Oferta
                     </Button>
@@ -231,6 +232,7 @@ const OfertasEducativasTable = () => {
                                                 className="action-button ant-btn-danger"
                                                 onClick={() => confirmDeleteOferta(oferta._id)}
                                                 icon={<RiDeleteBin6Line />}
+                                                style={{backgroundColor: '#ff0000'}}
                                             >
                                                 Eliminar
                                             </Button>
@@ -238,6 +240,7 @@ const OfertasEducativasTable = () => {
                                                 className="action-button ant-btn-success"
                                                 onClick={() => showEditModal(oferta)}
                                                 icon={<RiEdit2Line />}
+                                                style={{backgroundColor: '#0468BF'}}
                                             >
                                                 Editar
                                             </Button>

@@ -288,6 +288,7 @@ const showModal = (mode, product) => {
                         //type="primary"
                         onClick={() => showModal('add', null)}
                         icon={<RiAddLine />}
+                        style={{backgroundColor: '#27ae60'}}
                     >
                         Agregar Admisión
                     </Button>
@@ -324,9 +325,9 @@ const showModal = (mode, product) => {
                                 <td>{product.nombre}</td>
                                 <td>{product.activo ? 'Activo' : 'Inactivo'}</td>
                                 {user && ( <td>
-                                    <Button icon={<RiEyeLine />} onClick={() => showOffersModal(product._id)} className="action-button consultar-button"> consultar  </Button>
-                                    <Button icon={<RiEdit2Line />} onClick={() => showModal('edit', product)} className="action-button ant-btn-success"> Editar </Button>
-                                    <Button icon={<RiDeleteBin6Line />} onClick={() => confirmDeleteAdmision(product._id)} className="action-button ant-btn-danger">Eliminar </Button>
+                                    <Button icon={<RiEyeLine />} onClick={() => showOffersModal(product._id)} className="action-button consultar-button"  style={{backgroundColor: '#F1B705'}}> consultar  </Button>
+                                    <Button icon={<RiEdit2Line />} onClick={() => showModal('edit', product)} className="action-button ant-btn-success" style={{backgroundColor: '#0468BF'}}> Editar </Button>
+                                    <Button icon={<RiDeleteBin6Line />} onClick={() => confirmDeleteAdmision(product._id)} className="action-button ant-btn-danger" style={{backgroundColor: '#ff0000'}} >Eliminar </Button>
                                 </td>)}
                             </tr>
                         ))}
