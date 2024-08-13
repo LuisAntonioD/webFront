@@ -142,7 +142,7 @@ button:focus-visible,.add-button ,
 
 
 .action-button.ant-btn-success:hover {
-    background-color: #45a049; /* Color de fondo cuando el botón es hover */
+    background-color: #0468BF; /* Color de fondo cuando el botón es hover */
     border: none; /* Sin borde */
 }
 
@@ -153,7 +153,7 @@ button:focus-visible,.add-button ,
 }
 
 .consultar-button:hover {
-    background-color: #45a049; /* Color de fondo cuando el botón es hover */
+    background-color: #0468BF; /* Color de fondo cuando el botón es hover */
     border: none; /* Sin borde */
 }
 
@@ -187,7 +187,7 @@ button:focus-visible,.add-button ,
 
 /* Estilos para el botón 'OK' */
 .custom-modal .ant-btn-primary {
-    background-color: #2ecc71; /* Color de fondo del botón OK (verde) */
+    background-color: #27ae60; /* Color de fondo del botón OK (verde) */
     border: none; /* Sin borde */
     color: #fff; /* Color del texto del botón OK */
 }

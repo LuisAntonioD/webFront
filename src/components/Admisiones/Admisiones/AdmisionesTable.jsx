@@ -366,15 +366,14 @@ const showModal = (mode, product) => {
 
                 
 
-                <Form.Item
-                    name="activo"
-                    label="Estado"
-                    valuePropName="checked"
-                    initialValue={true}
-                >
-                    <Switch checkedChildren="Encendido" unCheckedChildren="Apagado" checked={newActivo}
-                        onChange={(checked) => setNewActivo(checked)}/>
-                </Form.Item>
+               
+
+                <Switch
+                    checkedChildren="Encendido"
+                    unCheckedChildren="Apagado"
+                    checked={newActivo}  // Aquí es donde se debería reflejar el estado
+                    onChange={(checked) => setNewActivo(checked)}
+                />
             </Modal>
 
             <Modal
