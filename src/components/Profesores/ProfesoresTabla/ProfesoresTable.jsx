@@ -271,7 +271,7 @@ const ProfesoresTable = () => {
                                         className="action-button ant-btn-danger"
                                         onClick={() => confirmDeleteProfesor(prof._id)}
                                         icon={<RiDeleteBin6Line />}
-                                        style={{backgroundColor: '#0468BF'}}
+                                        style={{backgroundColor: '#ff0000'}}
                                     >
                                         Eliminar
                                     </Button>
@@ -279,7 +279,7 @@ const ProfesoresTable = () => {
                                         className="action-button ant-btn-success"
                                         onClick={() => showEditModal(prof)}
                                         icon={<RiEdit2Line />}
-                                        style={{backgroundColor: '#ff0000'}}
+                                        style={{backgroundColor: '#0468BF'}}
                                     >
                                         Editar
                                     </Button>

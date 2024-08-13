@@ -245,7 +245,7 @@ const UsersTable = () => {
                                         className="action-button ant-btn-danger"
                                         onClick={() => confirmDeleteUser(user._id)}
                                         icon={<RiDeleteBin6Line />}
-                                        style={{backgroundColor: '#0468BF'}}
+                                        style={{backgroundColor: '#ff0000'}}
                                     >
                                         Eliminar
                                     </Button>
@@ -253,7 +253,7 @@ const UsersTable = () => {
                                         className="action-button ant-btn-success"
                                         onClick={() => showEditModal(user)}
                                         icon={<RiEdit2Line />}
-                                        style={{backgroundColor: '#ff0000'}}
+                                        style={{backgroundColor: '#0468BF'}}
                                     >
                                         Editar
                                     </Button>
