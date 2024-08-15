@@ -11,13 +11,14 @@ export const getHorarios = async () => {
     }
 };
 
-const addHorario = async (token) => {
+const addHorario = async (token, fecha, horaInicio, horaFinal, profesor) => {
     try {
         const response = await axios.post(
             `${ENV.API_URL}/${ENV.ENDPOINTS.HORARIOS}`,
-            { fecha: "2024-08-01", horaInicio: "09:00", horaFinal: "10:00" },
+            { fecha, horaInicio, horaFinal, profesor },
             { headers: { 'x-access-token': token } }
         );
+        console.log('Respuesta del backend en addHorario:', response.data); // Agregar logging para depuración
         return response.data;
     } catch (error) {
         console.error('Error en addHorario:', error.response ? error.response.data : error.message);
@@ -26,18 +27,31 @@ const addHorario = async (token) => {
 };
 
 
+
 const editHorario = async (id, updatedHorario, token) => {
-    return axios.put(`${ENV.API_URL}/${ENV.ENDPOINTS.HORARIOS}/${id}`, {
-        fecha: updatedHorario.dia,
-        horaInicio: updatedHorario.horaInicio,
-        horaFinal: updatedHorario.horaFin,
-        profesor: updatedHorario.profesor,  // Asignación del profesor al horario
-    }, {
-        headers: {
-            'x-access-token': token
-        }
-    });
+    try {
+        const response = await axios.put(
+            `${ENV.API_URL}/${ENV.ENDPOINTS.HORARIOS}/${id}`,
+            {
+                fecha: updatedHorario.fecha,
+                horaInicio: updatedHorario.horaInicio,
+                horaFinal: updatedHorario.horaFinal,
+                profesor: updatedHorario.profesor,
+            },
+            {
+                headers: {
+                    'x-access-token': token
+                }
+            }
+        );
+        console.log('Respuesta del backend en editHorario:', response.data); // Agregar logging para depuración
+        return response.data;
+    } catch (error) {
+        console.error('Error en editHorario:', error.response ? error.response.data : error.message);
+        throw error;
+    }
 };
+
 
 const deleteHorario = async (id, token) => {
     return axios.delete(`${ENV.API_URL}/${ENV.ENDPOINTS.HORARIOS}/${id}`, {
