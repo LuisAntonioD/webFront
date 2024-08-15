@@ -30,6 +30,14 @@ const addHorario = async (token, fecha, horaInicio, horaFinal, profesor) => {
 
 const editHorario = async (id, updatedHorario, token) => {
     try {
+        console.log('Datos enviados a editHorario:', {
+            id,
+            fecha: updatedHorario.fecha,
+            horaInicio: updatedHorario.horaInicio,
+            horaFinal: updatedHorario.horaFinal,
+            profesor: updatedHorario.profesor,
+        });
+
         const response = await axios.put(
             `${ENV.API_URL}/${ENV.ENDPOINTS.HORARIOS}/${id}`,
             {
@@ -44,13 +52,15 @@ const editHorario = async (id, updatedHorario, token) => {
                 }
             }
         );
-        console.log('Respuesta del backend en editHorario:', response.data); // Agregar logging para depuración
+
+        console.log('Respuesta del backend en editHorario:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error en editHorario:', error.response ? error.response.data : error.message);
         throw error;
     }
 };
+
 
 
 const deleteHorario = async (id, token) => {

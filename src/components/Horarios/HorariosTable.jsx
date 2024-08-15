@@ -54,30 +54,47 @@ const HorariosTable = () => {
         }
     };
 
+    const getProfesorNames = (profesorArray) => {
+        if (!Array.isArray(profesorArray)) {
+            return '';
+        }
+        // Mapear los nombres de los profesores y unirlos en una sola cadena
+        const nombresProfesores = profesorArray.map(prof => prof.nombre).join(', ');
+        return nombresProfesores;
+    };
+
     const handleAddHorario = async (values) => {
         const { fecha, horaInicio, horaFinal, profesores } = values;
-    
+
         const formattedFecha = fecha.format('DD-MM-YYYY');
         const formattedHoraInicio = horaInicio.format('HH:mm');
         const formattedHoraFinal = horaFinal.format('HH:mm');
-    
+
         console.log('Agregar Horario:', {
             fecha: formattedFecha,
             horaInicio: formattedHoraInicio,
             horaFinal: formattedHoraFinal,
             profesores,
         });
-    
+
         try {
             const response = await horariosService.addHorario(token, formattedFecha, formattedHoraInicio, formattedHoraFinal, profesores);
-            console.log('Respuesta del backend:', response.data); // Aquí verificas la respuesta
+            if (response) {
+                console.log('Horario agregado con éxito:', response);
+                notification.success({
+                    message: 'Horario Agregado',
+                    description: 'Horario agregado correctamente.',
+                });
+            } else {
+                console.warn('El backend no devolvió datos después de agregar el horario.');
+                notification.warning({
+                    message: 'Horario Agregado',
+                    description: 'Horario agregado, pero no se recibieron datos del backend.',
+                });
+            }
             fetchHorarios();
             setIsModalVisible(false);
             form.resetFields();
-            notification.success({
-                message: 'Horario Agregado',
-                description: 'Horario agregado correctamente.',
-            });
         } catch (error) {
             notification.error({
                 message: 'Error',
@@ -86,32 +103,56 @@ const HorariosTable = () => {
             console.error('Error al agregar el horario:', error);
         }
     };
-    
 
     const handleEditHorario = async (values) => {
         const { fecha, horaInicio, horaFinal, profesores } = values;
-
+    
+        if (!fecha || !horaInicio || !horaFinal) {
+            notification.error({
+                message: 'Error',
+                description: 'Todos los campos son obligatorios.',
+            });
+            return;
+        }
+    
         const formattedFecha = fecha.format('DD-MM-YYYY');
         const formattedHoraInicio = horaInicio.format('HH:mm');
         const formattedHoraFinal = horaFinal.format('HH:mm');
-
+    
+        console.log('Editar Horario:', {
+            id: currentHorario._id,
+            fecha: formattedFecha,
+            horaInicio: formattedHoraInicio,
+            horaFinal: formattedHoraFinal,
+            profesores,
+        });
+    
         try {
             const updatedHorario = {
                 fecha: formattedFecha,
                 horaInicio: formattedHoraInicio,
                 horaFinal: formattedHoraFinal,
-                profesores: profesores,
+                profesor: profesores,
             };
-            await horariosService.editHorario(currentHorario._id, updatedHorario, token);
+            const response = await horariosService.editHorario(currentHorario._id, updatedHorario, token);
+            if (response) {
+                console.log('Horario actualizado con éxito:', response);
+                notification.success({
+                    message: 'Horario Actualizado',
+                    description: 'Horario actualizado correctamente.',
+                });
+            } else {
+                console.warn('El backend no devolvió datos después de actualizar el horario.');
+                notification.warning({
+                    message: 'Horario Actualizado',
+                    description: 'Horario actualizado, pero no se recibieron datos del backend.',
+                });
+            }
             fetchHorarios();
             setIsModalVisible(false);
             form.resetFields();
             setIsEditing(false);
             setCurrentHorario(null);
-            notification.success({
-                message: 'Horario Actualizado',
-                description: 'Horario actualizado correctamente.',
-            });
         } catch (error) {
             notification.error({
                 message: 'Error',
@@ -119,6 +160,27 @@ const HorariosTable = () => {
             });
             console.error('Error al actualizar el horario:', error);
         }
+    };
+    
+    const handleGenerateReport = () => {
+        const columns = [
+            { title: 'Fecha', dataIndex: 'fecha' },
+            { title: 'Hora de Inicio', dataIndex: 'horaInicio' },
+            { title: 'Hora de Fin', dataIndex: 'horaFinal' },
+            {
+                title: 'Profesores',
+                dataIndex: 'profesor',
+                render: (profesorArray) => getProfesorNames(profesorArray)  // Usa getProfesorNames para renderizar los nombres
+            },
+        ];
+
+        // Antes de llamar a generatePDF, transforma los datos de los profesores
+        const data = horarios.map(horario => ({
+            ...horario,
+            profesor: getProfesorNames(horario.profesor),  // Aplica la función aquí
+        }));
+
+        generatePDF('Reporte de Horarios', columns, data, user);
     };
 
     const showEditModal = (horario) => {
@@ -153,14 +215,6 @@ const HorariosTable = () => {
         (horario) =>
             (horario.fecha || '').toLowerCase().includes(searchText.toLowerCase())
     );
-
-    const getProfesorNames = (profesorArray) => {
-        if (!Array.isArray(profesorArray)) {
-            return '';
-        }
-        const nombresProfesores = profesorArray.map(prof => prof.nombre).join(', ');
-        return nombresProfesores;
-    };
 
     const deleteHorario = async (id) => {
         try {
@@ -231,16 +285,6 @@ const HorariosTable = () => {
         doc.text(`Fecha de Generación: ${formattedDate}`, 14, 35);
 
         doc.save(`${title.replace(/\s+/g, '_').toLowerCase()}.pdf`);
-    };
-
-    const handleGenerateReport = () => {
-        const columns = [
-            { title: 'Fecha', dataIndex: 'fecha' },
-            { title: 'Hora de Inicio', dataIndex: 'horaInicio' },
-            { title: 'Hora de Fin', dataIndex: 'horaFinal' },
-            { title: 'Profesores', dataIndex: 'profesor', render: getProfesorNames },
-        ];
-        generatePDF('Reporte de Horarios', columns, horarios, user);
     };
 
     return (
