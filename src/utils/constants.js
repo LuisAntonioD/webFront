@@ -1,6 +1,7 @@
 export const ENV = {
-    API_URL: "https://lizard-server.vercel.app",
+    API_URL: "https://web-app-seven-pink.vercel.app/",
     //http://localhost:3000
+    //https://lizard-server.vercel.app
     //https://lizard-server.vercel.app
     ENDPOINTS: {
         LOGIN: 'api/auth/signin',
