@@ -6,8 +6,10 @@ import './ImageLogin.css'; // Archivo CSS para estilos específicos si es necesa
 const ImageLogin = () => {
   return (
     <div>
+       {/*
       <img src={loginImage} alt="Login" />
-      {/* Agrega un enlace a la página de productos */}
+      Agrega un enlace a la página de productos */}
+       {/*
       <div className="button-container">
         <Link to="/mostraradmisiones">
           <button className="ver-productos-btn">Nuestras Admisiones</button>
@@ -16,6 +18,8 @@ const ImageLogin = () => {
           <button className="ver-productos-btn">Nuestras Ofertas</button>
         </Link>
       </div>
+              */}
+
     </div>
   );
 };
