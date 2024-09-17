@@ -3,6 +3,7 @@ export const ENV = {
     //http://localhost:3000
     //https://lizard-server.vercel.app
     //https://lizard-server.vercel.app
+    //hola
     ENDPOINTS: {
         LOGIN: 'api/auth/signin',
         REGISTER: 'api/auth/signup',
