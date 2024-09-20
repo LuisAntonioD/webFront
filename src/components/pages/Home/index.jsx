@@ -60,7 +60,6 @@ import FooterNav  from '../Menu/Footer.jsx';
               <div className="home-container">
                 <h1>Bienvenido a tu página de inicio</h1>
                 <p>Estás en casa, {user.username}</p>
-                <Carrousel />
               </div>
             </div>
             <FooterNav/>

@@ -21,7 +21,7 @@ const SidebarMenu = ({ user, collapsed, setCollapsed, handleMenuClick, logout })
     return (
         <Sider trigger={null} collapsible collapsed={collapsed}>
             <Link to="/" className="logo" onClick={() => handleMenuClick('')}>
-                <img src={logo} alt="logo" />
+                {/*<img src={logo} alt="logo" />*/}KolibriApps
             </Link>
             <Menu
                 theme="dark"
@@ -36,12 +36,14 @@ const SidebarMenu = ({ user, collapsed, setCollapsed, handleMenuClick, logout })
                 <Menu.Item key="1" icon={<HomeOutlined />}>
                     <Link to="/">Inicio</Link>
                 </Menu.Item>
+                {/*
                 <Menu.Item key="2" icon={<BookFilled />}>
                     <Link to="/admisiones">Admisiones</Link>
-                </Menu.Item>
+                </Menu.Item> */}
                 <Menu.Item key="3" icon={<UserOutlined />}>
                     <Link to="/usuarios">Usuarios</Link>
                 </Menu.Item>
+                {/*
                 <Menu.Item key="4" icon={<UserOutlined />}>
                     <Link to="/profesores">Profesores</Link>
                 </Menu.Item>
@@ -57,6 +59,7 @@ const SidebarMenu = ({ user, collapsed, setCollapsed, handleMenuClick, logout })
                 <Menu.Item key="8" icon={<UserOutlined />}>
                     <Link to="/horarios">Horarios</Link>
                 </Menu.Item>
+                */}
                 <Menu.Item
                     key="9"
                     icon={<UserOutlined />}
