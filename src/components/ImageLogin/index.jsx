@@ -12,4 +12,4 @@ const ImageLogin = () => {
   );
 };
 
-export default ImageLogin;
+export default ImageLogin;//
